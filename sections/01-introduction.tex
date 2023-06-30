@@ -1,0 +1,23 @@
+\chapter{Introduction} %numbered chapter
+% draft for the introduction to the thesis
+
+%note: eileen recommends ~half a page
+%todo: what is this thesis about?
+%todo: why is the topic important?
+%todo: what do i plan to find out and what is the solution supposed to look like?
+%todo: which steps and tasks am I willing to take as part of this thesis?
+
+\begin{itemize}
+    \item quantum computing is evolving rapidly with new algorithms and hardware being released "very often" (source?)
+    \item still, todays quantum devices are subject to high amounts of noise, have a very limited number of qubits and "use" an incomplete topology
+    \item one promising idea is to apply the concept of (classical) machine learning to quantum computers because (a) you don't need to build and understand an algorithm by hand and (b) machine learning can benefit from a limited amount of noise
+    \item A common approach to quantum machine learning is to use a classical gradient-based optimizer with a parameterized quantum circuit to approximate the probability distribution of an ??? function
+    \item However, this approach requires both a lot of shots to calculate the gradient and a lot of refinement steps to perform the gradient walk.
+    \item A soon-to-be-published paper by the SCC quantum research group around Eileen Kuehn explores a different optimization approach
+    \item instead of optimizing a circuit through a gradient-based approach, they calculate the optimal parameters analytically by measuring a set of 3 (???) points through circuit execution
+    \item The approach has only been tested for optimizing the rotation parameter in single-qubit rotational gates.
+    \item Another important aspect to point out is that this approach does not necessarily find the global optimum because it optimizes parameters individually.
+    \item However, experiments show good results with this approach compared to state-of-the-art optimizers like X (???) and Y (YYY).
+    \item These promising results naturally pose the question whether this approach can be applied to other types of gates.
+    \item Because of their similarity with the studied rotational gates, this bachelor thesis attempts to find a similar optimization technique for controlled rotational gates (i.e., CRX, CRY and CRZ).
+\end{itemize}

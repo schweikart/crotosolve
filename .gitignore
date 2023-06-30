@@ -1,7 +1,17 @@
-# LaTeX artifacts
+# intermediary LaTeX artifacts
 *.aux
 *.fdb_latexmk
 *.fls
 *.log
 *.out
+*.toc
+
+# intermediary biblatex artifacts
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+*.synctex.gz
+
+# output files
 *.pdf
