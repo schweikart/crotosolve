@@ -1,0 +1,157 @@
+\documentclass[
+ %class options that do not change the layout can be added here
+ UKenglish%,french%,ngerman (already default) ... %--- activate one (or more) language options as needed
+ ]{report}
+
+\usepackage[
+ %work, %--- activate temporarily to visualise the type area while fine tuning the report pages
+ %helvet, %heros, %--- use one of these to have a fallback font as default
+ %cursor %--- activate to have the fallback typewriter font as default
+ ]{KITreport}
+
+\graphicspath{{examplefiles/}}% this command from the graphics package allows to add folders (here subfolder "examplefiles") to be searched for graphic/image files
+
+%\usepackage{multimedia}%necessary for \movie (see below)
+
+%meta data fields: their content will be used for the title page
+ %(title, author and subject will also be added automatically as PDF meta information)
+\subject{Report}
+\title{Title\break maybe second title line}
+\author{Author}
+\project{Project}
+\addinfo{Optional additional info}
+%\titleimage{KIT-Bildwelt_Allgemein_Form_RGB_breit_Vorlage}
+  %or e.g. \titleimagecommand{\KITincludegraphics[width=100mm,height=150mm]{KIT-Bildwelt_Allgemein_Form_RGB_breit_Vorlage}}
+\kindlynote[My note:\enskip]{This internal report contains information of preliminary character\\ and is intended for internal use exclusively.}
+
+\begin{document}
+\maketitle
+
+%examples for sectioning commands:
+\chapter{Example heading level 0}%numbered chapter
+Lorem ipsum
+
+\chapter*{Example heading level 0}%unnumbered chapter
+Lorem ipsum
+
+\section{Example heading level 1}
+Lorem ipsum
+
+\section*{Example heading level 1}
+Lorem ipsum
+
+\subsection{Example heading level 2}
+Lorem ipsum
+
+\subsection*{Example heading level 2}
+Lorem ipsum
+
+\subsubsection{Example heading level 3}
+Lorem ipsum
+
+\paragraph{Example heading level 4}
+Lorem ipsum
+
+\subparagraph{Example heading level 5}
+Lorem ipsum
+
+\newpage
+\begin{itemize}
+\item Lorem ipsum
+\item Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna 
+\item Lorem ipsum
+  \begin{itemize}
+  \item Lorem ipsum
+  \item Lorem ipsum
+    \begin{itemize}
+    \item Lorem ipsum
+    \item Lorem ipsum
+    \end{itemize}
+    \begin{itemize}
+    \item Lorem ipsum
+    \item Lorem ipsum
+      \begin{itemize}
+      \item Lorem ipsum
+      \item Lorem ipsum
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{enumerate}
+\item Lorem ipsum
+\item Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna 
+\item Lorem ipsum
+  \begin{enumerate}
+  \item Lorem ipsum
+  \item Lorem ipsum
+    \begin{enumerate}
+    \item Lorem ipsum
+    \item Lorem ipsum
+      \begin{enumerate}
+      \item Lorem ipsum
+      \item Lorem ipsum
+      \end{enumerate}
+    \end{enumerate}
+  \end{enumerate}
+\end{enumerate}
+
+\begin{description}
+\item[Definiendum] Lorem ipsum
+\item[Definiendum] Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna 
+\item[Definiendum] Lorem ipsum
+\end{description}
+
+\begin{table}[p]
+  \caption{Lorem ipsum}\label{tab:1}
+  \begin{KITtabular}{lll}
+    Lorem ipsum & Lorem ipsum & Lorem ipsum \\\midrule
+    Lorem ipsum & Lorem ipsum & Lorem ipsum \\
+    Lorem ipsum & Lorem ipsum & Lorem ipsum \\
+  \end{KITtabular}
+\end{table}
+
+\begin{table}[p]
+  \caption{Lorem ipsum}\label{tab:2}
+  \begin{KITtabularx}{0.55\hsize}{lXl}
+    Lorem ipsum & Lorem ipsum dolor sit amet & Lorem ipsum \\\midrule
+    Lorem ipsum & Lorem ipsum dolor sit amet & Lorem ipsum \\
+    Lorem ipsum & Lorem ipsum & Lorem ipsum \\
+  \end{KITtabularx}
+\end{table}
+
+\begin{figure}[p]
+  \KITincludegraphics[width=\hsize]{KIT-Bildwelt_Allgemein_Faecher_RGB_breit_Vorlage}
+  \caption{Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna}\label{fig:1}
+\end{figure}
+
+\begin{SCfigure}[5][p]%
+  \KITincludegraphics[width=0.5\hsize]{KIT-Bildwelt_Allgemein_Faecher_RGB_breit_Vorlage}
+  \caption{Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna}\label{fig:2}
+\end{SCfigure}
+
+
+\begin{video}[t]
+  % Here are 4 video examples:
+  % 1. Simple link to a video file:
+    %\href{./video.avi}{\includegraphics[width=\hsize]{KIT-Bildwelt_Allgemein_Faecher_RGB_breit_Vorlage}}
+  % 2. Link to a video file with the help of beamer/multimedia (multimedia package required, see document preamble):
+    %\movie[externalviewer]{\includegraphics[width=\hsize]{KIT-Bildwelt_Allgemein_Faecher_RGB_breit_Vorlage}}{video.mp4}
+  % 3. Video embedding with the help of the media9 package:
+    %\includemedia[
+    %  width=\linewidth,height=\linewidth,keepaspectratio,
+    %  addresource=video.mp4,
+    %  flashvars={source=video.mp4}
+    %  ]{\includegraphics[width=\hsize]{KIT-Bildwelt_Allgemein_Faecher_RGB_breit_Vorlage}}{VPlayer.swf}
+  % 4. Video embedding without using flash player:
+       \simplemedia[showGUI=true]{\KITincludegraphics[width=\hsize]{KIT-Bildwelt_Allgemein_Faecher_RGB_breit_Vorlage}}{video.mp4}{video/mp4}
+       %(requires TeXLive 2021)
+  % See the KITreport doc for further information.
+  \caption{Lorem ipsum}\label{vid:1}
+\end{video}
+
+\part{Example heading level \textminus1}% a numbered part (rarely used)
+
+\part*{Example heading level \textminus1}% an unnumbered part (rarely used)
+
+\end{document}
