@@ -1,0 +1,3 @@
+[submodule "KITreport"]
+	path = KITreport
+	url = git@github.com:schweikart/KITreport.git
