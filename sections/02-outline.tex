@@ -4,11 +4,111 @@
 
 \begin{enumerate}
     \item Introduction
+    \begin{itemize}
+        \item
+            Explain the motivation and relevance of the topic.
+        \item
+            Name the contributions of this thesis.
+        \item
+            Provide a realistic outlook on the possible impacts of these
+            contributions.
+        \item
+            A short draft for this section is already provided in
+            \autoref{chap:introduction}.
+    \end{itemize}
+
     \item Quantum Machine Learning with PQCs (incl. parameter shift rule, gradient decent)
-    \item Gradient-free CRX/CRY/CRZ optimization (the maths)
+    \begin{itemize}
+        \item
+            Briefly explain the basic operation of a quantum computer.
+            This section should mention qubits, gates, measurements and their
+            mathematical representation.
+        \item
+            Explain the setup for quantum machine learning with parameterized
+            quantum circuits.
+            This section should include a few examples and cite demonstrations
+            as well as evaluations of the idea.
+        \item
+            Go into detail on the different optimization techniques used for
+            this approach.
+            This section should mention state-of-the-art optimizers such as
+            Adam, Gradient Descent and (Quantum) Natural Gradient.
+            % TODO: cite these optimizers
+            Also explain the parameter shift rule \cite{mitarai_quantum_2018} as
+            we are trying to replace it.
+            % TODO: think about it
+    \end{itemize}
+
+    \item Gradient-free \texttt{CRX}/\texttt{CRY}/\texttt{CRZ} optimization
+    \begin{itemize}
+        \item
+            Explain the concept of gradient-free optimization for the example of
+            uncontrolled rorational gates (i.e., \texttt{RX}, \texttt{RY},
+            \texttt{RZ}) from \cite{wendenius_gradient-free_2023}.
+        \item
+            Explain how I plan to implement this for controlled rotational gates
+            (i.e., \texttt{CRX}, \texttt{CRY}, \texttt{CRZ}).
+        \item
+            Do the maths.
+    \end{itemize}
+
     \item Proof of Concent / prototype
+    \begin{itemize}
+        \item
+            Implement a proof-of-concept using a popular quantum computing SDK.
+        \item
+            This POC may or may not build onto the methods proposed in
+            \cite{wendenius_gradient-free_2023}, taking advantage of
+            gradient-free optimization of uncontrolled rotational gates.
+            % TODO: decide whether or not to do this
+    \end{itemize}
+
     \item Evaluation
+    \begin{itemize}
+        \item
+            Evaluate the accuracy of the model, the number of steps in the
+            optimization loop and the number of circuit evaluations
+            \cite{wendenius_gradient-free_2023}.
+        \item
+            Compare the results with the performance of other established
+            optimizers (e.g., Adam, Gradient Descent and
+            Quantum Natural Gradient) as well as the \emph{Sine Exact} and
+            \emph{Sine Iterative} variants proposed in
+            \cite{wendenius_gradient-free_2023}.
+            % TODO: sources for other optimizers
+        \item
+            Think about the effects of barren plateaus on this optimizer.
+            % TODO: do think about this and come up with a concrete task!
+    \end{itemize}
+
     \item Related Work
+    \begin{itemize}
+        \item TODO
+    \end{itemize}
+
     \item Conclusion
+    \begin{itemize}
+        \item
+            Mention how the concept of gradient-free optimization can be
+            extended from rotational gates to controlled rotational gates.
+        \item
+            Mention the proof-of-concept implementation and its evaluation.
+        \item
+            Hopefully be able to recommend 
+        \item
+            Present some ideas for future work.
+            This might included the extension of this concept to even more
+            gates.
+            Unproven guess:
+            If we apply this to \tt{CCX} gates, we might be able to optimize
+            arbitrary circuits with this approach.
+    \end{itemize}
+
     \item References
+    \begin{itemize}
+        \item
+            Many of the references should already be included in
+            \autoref{chap:bibliography} of this Exposé but more literature might
+            come up in the process. 
+    \end{itemize}
 \end{enumerate}
