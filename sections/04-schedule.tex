@@ -1,14 +1,62 @@
 \chapter{Schedule}
+\label{chap:sched}
 % todo: assign a duration to each step
 
 \begin{table}[h] % h = here
     \centering
-    \begin{tabular}{c|c}
-        What & When \\
-        Literature review & 4 weeks \\
-        maths & 4 weeks \\
-        writing stuff down & 6 weeks
-    \end{tabular}
-    \caption{Caption}
-    \label{tab:my_label}
+    \begin{tabularx}{0.95\textwidth}{X | c | c}
+        \textbf{What} & \textbf{How long} & \textbf{When} \\
+        \hline
+        Topic Selection
+            & -
+            & week 20 - 22 \\
+        \rule{0pt}{3ex
+        }Introduction to the topic
+            & -
+            & week 23 - 25 \\
+        \rule{0pt}{3ex
+        }Submit Exposé
+            & -
+            & week 26 - 28 \\
+        \hline
+        Literature review: Read the literature from \autoref{chap:bibliography}
+            and further works relevant for the topic. 
+            & 3 weeks
+            & week 29 - 31 \\
+        \rule{0pt}{3ex
+        }Develop optimization technique:
+            Find the mathematical structure of
+            \texttt{CRX}/\texttt{CRY}/\texttt{CRZ} parameter effects and develop
+            an algorithm to find the optimal parameters
+            & 3 weeks
+            & week 32 - 34 \\
+        \rule{0pt}{3ex
+        }Implementation:
+            Extend the optimizer from \cite{wendenius_gradient-free_2023} to
+            include analytical optimizations for controlled rotation gates
+            & 3 weeks
+            & week 35 - 37 \\
+        \rule{0pt}{3ex
+        }Evaluation:
+            Gather a set of training demo problems and run experiments to
+            compare this thesis' extension with the implementation from
+            \cite{wendenius_gradient-free_2023} and state-of-the-art QML
+            optimizers
+            & 3 weeks
+            & week 38 - 40 \\
+        \rule{0pt}{3ex
+        }Formulation of the thesis
+            & 4 weeks
+            & week 41 - 44 \\
+        \rule{0pt}{3ex
+        }Buffer:
+            Proofreading, printing and hopefully not the developing an addiction
+            to coffee
+            & 2 weeks
+            & week 45 - 46 \\
+        \hline
+        \textbf{Total} & \textbf{18 weeks} & \textbf{week 29 - 46}
+    \end{tabularx}
+    \caption{Schedule for working on this bachelor thesis}
+    \label{tab:schedule}
 \end{table}
