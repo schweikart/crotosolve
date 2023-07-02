@@ -1,0 +1,24 @@
+name: 'Build PDF from LaTeX sources'
+
+on:
+  push:
+
+jobs:
+  pdf:
+    runs-on: ubuntu-latest
+    container:
+      image: texlive/texlive:latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+          token: ${{ secrets.GH_CLONE_TOKEN }}
+      - name: Build PDF with LaTeXmk
+        run: latexmk
+      - name: Upload PDF as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: PDF
+          path: thesis.pdf
