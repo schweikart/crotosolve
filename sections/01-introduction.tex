@@ -8,12 +8,18 @@
 %todo: what do i plan to find out and what is the solution supposed to look like?
 %todo: which steps and tasks am I willing to take as part of this thesis?
 
-Quantum computing is evolving rapidly with new algorithms and hardware being
-released every month. % TODO: source?
+While the first theoretical foundations of quantum computers have already been
+developed in the 1980s, quantum computers have only recently gathered widespread
+attention with the development and availability of real quantum computing
+hardware.
+% TODO: cite! maybe Nielsen & Chuang or Hidary?
+The field is currently evolving rapidly with new tools, algorithms and hardware
+being released every month. % TODO: source?
 Still, today's quantum devices are subject to high amounts of noise, have a very
 limited number of qubits and are not fully connected, which often further
-increases the number of gates and qubits needed to perform a task.
+reduces the number available qubits and gates needed to perform a given task.
 % TODO: source?
+% TODO: given? really?
 
 One promising idea is to apply the concept of (classical) machine learning to
 quantum computers because (a) you don't need to build and understand an
@@ -29,16 +35,15 @@ However, this approach requires both a lot of shots to calculate the gradient
 and a lot of refinement steps to perform the gradient walk.
 % TODO: is refinement really the right word for this? (same for gradient walk)
 
-A soon-to-be-published paper by the SCC quantum research group around
-Eileen Kühn explores a different optimization approach.
+A soon-to-be-published paper by Wendenius et al. from the Steinbuch Centre for
+Computing (SCC) at KIT explores a different optimization approach.
 % TODO: we are not the news, this is a thesis! also, we can just cite the paper.
-% TODO: also, shouldn't this be wendenius et al?
-Instead of optimizing a circuit through a gradient-based approach, they
-calculate the optimal parameters analytically by executing the PQC three times
-with different parameters in each run.
-% TODO: talking about "them" seems both too distanced and personal
+Instead of optimizing a circuit through a gradient-based approach, they observed
+the sinusoid effect of rotational gate parameters on the output of a PQC and
+calculate the optimal parameters analytically by determining the properties of
+the sine wave through a small number of circuit evaluations. 
 % TODO: what about the shots?
-The approach has only been tested for optimizing the rotation parameter in
+This approach has only been tested for optimizing the rotation parameter in
 single-qubit rotational gates.
 % TODO: that's not true, they just haven't contributed a solution for other
 %       types of gates yet! There's even a plot about CRP gates!
@@ -50,20 +55,20 @@ state-of-the-art optimizers like Adam, Gradient Descent and Quantum Natural
 Gradient.
 % TODO: cite?
 These promising results naturally pose the question whether this approach can be
-applied to other types of gates.
+extended to other types of gates.
 
 Because of their similarity with the studied rotational gates, this bachelor
-thesis attempts to find a similar optimization technique for controlled rotational gates (i.e., \texttt{CRX},
-\texttt{CRY} and \texttt{CRZ}).
-After some history and theoretical backgrounds on quantum computing and quantum
-machine learning in general, we will develop a derive an analytic optimization
-method for parameters of controlled rotation gates in PQCs.
+thesis attempts to find a similar optimization technique for controlled
+rotational gates (i.e., \texttt{CRX}, \texttt{CRY} and \texttt{CRZ}).
+After some theoretical backgrounds on quantum computing and QML in general, we
+will derive an analytic optimization method for parameters of controlled
+rotation gates in PQCs.
 We will then present a proof-of-concept implementation
 \footnote{The implementation will be made available with an open-source license
 on GitHub}
-that extends the gradient-free optimizer by Wendenius et al.
+that extends the gradient-free optimizer by Wendenius et al..
 We will evaluate the accuracy and the performance of this optimizer both
-analytically and through experiments, comparing it to both the Wendenius
-implementation and state-of-the-art QML optimizers.
+analytically and through experiments, comparing it to both the original
+implementation for rotational gates and to state-of-the-art QML optimizers.
 We will hopefully be able to conclude that our extension can further improve the
 gradient-free QML optimizer.
