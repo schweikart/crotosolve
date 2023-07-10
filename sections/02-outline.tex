@@ -40,9 +40,10 @@
             This section should mention state-of-the-art optimizers such as
             Adam, Gradient Descent and (Quantum) Natural Gradient.
             % TODO: cite these optimizers
-            Also explain the parameter shift rule \cite{mitarai_quantum_2018} as
-            we are trying to replace it.
-            % TODO: think about it
+            Also explain the parameter shift rule
+            \cite{mitarai_quantum_2018,schuld_evaluating_2019} as we are trying
+            to replace it.
+            % TODO: re-formulate
     \end{itemize}
 
     \item Gradient-free \texttt{CRX}/\texttt{CRY}/\texttt{CRZ} optimization
@@ -82,6 +83,11 @@
             \emph{Sine Iterative} variants proposed in
             \cite{wendenius_gradient-free_2023}.
             % TODO: sources for other optimizers
+            For this purpose, evaluate at least the circuits from
+            \cite{sim_expressibility_2019} that were also evaluated in the
+            Wendenius et al. paper \cite{wendenius_gradient-free_2023}.
+            % TODO: more circuits to evaluate? eileen might have access to
+            %       something...
         \item
             Think about the effects of barren plateaus on this optimizer.
             % TODO: do think about this and come up with a concrete task!
