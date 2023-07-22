@@ -24,34 +24,34 @@ One promising idea is to apply the concept of (classical) machine learning to
 quantum computers because (a) machine learning can often be used to approximate
 complex functions without much knowledge about their nature and
 % TODO: cite! and is this too vague?
-(b) machine learning can benefit from a limited amount of noise
-\cite{ciliberto_quantum_2018}.
+(b) machine learning can work with or even benefit from a limited amount of
+noise \cite{ciliberto_quantum_2018}.
 One common approach to quantum machine learning (QML) is to use a classical
 gradient-based optimizer with a parameterized quantum circuit (PQC) to
 approximate a given probability distribution.
-% TODO: this enters the topic too quickly!
+% TODO: this enters the topic too quickly! PQCs must be explained
 However, this approach requires both a lot of shots to calculate the gradient
 and a lot of refinement steps to perform the gradient walk.
 % TODO: is refinement really the right word for this? (same for gradient walk)
 
-A soon-to-be-published paper by Wendenius et al.
-\cite{wendenius_gradient-free_2023} explores a different optimization approach.
+In ``\emph{\citefield{ostaszewski_structure_2021}{title}}''
+\cite{ostaszewski_structure_2021}, Ostaszewski et al. explore a different
+optimization approach.
 Instead of optimizing a circuit through a gradient-based approach, they observed
 the sinusoid effect of rotational gate parameters on the output of a PQC and
 calculate the optimal parameters analytically by determining the properties of
 the sine wave through a small number of circuit evaluations. 
+Just like with gradient-based optimizers, this approach does not necessarily
+find the global optimum because it optimizes parameters individually.
 % TODO: what about the shots?
-This approach has only been tested for optimizing the rotation parameter in
-single-qubit rotational gates.
+It has only been tested for optimizing the rotation parameters and directions
+for single-qubit rotational gates within arbitrary quantum circuits.
 % TODO: that's not true, they just haven't contributed a solution for other
 %       types of gates yet! There's even a plot about CRP gates!
-Another important aspect to point out is that this approach does not necessarily
-find the global optimum because it optimizes parameters individually.
-% TODO: first part of the sentence is a waste of space
 However, experiments show good results with this approach compared to
-state-of-the-art optimizers like Adam, Gradient Descent and Quantum Natural
-Gradient.
-% TODO: cite?
+state-of-the-art optimizers like Adam \cite{kingma_adam_2017},
+Gradient Descent and Quantum Natural Gradient \cite{stokes_quantum_2020}.
+% TODO: cite? and QNG is not a thing any more, the new paper cites SPSA
 These promising results naturally pose the question whether this approach can be
 extended to other types of gates.
 
@@ -61,10 +61,10 @@ rotational gates (i.e., \texttt{CRX}, \texttt{CRY} and \texttt{CRZ}).
 After some theoretical backgrounds on quantum computing and QML in general, we
 will derive an analytic optimization method for parameters of controlled
 rotation gates in PQCs.
-We will then present a proof-of-concept implementation
+We will then present a proof-of-concept implementation%
 \footnote{The implementation will be made available with an open-source license
 on GitHub}
-that extends the gradient-free optimizer by Wendenius et al..
+that extends the \texttt{Rotosolve} optimizer proposed by Ostaszewski et al.
 We will evaluate the accuracy and the performance of this optimizer both
 analytically and through experiments, comparing it to both the original
 implementation for rotational gates and to state-of-the-art QML optimizers.
