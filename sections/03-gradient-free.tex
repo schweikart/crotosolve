@@ -55,3 +55,141 @@ with $\ket{\varphi} = V \cdot CRP(\theta) \cdot U \cdot \ket{00}$.
 To resolve this result, let's compute the more general
 $\bra{\alpha} \cdot V \cdot CRP(\theta) \cdot U \cdot \ket{\beta}$.
 % TODO: are the qubit indices correct?
+
+\begin{equation}
+    \label{eq:single-prob}
+    \begin{split}
+        \lvert \bra\alpha \cdot V \cdot CPR(\theta) \cdot U \ket\beta \rvert^2
+            &= \bra\alpha \cdot V \cdot CPR(\theta) \cdot U \ket\beta
+                \cdot \overline{\bra\alpha \cdot V \cdot CPR(\theta) \cdot U \ket\beta} \\
+            &= \underbrace{\bra\alpha \cdot V}_{=: \bra{\tilde\alpha}} \cdot CPR(\theta)
+                \cdot \underbrace{U \ket\beta \cdot \bra\beta \cdot U^\dagger}_{=: A} \cdot CPR(\theta)^\dagger
+                \cdot \underbrace{V^\dagger \ket\alpha}_{=\ket{\tilde\alpha}} \\
+            &= \bra{\tilde\alpha} \cdot CPR(\theta) \cdot A \cdot CPR(-\theta) \cdot \ket{\tilde\alpha} \\
+            &= \bra{\tilde\alpha}
+                \cdot \left(\ket 0 \bra 0 \otimes I + \ket 1 \bra 1 \otimes RP\left(\theta\right)\right)
+                \cdot A
+                \cdot \left(\ket 0 \bra 0 \otimes I + \ket 1 \bra 1 \otimes RP\left(-\theta\right)\right)
+                \cdot \ket{\tilde\alpha} \\
+            &= \underbrace{\bra{\tilde\alpha} \cdot (\ket 0 \bra 0 \otimes I)}_{=: \bra\gamma} \cdot A \cdot \underbrace{(\ket 0 \bra 0 \otimes I) \ket{\tilde\alpha}}_{=: \ket{\delta}} \\
+                &\quad + \underbrace{\bra{\tilde\alpha} \cdot (\ket 0 \bra 0 \otimes I)}_{= \bra\gamma} \cdot A \cdot (\ket 1 \bra 1 \otimes RP\left(-\theta\right)) \ket{\tilde\alpha} \\
+                &\quad + \bra{\tilde\alpha} \cdot (\ket 1 \bra 1 \otimes RP\left(\theta\right)) \cdot A \underbrace{(\ket 0 \bra 0 \otimes I) \ket{\tilde\alpha}}_{=: \ket{\delta}} \\
+                &\quad + \bra{\tilde\alpha} \cdot (\ket 1 \bra 1 \otimes RP\left(\theta\right)) \cdot A \cdot (\ket 1 \bra 1 \otimes RP\left(-\theta\right)) \ket{\tilde\alpha} \\
+            &= \bra\gamma \cdot A \cdot \ket\delta \\
+                &\quad + \bra\gamma \cdot A \cdot (\ket 1 \bra 1 \otimes RP\left(-\theta\right)) \ket{\tilde\alpha} \\
+                &\quad + \bra{\tilde\alpha} \cdot (\ket 1 \bra 1 \otimes RP\left(\theta\right)) \cdot A \ket\delta \\
+                &\quad + \bra{\tilde\alpha} \cdot (\ket 1 \bra 1 \otimes RP\left(\theta\right)) \cdot A \cdot (\ket 1 \bra 1 \otimes RP\left(-\theta\right)) \ket{\tilde\alpha} \\
+    \end{split}
+\end{equation}
+
+The summands in \autoref{eq:single-prob} can be further simplified using
+$RP\left(\theta\right) = \cos\left(\frac\theta2\right) I - i \sin\left(\frac\theta2\right) P$
+from \cite{ostaszewski_structure_2021}, the linearity of gates and by
+introducing constants for parts of the equation that are independent from
+$\theta$.
+
+\begin{equation}
+    \label{eq:single-prob-simplification1}
+    \begin{split}
+        \bra\gamma \cdot A \cdot (\ket 1 \bra 1 \otimes RP\left(-\theta\right)) \cdot \ket{\tilde\alpha}
+            &= \bra{\gamma^\downarrow} \cdot A^\downarrow \cdot RP\left(-\theta\right) \cdot \ket{\tilde\alpha^\downarrow} \\
+            &= \bra{\gamma^\downarrow} \cdot A^\downarrow \cdot \left(\cos\left(-\frac\theta2\right) I - i \sin\left(-\frac\theta2\right) P\right) \cdot \ket{\tilde\alpha^\downarrow} \\
+            &= \cos\left(-\frac\theta2\right) \cdot \bra{\gamma^\downarrow} \cdot A^\downarrow \cdot I \cdot \ket{\tilde\alpha^\downarrow} \\
+                &\quad - i \sin\left(-\frac\theta2\right) \cdot \bra{\gamma^\downarrow} \cdot A^\downarrow \cdot P \cdot \ket{\tilde\alpha^\downarrow} \\
+            &= \cos\left(\frac\theta2\right) \cdot \underbrace{\bra{\gamma^\downarrow} \cdot A^\downarrow \cdot I \cdot \ket{\tilde\alpha^\downarrow}}_{=: c_1} \\
+                &\quad + \sin\left(\frac\theta2\right) \cdot \underbrace{i \cdot \bra{\gamma^\downarrow} \cdot A^\downarrow \cdot P \cdot \ket{\tilde\alpha^\downarrow}}_{=: c_2} \\
+            &= \cos\left(\frac\theta2\right) \cdot c_1 + \sin\left(\frac\theta2\right) \cdot c_2
+    \end{split}
+\end{equation}
+
+\begin{equation}
+    \label{eq:single-prob-simplification2}
+    \begin{split}
+        \bra{\tilde\alpha} \cdot (\ket 1 \bra 1 \otimes RP\left(\theta\right)) \cdot A \cdot \ket\delta
+            &= \bra{\tilde\alpha^\downarrow} \cdot RP\left(\theta\right) \cdot A^\downarrow \cdot \ket{\delta^\downarrow} \\
+            &= \bra{\tilde\alpha^\downarrow} \cdot \left(\cos\left(\frac\theta2\right) I - i \sin\left(\frac\theta2\right) P\right) \cdot A^\downarrow \cdot \ket{\delta^\downarrow} \\
+            &= \cos\left(\frac\theta2\right) \cdot \bra{\tilde\alpha^\downarrow} \cdot I \cdot A^\downarrow \cdot \ket{\delta^\downarrow} \\
+                &\quad - i \sin\left(\frac\theta2\right) \cdot \bra{\tilde\alpha^\downarrow} \cdot P \cdot A^\downarrow \cdot \ket{\delta^\downarrow} \\
+            &= \cos\left(\frac\theta2\right) \cdot \underbrace{\bra{\tilde\alpha^\downarrow} \cdot I \cdot A^\downarrow \cdot \ket{\delta^\downarrow}}_{=: c_3} \\
+                &\quad + \sin\left(\frac\theta2\right) \cdot \underbrace{\left(-i\right)\cdot \bra{\tilde\alpha^\downarrow} \cdot P \cdot A^\downarrow \cdot \ket{\delta^\downarrow}}_{=: c_4} \\
+            &= \cos\left(\frac\theta2\right) \cdot c_3 + \sin\left(\frac\theta2\right) \cdot c_4
+    \end{split}
+\end{equation}
+
+\begin{equation}
+    \label{eq:single-prob-simplification3}
+    \begin{split}
+        \bra{\tilde\alpha} \cdot (\ket 1 \bra 1 \otimes RP\left(\theta\right)) \cdot A \cdot (\ket 1 \bra 1 \otimes RP\left(-\theta\right)) \cdot \ket{\tilde\alpha}
+            &= \bra{\tilde\alpha^\downarrow} \cdot RP\left(\theta\right) \cdot A^\downarrow \cdot RP\left(-\theta\right) \cdot \ket{\tilde\alpha^\downarrow} \\
+            &= \bra{\tilde\alpha^\downarrow} \cdot \left(\cos\left(\frac\theta2\right) I - i \sin\left(\frac\theta2\right) P\right) \\
+                &\quad\cdot A^\downarrow \cdot \left(\cos\left(-\frac\theta2\right) I - i \sin\left(-\frac\theta2\right) P\right) \cdot \ket{\tilde\alpha^\downarrow} \\
+            &= \cos\left(\frac\theta2\right)\cos\left(-\frac\theta2\right) \bra{\tilde\alpha} \cdot I \cdot A \cdot I \cdot \ket{\tilde\alpha^\downarrow} \\
+                &\quad + \cos\left(\frac\theta2\right)\sin\left(-\frac\theta2\right) \cdot (-i) \cdot \bra{\tilde\alpha} \cdot I \cdot A \cdot P \cdot \ket{\tilde\alpha^\downarrow}  \\
+                &\quad + \sin\left(\frac\theta2\right)\cos\left(-\frac\theta2\right) \cdot (-i) \cdot \bra{\tilde\alpha} \cdot P \cdot A \cdot I \cdot \ket{\tilde\alpha^\downarrow} \\
+                &\quad + \sin\left(\frac\theta2\right)\sin\left(-\frac\theta2\right) \cdot (-i)^2 \cdot \bra{\tilde\alpha} \cdot P \cdot A \cdot P \cdot \ket{\tilde\alpha^\downarrow} \\
+            &= \cos\left(\frac\theta2\right)^2 \cdot \underbrace{\bra{\tilde\alpha} \cdot A \cdot \ket{\tilde\alpha^\downarrow}}_{=: c_5} \\
+                &\quad + \cos\left(\frac\theta2\right)\sin\left(\frac\theta2\right) \cdot \underbrace{i \cdot \bra{\tilde\alpha} \cdot A \cdot P \cdot \ket{\tilde\alpha^\downarrow}}_{=: c_6} \\
+                &\quad + \sin\left(\frac\theta2\right)\cos\left(\frac\theta2\right) \cdot \underbrace{(-i) \cdot \bra{\tilde\alpha} \cdot P \cdot A \cdot \ket{\tilde\alpha^\downarrow}}_{=: c_7} \\
+                &\quad + \sin\left(\frac\theta2\right)^2 \cdot \underbrace{\bra{\tilde\alpha} \cdot P \cdot A \cdot P \cdot \ket{\tilde\alpha^\downarrow}}_{=: c_8} \\
+            &= \cos\left(\frac\theta2\right)^2 \cdot c_5 + \sin\left(\frac\theta2\right)^2 \cdot c_8 \\
+                &\quad + \cos\left(\frac\theta2\right)\sin\left(\frac\theta2\right) \cdot \left(c_6 + c_7\right)
+    \end{split}
+\end{equation}
+
+With \ref{eq:single-prob-simplification1},
+\ref{eq:single-prob-simplification2} and \ref{eq:single-prob-simplification3},
+equation \ref{eq:single-prob} can be expressed as the following.
+
+\begin{equation}
+    \label{eq:single-prob-simplified}
+    \begin{split}
+        \lvert \bra\alpha \cdot V \cdot CPR(\theta) \cdot U \ket\beta \rvert^2
+            &= \underbrace{\bra\gamma \cdot A \cdot \ket\delta}_{=: c_9} \\
+                &\quad + \bra\gamma \cdot A \cdot (\ket 1 \bra 1 \otimes RP\left(-\theta\right)) \ket{\tilde\alpha} \\
+                &\quad + \bra{\tilde\alpha} \cdot (\ket 1 \bra 1 \otimes RP\left(\theta\right)) \cdot A \ket\delta \\
+                &\quad + \bra{\tilde\alpha} \cdot (\ket 1 \bra 1 \otimes RP\left(\theta\right)) \cdot A \cdot (\ket 1 \bra 1 \otimes RP\left(-\theta\right)) \ket{\tilde\alpha} \\
+            &= c_9 \\
+                &\quad + \cos\left(\frac\theta2\right) \cdot c_1 + \sin\left(\frac\theta2\right) \cdot c_2 \\
+                &\quad + \cos\left(\frac\theta2\right) \cdot c_3 + \sin\left(\frac\theta2\right) \cdot c_4 \\
+                &\quad + \cos\left(\frac\theta2\right)^2 \cdot c_5 + \sin\left(\frac\theta2\right)^2 \cdot c_8 \\
+                &\quad + \cos\left(\frac\theta2\right)\sin\left(\frac\theta2\right) \cdot \left(c_6 + c_7\right) \\
+            &= c_9 \\
+                &\quad + \cos\left(\frac\theta2\right) \cdot \left(c_1 + c_3\right) + \sin\left(\frac\theta2\right) \cdot \left(c_2 + c_4\right) \\
+                &\quad + \cos\left(\frac\theta2\right)^2 \cdot c_5 + \sin\left(\frac\theta2\right)^2 \cdot c_8 \\
+                &\quad + \cos\left(\frac\theta2\right)\sin\left(\frac\theta2\right) \cdot \left(c_6 + c_7\right) \\
+    \end{split}
+\end{equation}
+
+This equation in turn can be simplified even further through the use of the
+following trigonometric identities:
+
+\begin{equation}
+    \begin{split}
+        \cos^2\left(\theta\right) &= \frac12 + \frac12 \cos\left(2\theta\right) \\
+        \sin^2\left(\theta\right) &= \frac12 - \frac12 \cos\left(2\theta\right) \\
+        \cos\left(\theta\right)\sin\left(\varphi\right) &= \frac12\sin\left(\theta + \varphi\right) + \frac12 \sin\left(\theta - \varphi\right) \\
+        a\cos x + b \sin x &= sgn(a) \sqrt{a^2 + b^2} \cos\left(x + \arctan\left(-\frac ba\right)\right)
+    \end{split}
+\end{equation}
+
+\begin{equation}
+    \label{eq:single-prob-simplified-simplified}
+    \begin{split}
+        \lvert \bra\alpha \cdot V \cdot CPR(\theta) \cdot U \ket\beta \rvert^2
+            &= c_9 \\
+                &\quad + \cos\left(\frac\theta2\right) \cdot \left(c_1 + c_3\right) + \sin\left(\frac\theta2\right) \cdot \left(c_2 + c_4\right) \\
+                &\quad + \cos\left(\frac\theta2\right)^2 \cdot c_5 + \sin\left(\frac\theta2\right)^2 \cdot c_8 \\
+                &\quad + \cos\left(\frac\theta2\right)\sin\left(\frac\theta2\right) \cdot \left(c_6 + c_7\right) \\
+            &= c_9 \\
+                &\quad + \cos\left(\frac\theta2\right) \cdot \left(c_1 + c_3\right) + \sin\left(\frac\theta2\right) \cdot \left(c_2 + c_4\right) \\
+                &\quad + \left(\frac12 + \frac12 \cos\left(\theta\right)\right) \cdot c_5 + \left(\frac12 - \frac12 \cos\left(\theta\right)\right) \cdot c_8 \\
+                &\quad + \frac12 \sin\left(\underline{\frac\theta2 + \frac\theta2}_{=\theta}\right) + \underbrace{\frac12 \sin\left(\frac\theta2 - \frac\theta2\right)}_{= 0} \\
+            &= c_9 + \frac{c_5}{2} + \frac{c_8}{2} \\
+                &\quad + \cos\left(\frac\theta2\right) \cdot \left(c_1 + c_3\right) + \sin\left(\frac\theta2\right) \cdot \left(c_2 + c_4\right) \\
+                &\quad + \cos\left(\theta\right) \cdot \left(\frac{c_5}{2} - \frac{c_8}{2}\right) + \sin\left(\theta\right) \cdot \frac12 \\
+            &= \underbrace{c_9 + \frac{c_5}{2} + \frac{c_8}{2}}_{=: d_1} \\
+                &\quad + \cos\left(\frac\theta2 + \underbrace{\arctan\left(-\frac{c_2 + c_4}{c_1 + c_3}\right)}_{=: d_2}\right) \cdot \underbrace{sgn\left(c_1 + c_3\right) \sqrt{(c_1 + c_3)^2 + (c_2 + c_4)^2}}_{=: d_3} \\
+                &\quad + \cos\left(\theta + \underbrace{\arctan\left(-\frac{\frac12}{\frac{c_5}{2} - \frac{c_6}{2}}\right)}_{=: d_4}\right) \cdot \underbrace{sgn\left(\frac{c_5}{2} - \frac{c_6}{2}\right) \sqrt{\left(\frac{c_5}{2} - \frac{c_6}{2}\right)^2 + \left(\frac12\right)^2}}_{=: d_5} \\
+            &= d_1 + \cos\left(\frac\theta2 + d_2\right) \cdot d_3 + \cos\left(\theta + d_4\right) \cdot d_5
+    \end{split}
+\end{equation}
