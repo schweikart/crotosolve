@@ -23,3 +23,35 @@
         expectation values mathematically and describe how the properties of
         this expression can be extracted from measurements.
 \end{itemize}
+
+\section{Effect}
+Consider a quantum circuit -- any two-bit quantum circuit -- with a
+parameterized controlled pauli rotation gate.
+
+\begin{center}
+\begin{quantikz}
+\lstick{\ket{0}}    & \gate[wires=2]{U} & \ctrl{1}          & \gate[wires=2]{V}\slice{$\ket{\varphi}$}  & \meter\qw \\
+\lstick{\ket{0}}    &                   & \gate{RP(\theta)} & \qw                               & \qw
+\end{quantikz}
+\end{center}
+
+If we measure the first qubit\footnote{
+    This can in fact be any of the qubits.
+    If we want to measure any other qubit, we can just append a corresponding
+    swap gate to $V$ and the equation will remain the same.
+}, we can describe the probability of measuring a $\ket 0$ by the following.
+
+\begin{equation}
+    \label{eq1}
+    \begin{split}
+        \mathbb{P}(M_0 = \ket 0)
+            &= \mathbb{P}(M = \ket{00}) + \mathbb{P}(M = \ket{01}) \\
+            &= \lvert\braket{00}{\varphi}\rvert^2 + \lvert\braket{01}{\varphi}\rvert^2
+    \end{split}
+\end{equation}
+
+with $\ket{\varphi} = V \cdot CRP(\theta) \cdot U \cdot \ket{00}$.
+
+To resolve this result, let's compute the more general
+$\bra{\alpha} \cdot V \cdot CRP(\theta) \cdot U \cdot \ket{\beta}$.
+% TODO: are the qubit indices correct?
