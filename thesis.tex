@@ -1,40 +1,47 @@
 \documentclass[
- %class options that do not change the layout can be added here
- UKenglish%,french%,ngerman (already default) ... %--- activate one (or more) language options as needed
- ]{report}
-
-\usepackage[
- %work, %--- activate temporarily to visualise the type area while fine tuning the report pages
- %helvet, %heros, %--- use one of these to have a fallback font as default
- %cursor %--- activate to have the fallback typewriter font as default
- ]{KITreport}
+    twoside, english
+ ]{sdqthesis}
 
 \usepackage{tikz}
 \usetikzlibrary{quantikz}
 
-\usepackage[]{biblatex}
+\usepackage[citestyle=numeric,style=numeric,backend=biber]{biblatex}
 \addbibresource{thesis.bib}
 
 \graphicspath{{examplefiles/}}% this command from the graphics package allows to add folders (here subfolder "examplefiles") to be searched for graphic/image files
 
  % TODO: improve wording and appearance of the title page, maybe mention that this
  %       is an exposé for a bachelor's thesis?
- \subject{Quantum Computing} %TODO better subject
- \title{Extending gradient-free Optimization of\break
- Parameterized Quantum Circuits to\break
- Controlled Pauli Gates}
  \author{Maximilian Tim Schweikart}
- \project{Advised by Dr. Eileen Kühn, Dr. Max Fischer and Prof. Dr. Achim Streit}
- \addinfo{Steinbuch Centre for Computing at KIT}
+ \title{Extending gradient-free Optimization of Parameterized Quantum Circuits to Controlled Pauli Gates}
+ \thesistype{Bachelor's Thesis}
+ \myinstitute{Steinbuch Centre for Computing}
+ \nogrouplogo % TODO use \grouplogo!
+ \reviewerone{Prof. Dr. Achim Streit}
+ \advisorone{Dr. Eileen Kühn}
+ \advisortwo{Dr. Max Fischer}
+ \editingtime{Aug 1, 2023}{Dec 1, 2023} %TODO this is false!
+ \settitle
  
- % TODO: do we get to use that?
- \kindlynote[Note:\enskip]{The author acknowledges support by the state of Baden-Württemberg through bwHPC.}
-
 \begin{document}
+\setpdf
 \maketitle
+\frontmatter
 
-%TODO customize TOC to look better
+% TODO: declaration
+\setcounter{page}{1}
+\pagenumbering{roman}
+
+% TODO: abstract
+%\includeabstract
+
 \tableofcontents
+% TODO: uncomment once there are any relevant figures and tables
+% \listoffigures
+% \listoftables
+
+% === content of the thesis ===
+\mainmatter
 
 \include{sections/01-introduction}
 \include{sections/02-background}
@@ -44,5 +51,13 @@
 \include{sections/06-related-work}
 \include{sections/07-conclusion}
 \include{sections/08-bibliography}
+
+\printbibliography[
+    heading=bibintoc
+]
+
+% TODO: uncomment if we need an appendix
+% \appendix
+% \input{sections/??-appendix}
 
 \end{document}
