@@ -1,9 +1,14 @@
 \documentclass[
-    twoside, english
- ]{sdqthesis}
+    twoside,
+    english
+]{sdqthesis}
 
+% for rendering quantum circuits with tikz
 \usepackage{tikz}
 \usetikzlibrary{quantikz}
+
+% for typesetting frequently used fractions with less vertical space (\sfrac)
+\usepackage{xfrac}
 
 \usepackage[citestyle=numeric,style=numeric,backend=biber]{biblatex}
 \addbibresource{thesis.bib}
