@@ -195,3 +195,140 @@ following trigonometric identities:
             &= d_1 + \cos\left(\sfrac\theta2 + d_2\right) \cdot d_3 + \cos\left(\theta + d_4\right) \cdot d_5
     \end{split}
 \end{equation}
+
+\section{Determining the constants}
+Equation \ref{eq:single-prob-simplified-simplified} describes the effect of the
+rotation angle parameter on the expectation value of a single qubit.
+The simple structure of this formula comes at the cost of five unknown
+constants $d_1, \dots, d_5$.
+While it is possible to compute those constants from their definitions in
+equations \ref{eq:single-prob} - \ref{eq:single-prob-simplified-simplified},
+this computation is as computationally expensive as simulating the execution of
+the quantum circuit.
+% TODO: add a reason for this. something about calculating <alpha|A|beta>
+
+Instead, because of the sinoidal nature of the function, the constants can be
+determined through a few evaluations of the quantum circuit.
+
+\begin{equation}
+    \label{eq:y}
+    y(\theta) = d_1 + d_3 \cos(\sfrac\theta2 + d_2) + d_5 \cos(\theta + d_4)
+\end{equation}
+
+Let's define a helper function to observe the interference of the function with
+a phase-shifted version of itself.
+
+\begin{equation}
+    \label{eq:y+2pi}
+    \begin{split}
+        y_{+2\pi}(\theta) &:= y(\theta) + y(\theta + 2\pi) \\
+            &= d_1 + d_3 \cos(\sfrac\theta2 + d_2) + d_5 \cos(\theta + d_4) \\
+                &\quad + d_1 + d_3 \cos(\sfrac\theta2 + \pi + d_2) + d_5 \cos(\theta + 2\pi + d_4) \\
+            &= d_1 + d_3 \cos(\sfrac\theta2 + d_2) + d_5 \cos(\theta + d_4) \\
+                &\quad + d_1 - d_3 \cos(\sfrac\theta2 + d_2) + d_5 \cos(\theta + d_4) \\
+            &= 2 d_1 + 2 d_5 \cos(\theta + d_4)
+    \end{split}
+\end{equation}
+
+Again, the interference of this function with itself can be used to eliminate
+yet another part of it.
+
+\begin{equation}
+    \label{eq:y+2pi+pi}
+    \begin{split}
+        y_{+2\pi}(\theta) + y_{+2\pi}(\theta + \pi)
+            &= 2 d_1 + 2 d_5 \cos(\theta + d_4) \\
+                &\quad + 2 d_1 + 2 d_5 \cos(\theta + \pi + d_4) \\
+            &= 2 d_1 + 2 d_5 \cos(\theta + d_4) \\
+                &\quad + 2 d_1 - 2 d_5 \cos(\theta + d_4) \\
+            &= 4 d_1
+    \end{split}
+\end{equation}
+
+This way, we can derive $d_1$ from the original equation as follows using four
+evaluations of the quantum circuit.
+
+\begin{equation}
+    \label{eq:d1}
+    \begin{split}
+        d_1
+            &= \frac14 (y_{+2\pi}(\theta) + y_{+2\pi}(\theta + \pi)) \\
+            &= \frac14 (y(\theta) + y(\theta + 2\pi) + y(\theta + \pi) + y(\theta + 3\pi))
+    \end{split}
+\end{equation}
+
+With $d_1$, we can now also derive $d_4$ and $d_5$ from $y_{+2\pi}$, requiring
+two additional evaluations of the quantum circuit.
+
+\begin{equation}
+    \label{eq:d4}
+    \begin{split}
+        \frac{y_{+2\pi}(\theta + \sfrac32 \pi) - 2 d_1}{y_{+2\pi}(\theta) - 2 d_1}
+            &= \frac{2 d_1 + d_5 \cos(\theta + \sfrac32 \pi + d_4) - 2 d_1}{2 d_1 + d_5 \cos(\theta + d_4) - 2 d_1} \\
+            &= \frac{\sin(\theta + d_4)}{\cos(\theta + d_4)} \\
+            &= \tan(\theta + d_4) \\
+        \Rightarrow \theta + d_4
+            &= \arctan\left(\frac{y_{+2\pi}(\theta + \sfrac32 \pi) - 2 d_1}{y_{+2\pi}(\theta) - 2 d_1}\right) \\
+        \Rightarrow d_4
+            &= \arctan\left(\frac{y_{+2\pi}(\theta + \sfrac32 \pi) - 2 d_1}{y_{+2\pi}(\theta) - 2 d_1}\right) - \theta \\
+            &= \arctan\left(\frac{y(\theta + \sfrac32 \pi) + y(\theta + \sfrac72 \pi) - 2 d_1}{y(\theta) + y(\theta + 2\pi) - 2 d_1}\right) - \theta
+    \end{split}
+\end{equation}
+
+The computation of $d_5$ then needs no additional circuit evaluations.
+
+\begin{equation}
+    \label{eq:d5}
+    \begin{split}
+        y_{+2\pi}(\theta) &= 2 d_1 + d_5 \cos(\theta + d_4) \\
+        \Rightarrow d_5 &= \frac{y_{+2\pi}(\theta) - 2 d_1}{\cos(\theta + d_4)}
+        % TODO: is this safe? could divide by zero but we have lots of thetas to choose from!
+    \end{split}
+\end{equation}
+
+A similar approach can be used to determine the remaining constants, $d_2$ and
+$d_3$.
+Again, we use an interference of $y$ with a phase-shifted version of itself to
+find an equation with only the missing constants.
+
+\begin{equation}
+    \label{eq:y-2pi}
+    \begin{split}
+        y_{-2\pi}(\theta)
+            &:= y(\theta) - y(\theta - 2\pi) \\
+            &= d_1 + d_3 \cos(\sfrac\theta2 + d_2) + d_5 \cos(\theta + d_4) \\
+                &\quad - d_1 - d_3 \cos(\sfrac\theta2 + \pi + d_2) - d_5 \cos(\theta + 2\pi + d_4) \\
+            &= d_1 + d_3 \cos(\sfrac\theta2 + d_2) + d_5 \cos(\theta + d_4) \\
+                &\quad - d_1 + d_3 \cos(\sfrac\theta2 + d_2) - d_5 \cos(\theta + d_4) \\
+            &= 2 d_3 \cos(\sfrac\theta2 + d_2)
+    \end{split}
+\end{equation}
+
+And, again similary to \ref{eq:d5} and \ref{eq:d4}, the missing constants can be
+derived from this equation.
+No additional evaluations of the quantum circuit are required for this.
+
+\begin{equation}
+    \label{eq:d2}
+    \begin{split}
+        \frac{y_{-2\pi}(\theta + 3\pi)}{y_{-2\pi}(\theta)}
+            &= \frac{2 d_3 \cos(\sfrac\theta2 + \sfrac32 \pi + d_2)}{2 d_3 \cos(\sfrac\theta2 + d_2)} \\
+            &= \frac{\sin(\sfrac\theta2 + d_2)}{\cos(\sfrac\theta2 + d_2)} \\
+            &= \tan(\sfrac\theta2 + d_2) \\
+        \Rightarrow \sfrac\theta2 + d_2
+            &= \arctan\left(\frac{y_{-2\pi}(\theta + 3\pi)}{y_{-2\pi}(\theta)}\right) \\
+        \Rightarrow d_2
+            &= \arctan\left(\frac{y_{-2\pi}(\theta + 3\pi)}{y_{-2\pi}(\theta)}\right) - \sfrac\theta2
+    \end{split}
+\end{equation}
+
+\begin{equation}
+    \label{eq:d3}
+    \begin{split}
+        y_{-2\pi}(\theta) &= 2 d_3 \cos(\sfrac\theta2 + d_2) \\
+        \Rightarrow d_3 &= \frac{y_{-2\pi}(\theta)}{2 \cos(\sfrac\theta2 + d_2)}
+    \end{split}
+\end{equation}
+
+Therefore, the constants $d_1, \dots, d_5$ can be determined with a total of six
+quantum circuit evaluations.
