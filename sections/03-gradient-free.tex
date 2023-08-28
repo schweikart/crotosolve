@@ -53,13 +53,14 @@ If we measure the first qubit\footnote{
 with $\ket{\varphi} = V \cdot CRP(\theta) \cdot U \cdot \ket{00}$.
 
 To resolve this result, let's compute the more general
-$\bra{\alpha} \cdot V \cdot CRP(\theta) \cdot U \cdot \ket{\beta}$.
+$p_{\alpha\beta} = \bra{\alpha} \cdot V \cdot CRP(\theta) \cdot U \cdot \ket{\beta}$.
 % TODO: are the qubit indices correct?
 
 \begin{equation}
     \label{eq:single-prob}
     \begin{split}
-        \lvert \bra\alpha \cdot V \cdot CPR(\theta) \cdot U \ket\beta \rvert^2
+        p_{\alpha\beta}
+            &= \lvert \bra\alpha \cdot V \cdot CPR(\theta) \cdot U \ket\beta \rvert^2 \\
             &= \bra\alpha \cdot V \cdot CPR(\theta) \cdot U \ket\beta
                 \cdot \overline{\bra\alpha \cdot V \cdot CPR(\theta) \cdot U \ket\beta} \\
             &= \underbrace{\bra\alpha \cdot V}_{=: \bra{\tilde\alpha}} \cdot CPR(\theta)
@@ -67,8 +68,8 @@ $\bra{\alpha} \cdot V \cdot CRP(\theta) \cdot U \cdot \ket{\beta}$.
                 \cdot \underbrace{V^\dagger \ket\alpha}_{=\ket{\tilde\alpha}} \\
             &= \bra{\tilde\alpha} \cdot CPR(\theta) \cdot A \cdot CPR(-\theta) \cdot \ket{\tilde\alpha} \\
             &= \bra{\tilde\alpha}
-                \cdot \left(\ket 0 \bra 0 \otimes I + \ket 1 \bra 1 \otimes RP\left(\theta\right)\right)
-                \cdot A
+                \cdot \left(\ket 0 \bra 0 \otimes I + \ket 1 \bra 1 \otimes RP\left(\theta\right)\right) \\
+                &\quad \cdot A
                 \cdot \left(\ket 0 \bra 0 \otimes I + \ket 1 \bra 1 \otimes RP\left(-\theta\right)\right)
                 \cdot \ket{\tilde\alpha} \\
             &= \underbrace{\bra{\tilde\alpha} \cdot (\ket 0 \bra 0 \otimes I)}_{=: \bra\gamma} \cdot A \cdot \underbrace{(\ket 0 \bra 0 \otimes I) \ket{\tilde\alpha}}_{=: \ket{\delta}} \\
@@ -91,7 +92,7 @@ $\theta$.
 \begin{equation}
     \label{eq:single-prob-simplification1}
     \begin{split}
-        \bra\gamma \cdot A \cdot (\ket 1 \bra 1 \otimes RP\left(-\theta\right)) \cdot \ket{\tilde\alpha}
+            &\quad \bra\gamma \cdot A \cdot (\ket 1 \bra 1 \otimes RP\left(-\theta\right)) \cdot \ket{\tilde\alpha} \\
             &= \bra{\gamma^\downarrow} \cdot A^\downarrow \cdot RP\left(-\theta\right) \cdot \ket{\tilde\alpha^\downarrow} \\
             &= \bra{\gamma^\downarrow} \cdot A^\downarrow \cdot \left(\cos\left(-\frac\theta2\right) I - i \sin\left(-\frac\theta2\right) P\right) \cdot \ket{\tilde\alpha^\downarrow} \\
             &= \cos\left(-\frac\theta2\right) \cdot \bra{\gamma^\downarrow} \cdot A^\downarrow \cdot I \cdot \ket{\tilde\alpha^\downarrow} \\
@@ -105,7 +106,7 @@ $\theta$.
 \begin{equation}
     \label{eq:single-prob-simplification2}
     \begin{split}
-        \bra{\tilde\alpha} \cdot (\ket 1 \bra 1 \otimes RP\left(\theta\right)) \cdot A \cdot \ket\delta
+            &\quad \bra{\tilde\alpha} \cdot (\ket 1 \bra 1 \otimes RP\left(\theta\right)) \cdot A \cdot \ket\delta \\
             &= \bra{\tilde\alpha^\downarrow} \cdot RP\left(\theta\right) \cdot A^\downarrow \cdot \ket{\delta^\downarrow} \\
             &= \bra{\tilde\alpha^\downarrow} \cdot \left(\cos\left(\frac\theta2\right) I - i \sin\left(\frac\theta2\right) P\right) \cdot A^\downarrow \cdot \ket{\delta^\downarrow} \\
             &= \cos\left(\frac\theta2\right) \cdot \bra{\tilde\alpha^\downarrow} \cdot I \cdot A^\downarrow \cdot \ket{\delta^\downarrow} \\
@@ -119,7 +120,7 @@ $\theta$.
 \begin{equation}
     \label{eq:single-prob-simplification3}
     \begin{split}
-        \bra{\tilde\alpha} \cdot (\ket 1 \bra 1 \otimes RP\left(\theta\right)) \cdot A \cdot (\ket 1 \bra 1 \otimes RP\left(-\theta\right)) \cdot \ket{\tilde\alpha}
+            &\quad \bra{\tilde\alpha} \cdot (\ket 1 \bra 1 \otimes RP\left(\theta\right)) \cdot A \cdot (\ket 1 \bra 1 \otimes RP\left(-\theta\right)) \cdot \ket{\tilde\alpha} \\
             &= \bra{\tilde\alpha^\downarrow} \cdot RP\left(\theta\right) \cdot A^\downarrow \cdot RP\left(-\theta\right) \cdot \ket{\tilde\alpha^\downarrow} \\
             &= \bra{\tilde\alpha^\downarrow} \cdot \left(\cos\left(\frac\theta2\right) I - i \sin\left(\frac\theta2\right) P\right) \\
                 &\quad\cdot A^\downarrow \cdot \left(\cos\left(-\frac\theta2\right) I - i \sin\left(-\frac\theta2\right) P\right) \cdot \ket{\tilde\alpha^\downarrow} \\
@@ -143,12 +144,13 @@ equation \ref{eq:single-prob} can be expressed as the following.
 \begin{equation}
     \label{eq:single-prob-simplified}
     \begin{split}
-        \lvert \bra\alpha \cdot V \cdot CPR(\theta) \cdot U \ket\beta \rvert^2
-            &= \underbrace{\bra\gamma \cdot A \cdot \ket\delta}_{=: c_9} \\
+        p_{\alpha\beta}
+            &\stackrel{(\ref{eq:single-prob})}= \underbrace{\bra\gamma \cdot A \cdot \ket\delta}_{=: c_9} \\
                 &\quad + \bra\gamma \cdot A \cdot (\ket 1 \bra 1 \otimes RP\left(-\theta\right)) \ket{\tilde\alpha} \\
                 &\quad + \bra{\tilde\alpha} \cdot (\ket 1 \bra 1 \otimes RP\left(\theta\right)) \cdot A \ket\delta \\
                 &\quad + \bra{\tilde\alpha} \cdot (\ket 1 \bra 1 \otimes RP\left(\theta\right)) \cdot A \cdot (\ket 1 \bra 1 \otimes RP\left(-\theta\right)) \ket{\tilde\alpha} \\
-            &= c_9 \\
+            &\stackrel{\substack{(\ref{eq:single-prob-simplification1})\\(\ref{eq:single-prob-simplification2})\\(\ref{eq:single-prob-simplification3})}}=
+                c_9 \\
                 &\quad + \cos\left(\frac\theta2\right) \cdot c_1 + \sin\left(\frac\theta2\right) \cdot c_2 \\
                 &\quad + \cos\left(\frac\theta2\right) \cdot c_3 + \sin\left(\frac\theta2\right) \cdot c_4 \\
                 &\quad + \cos\left(\frac\theta2\right)^2 \cdot c_5 + \sin\left(\frac\theta2\right)^2 \cdot c_8 \\
@@ -175,8 +177,8 @@ following trigonometric identities:
 \begin{equation}
     \label{eq:single-prob-simplified-simplified}
     \begin{split}
-        \lvert \bra\alpha \cdot V \cdot CPR(\theta) \cdot U \ket\beta \rvert^2
-            &= c_9 \\
+        p_{\alpha\beta}
+            &\stackrel{(\ref{eq:single-prob-simplified})}= c_9 \\
                 &\quad + \cos\left(\frac\theta2\right) \cdot \left(c_1 + c_3\right) + \sin\left(\frac\theta2\right) \cdot \left(c_2 + c_4\right) \\
                 &\quad + \cos\left(\frac\theta2\right)^2 \cdot c_5 + \sin\left(\frac\theta2\right)^2 \cdot c_8 \\
                 &\quad + \cos\left(\frac\theta2\right)\sin\left(\frac\theta2\right) \cdot \left(c_6 + c_7\right) \\
