@@ -60,13 +60,13 @@ $p_{\alpha\beta} = \bra{\alpha} \cdot V \cdot CRP(\theta) \cdot U \cdot \ket{\be
     \label{eq:single-prob}
     \begin{split}
         p_{\alpha\beta}
-            &= \lvert \bra\alpha \cdot V \cdot CPR(\theta) \cdot U \ket\beta \rvert^2 \\
-            &= \bra\alpha \cdot V \cdot CPR(\theta) \cdot U \ket\beta
-                \cdot \overline{\bra\alpha \cdot V \cdot CPR(\theta) \cdot U \ket\beta} \\
-            &= \underbrace{\bra\alpha \cdot V}_{=: \bra{\tilde\alpha}} \cdot CPR(\theta)
-                \cdot \underbrace{U \ket\beta \cdot \bra\beta \cdot U^\dagger}_{=: A} \cdot CPR(\theta)^\dagger
+            &= \lvert \bra\alpha \cdot V \cdot CRP(\theta) \cdot U \ket\beta \rvert^2 \\
+            &= \bra\alpha \cdot V \cdot CRP(\theta) \cdot U \ket\beta
+                \cdot \overline{\bra\alpha \cdot V \cdot CRP(\theta) \cdot U \ket\beta} \\
+            &= \underbrace{\bra\alpha \cdot V}_{=: \bra{\tilde\alpha}} \cdot CRP(\theta)
+                \cdot \underbrace{U \ket\beta \cdot \bra\beta \cdot U^\dagger}_{=: A} \cdot CRP(\theta)^\dagger
                 \cdot \underbrace{V^\dagger \ket\alpha}_{=\ket{\tilde\alpha}} \\
-            &= \bra{\tilde\alpha} \cdot CPR(\theta) \cdot A \cdot CPR(-\theta) \cdot \ket{\tilde\alpha} \\
+            &= \bra{\tilde\alpha} \cdot CRP(\theta) \cdot A \cdot CRP(-\theta) \cdot \ket{\tilde\alpha} \\
             &= \bra{\tilde\alpha}
                 \cdot \left(\ket 0 \bra 0 \otimes I + \ket 1 \bra 1 \otimes RP\left(\theta\right)\right) \\
                 &\quad \cdot A
