@@ -33,21 +33,24 @@ approximate a given probability distribution.
 However, this approach requires both a lot of shots to calculate the gradient
 and a lot of refinement steps to perform the gradient walk.
 % TODO: is refinement really the right word for this? (same for gradient walk)
+% TODO: cite
 
 In ``\emph{\citefield{ostaszewski_structure_2021}{title}}''
 \cite{ostaszewski_structure_2021}, Ostaszewski et al. explore a different
 optimization approach.
 Instead of optimizing a circuit through a gradient-based approach, they observed
-the sinusoid effect of rotational gate parameters on the output of a PQC and
-calculate the optimal parameters analytically by determining the properties of
-the sine wave through a small number of circuit evaluations. 
+the sinusoid effect of rotational gate parameters on the expectation value of a
+PQC and calculate the optimal parameters analytically by determining the
+properties of the sine wave through a small number of circuit evaluations. 
 Just like with gradient-based optimizers, this approach does not necessarily
 find the global optimum because it optimizes parameters individually.
 % TODO: what about the shots?
+% TODO: gradient descent does not optimize parameters individually
 It has only been tested for optimizing the rotation parameters and directions
 for single-qubit rotational gates within arbitrary quantum circuits.
 % TODO: that's not true, they just haven't contributed a solution for other
 %       types of gates yet! There's even a plot about CRP gates!
+% TODO: the general parameter shift rules paper does this for all PQCs already
 However, experiments show good results with this approach compared to
 state-of-the-art optimizers like Adam \cite{kingma_adam_2017},
 Gradient Descent and Quantum Natural Gradient \cite{stokes_quantum_2020}.
@@ -73,8 +76,6 @@ gradient-free QML optimizer.
 
 \section{Outline}
 \begin{itemize}
-    \item
-        Explain the motivation and relevance of the topic.
     \item
         Explicate the goals, limits and structure of the bachelor thesis.
     \item
