@@ -63,7 +63,10 @@ with $\sum_{n \in \left\{00, 01, 10, 11\right\}} \left|\gamma_n\right|^2 = 1$.
 
 Similarly, every system with $n$ qubits can be described in a state
 
-$$\ket\psi = \bigotimes_{i=1}^n \ket{\psi_i} = \sum_{j=0^n}^{1^n} \gamma_j \ket j$$
+\begin{equation}
+    \label{eq:separate-state-n}
+    \ket\psi = \bigotimes_{i=1}^n \ket{\psi_i} = \sum_{j=0^n}^{1^n} \gamma_j \ket j
+\end{equation}
 
 with the probability amplitudes
 $\gamma_n \in \mathbb C, \sum_n \left|\gamma_n\right|^2 = 1$ for the standard
@@ -76,6 +79,33 @@ computer to create copies of a qubit.
 While classical computers typically read (copy), transform (think add) and write
 data from and to registers, quantum computers have to do all operations
 in-place.
+
+Quantum states can be changed by applying operators to them.
+Since the state of an $n$-qubit-system can be described through its probability
+amplitudes $\gamma_i$, we can represent this state with a $2^n$-dimensional
+complex vector.
+If we identify $\ket 0 \equiv \begin{pmatrix}1 & 0\end{pmatrix}^\top$ and
+$\ket 1 \equiv \begin{pmatrix}0 & 1\end{pmatrix}^\top$,
+equation \ref{eq:separate-state-n} leaves us with
+
+\begin{equation}
+    \ket\psi \equiv \begin{pmatrix} \gamma_{0^n} \\ \vdots \\ \gamma_{1^n}\end{pmatrix}
+\end{equation}
+
+implicitly.
+
+Universal quantum computers allow us to apply operations to these states that
+are described by unitary matrices\footnote{
+    A matrix $A \in \mathbb{C}^{N \times N}$ is called unitary iff its conjugate
+    transpose is its inverse, i.e. $\overline{A^\top} = A^{-1}$.
+}.
+% COMMONLY USED EXAMPLE GATES, PARAMETERIZABLE (CONTROLLED) ROTATIONAL PAULI
+%  GATES IN PARTICULAR
+% UNIVERSAL GATE SETS
+
+\section{Quantum Machine Learning}
+
+\subsection{Optimization techniques}
 
 \section{Outline}
 Background: Quantum computing and QML with PQCs
