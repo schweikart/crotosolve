@@ -1,6 +1,61 @@
 \chapter{Background}
 \label{chap:background}
 
+\section{A brief introduction to Quantum Computing}
+At its core, the operation of a quantum computer revolves around the gates and
+qubits.
+
+Qubits (quantum bits) make up the data register of a quantum computer.
+Just like a classical bit can be in the $0$ or $1$ state, a qubit can be in the
+corresponding $\ket 0$ or $\ket 1$ state.
+In addition to these two basis states, however, quantum bits can be in a
+superposition of these two states,
+
+$$\ket \psi = \alpha_0 \cdot \ket 0 + \alpha_1 \cdot \ket 1,$$
+
+where the probability amplitudes $\alpha_0, \alpha_1 \in \mathbb C$ can be any
+complex numbers with $\left|\alpha_0\right|^2 + \left|\alpha_1\right|^2 = 1$.
+This essentially increases the expressibility of a qubit in comparison to a
+classical, digital bit from the discrete set $\left\{0, 1\right\}$ to the complex,
+two-dimensional sphere surface
+$\left\{\vec \alpha \in \mathbb C^2 \mid \left|\vec\alpha\right|^2\right\}$.
+This means that a quantum computer with a single qubit can work with continuous,
+multidimensional data, while a classical computer with a single bit can only
+work with this single bit.
+
+Unfortunalely, however, this multidimensional state of a quantum computer
+collapses into a discrete state upon observation.
+This means, if we try to find out what state the quantum computer is in, the
+superposition will either turn into $\ket 0$ (i.e., $\alpha_0 = 1, \alpha_1 = 0$)
+or $\ket 1$ (i.e., $\alpha_0 = 0, \alpha_1 = 1$).
+The probability of the qubit collapsing into either of these states is given by
+the squared absolute value of its probability amplitude,
+
+$$\mathbb P(M = \ket n) = \left| \alpha_n \right|^2.$$
+
+Thus, the normalization of the probability amplitudes, 
+$\sum_{n \in \left\{0, 1\right\}} \alpha_n \ket n$, is in fact a normalization
+of the probability distribution over the given basis states.
+While we cannot measure $\alpha_0$ and $\alpha_1$ directly, our observation is
+still influenced by them.
+If we know how to reproduce a state with the same (unknown) amplitudes
+$\alpha_1, \alpha_2$, we can measure the same state multiple times.
+Doing so many times gives us an empirical probability distribution for the basis
+states.
+% GLOBAL PHASE
+% BLOCH SPHERE
+
+\subsection{Multi-qubit-systems}
+yooo there are $n$ of these things rn?=??
+
+\subsection{Gates and circuits}
+
+Unlike with classical bits and gates, it is physically impossible for a quantum
+computer to create copies of a qubit.
+While classical computers typically read (copy), transform (think add) and write
+data from and to registers, quantum computers have to do all operations
+in-place.
+
 \section{Outline}
 Background: Quantum computing and QML with PQCs
 \begin{itemize}
