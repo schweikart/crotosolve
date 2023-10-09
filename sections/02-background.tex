@@ -46,7 +46,28 @@ states.
 % BLOCH SPHERE
 
 \subsection{Multi-qubit-systems}
-yooo there are $n$ of these things rn?=??
+The separated state of several qubits can be combined to one multi-qubit state
+through the outer product.
+With two qubits, this results in
+
+\begin{equation}
+    \label{eq:separate-state}
+    \begin{split}
+        &\left(\alpha_0 \ket 0 + \alpha_1 \ket 1\right) \otimes \left(\beta_0 \ket 0 + \beta_1 \ket 1\right) \\
+        = &\alpha_0\beta_0 \ket 0 \otimes \ket 0 + \alpha_0\beta_1 \ket 0 \otimes \ket 1 + \alpha_1\beta_0 \ket 1 \otimes \ket 0 + \alpha_1\beta_1 \ket 1 \otimes \ket 1 \\
+        = &\underbrace{\alpha_0\beta_0}_{=: \gamma_{00}} \ket{00} + \underbrace{\alpha_0\beta_1}_{=: \gamma_{01}} \ket{01} + \underbrace{\alpha_1\beta_0}_{=: \gamma_{10}} \ket{10} + \underbrace{\alpha_1\beta_1}_{=: \gamma_{11}} \ket{11}.
+    \end{split}
+\end{equation}
+
+with $\sum_{n \in \left\{00, 01, 10, 11\right\}} \left|\gamma_n\right|^2 = 1$.
+
+Similarly, every system with $n$ qubits can be described in a state
+
+$$\ket\psi = \bigotimes_{i=1}^n \ket{\psi_i} = \sum_{j=0^n}^{1^n} \gamma_j \ket j$$
+
+with the probability amplitudes
+$\gamma_n \in \mathbb C, \sum_n \left|\gamma_n\right|^2 = 1$ for the standard
+basis states $\ket{0^n}, \dots, \ket{1^n}$.
 
 \subsection{Gates and circuits}
 
