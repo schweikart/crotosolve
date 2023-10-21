@@ -338,6 +338,23 @@ No additional evaluations of the quantum circuit are required for this.
 \end{equation}
 
 Therefore, the constants $d_1, \dots, d_5$ can be determined with a total of six
-quantum circuit evaluations.
+quantum circuit evaluations
+$y(\theta), y(\theta + \pi), y(\theta + \sfrac32\pi), y(\theta + 2\pi), y(\theta + 3\pi)$
+and $y(\theta + \sfrac72\pi)$.
+For convenience, they are summarized in the following.
 
-% TODO: maybe summarize d_i formulae?
+\begin{subequations}
+    \label{eq:constants}
+    \begin{align}
+        d_1 &= \frac14 (y(\theta) + y(\theta + 2\pi) + y(\theta + \pi) + y(\theta + 3\pi))
+            \label{eq:constants-d1}\\
+        d_4 &= \arctan\left(\frac{y(\theta + \sfrac32 \pi) + y(\theta + \sfrac72 \pi) - 2 d_1}{y(\theta) + y(\theta + 2\pi) - 2 d_1}\right) - \theta
+            \label{eq:constants-d4}\\
+        d_5 &= \frac{y(\theta) + y(\theta + 2\pi) - 2 d_1}{\cos(\theta + d_4)}
+            \label{eq:constants-d5}\\
+        d_2 &= \arctan\left(\frac{y(\theta + 3\pi) - y(\theta + \pi)}{y(\theta) - y(\theta - 2\pi)}\right) - \sfrac\theta2
+            \label{eq:constants-d2}\\
+        d_3 &= \frac{y(\theta) - y(\theta - 2\pi)}{2 \cos(\sfrac\theta2 + d_2)}
+            \label{eq:constants-d3}
+    \end{align}
+\end{subequations}
