@@ -280,8 +280,11 @@ The computation of $d_5$ then needs no additional circuit evaluations.
 \begin{equation}
     \label{eq:d5}
     \begin{split}
-        y_{+2\pi}(\theta) &= 2 d_1 + d_5 \cos(\theta + d_4) \\
-        \Rightarrow d_5 &= \frac{y_{+2\pi}(\theta) - 2 d_1}{\cos(\theta + d_4)}
+        y_{+2\pi}(\theta)
+            &= 2 d_1 + d_5 \cos(\theta + d_4) \\
+        \Rightarrow d_5
+            &= \frac{y_{+2\pi}(\theta) - 2 d_1}{\cos(\theta + d_4)} \\
+            &= \frac{y(\theta) + y(\theta + 2\pi) - 2 d_1}{\cos(\theta + d_4)}
         % TODO: is this safe? could divide by zero but we have lots of thetas to choose from!
     \end{split}
 \end{equation}
@@ -318,17 +321,23 @@ No additional evaluations of the quantum circuit are required for this.
         \Rightarrow \sfrac\theta2 + d_2
             &= \arctan\left(\frac{y_{-2\pi}(\theta + 3\pi)}{y_{-2\pi}(\theta)}\right) \\
         \Rightarrow d_2
-            &= \arctan\left(\frac{y_{-2\pi}(\theta + 3\pi)}{y_{-2\pi}(\theta)}\right) - \sfrac\theta2
+            &= \arctan\left(\frac{y_{-2\pi}(\theta + 3\pi)}{y_{-2\pi}(\theta)}\right) - \sfrac\theta2 \\
+            &= \arctan\left(\frac{y(\theta + 3\pi) - y(\theta + \pi)}{y(\theta) - y(\theta - 2\pi)}\right) - \sfrac\theta2
     \end{split}
 \end{equation}
 
 \begin{equation}
     \label{eq:d3}
     \begin{split}
-        y_{-2\pi}(\theta) &= 2 d_3 \cos(\sfrac\theta2 + d_2) \\
-        \Rightarrow d_3 &= \frac{y_{-2\pi}(\theta)}{2 \cos(\sfrac\theta2 + d_2)}
+        y_{-2\pi}(\theta)
+            &= 2 d_3 \cos(\sfrac\theta2 + d_2) \\
+        \Rightarrow d_3
+            &= \frac{y_{-2\pi}(\theta)}{2 \cos(\sfrac\theta2 + d_2)} \\
+            &= \frac{y(\theta) - y(\theta - 2\pi)}{2 \cos(\sfrac\theta2 + d_2)}
     \end{split}
 \end{equation}
 
 Therefore, the constants $d_1, \dots, d_5$ can be determined with a total of six
 quantum circuit evaluations.
+
+% TODO: maybe summarize d_i formulae?
