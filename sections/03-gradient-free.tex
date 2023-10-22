@@ -281,10 +281,10 @@ The computation of $d_5$ then needs no additional circuit evaluations.
     \label{eq:d5}
     \begin{split}
         y_{+2\pi}(\theta)
-            &= 2 d_1 + d_5 \cos(\theta + d_4) \\
+            &= 2 d_1 + 2 d_5 \cos(\theta + d_4) \\
         \Rightarrow d_5
-            &= \frac{y_{+2\pi}(\theta) - 2 d_1}{\cos(\theta + d_4)} \\
-            &= \frac{y(\theta) + y(\theta + 2\pi) - 2 d_1}{\cos(\theta + d_4)}
+            &= \frac{y_{+2\pi}(\theta) - 2 d_1}{2 \cos(\theta + d_4)} \\
+            &= \frac{y(\theta) + y(\theta + 2\pi) - 2 d_1}{2 \cos(\theta + d_4)}
         % TODO: is this safe? could divide by zero but we have lots of thetas to choose from!
     \end{split}
 \end{equation}
@@ -350,7 +350,7 @@ For convenience, they are summarized in the following.
             \label{eq:constants-d1}\\
         d_4 &= \arctan\left(\frac{y(\theta + \sfrac32 \pi) + y(\theta + \sfrac72 \pi) - 2 d_1}{y(\theta) + y(\theta + 2\pi) - 2 d_1}\right) - \theta
             \label{eq:constants-d4}\\
-        d_5 &= \frac{y(\theta) + y(\theta + 2\pi) - 2 d_1}{\cos(\theta + d_4)}
+        d_5 &= \frac{y(\theta) + y(\theta + 2\pi) - 2 d_1}{2 \cos(\theta + d_4)}
             \label{eq:constants-d5}\\
         d_2 &= \arctan\left(\frac{y(\theta + 3\pi) - y(\theta + \pi)}{y(\theta) - y(\theta - 2\pi)}\right) - \sfrac\theta2
             \label{eq:constants-d2}\\
