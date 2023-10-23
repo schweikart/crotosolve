@@ -212,66 +212,108 @@ determined through a few evaluations of the quantum circuit.
 
 \begin{equation}
     \label{eq:y}
-    y(\theta) = d_1 + d_3 \cos(\sfrac\theta2 + d_2) + d_5 \cos(\theta + d_4)
+    \begin{split}
+        y(\theta)
+            &= d_1 + \underbrace{d_3 \cos(\sfrac\theta2 + d_2)}_{=: y_1(\theta)} + \underbrace{d_5 \cos(\theta + d_4)}_{=: y_2(\theta)}\\
+            &= d_1 + y_1(\theta) + y_2(\theta)
+    \end{split}
 \end{equation}
 
-Let's define a helper function to observe the interference of the function with
-a phase-shifted version of itself.
+We can analyze $y_1$ and $y_2$ separately by constructing interferences of $y$
+with a phase-shifted version of itself.
+Note that
+$\cos(\varphi + \pi) = -\cos(\varphi), \cos(\varphi + 2\pi) = \cos(\varphi)$.
 
 \begin{equation}
-    \label{eq:y+2pi}
+    \label{eq:d1+y2}
     \begin{split}
-        y_{+2\pi}(\theta) &:= y(\theta) + y(\theta + 2\pi) \\
-            &= d_1 + d_3 \cos(\sfrac\theta2 + d_2) + d_5 \cos(\theta + d_4) \\
-                &\quad + d_1 + d_3 \cos(\sfrac\theta2 + \pi + d_2) + d_5 \cos(\theta + 2\pi + d_4) \\
-            &= d_1 + d_3 \cos(\sfrac\theta2 + d_2) + d_5 \cos(\theta + d_4) \\
-                &\quad + d_1 - d_3 \cos(\sfrac\theta2 + d_2) + d_5 \cos(\theta + d_4) \\
-            &= 2 d_1 + 2 d_5 \cos(\theta + d_4)
+        y(\theta) + y(\theta + 2\pi)
+            &= d_1 + d_3 \cos(\sfrac\theta2 + d_2) + d_5 \cos(\theta + d_4)\\
+                &\quad + d_1 + d_3 \cos(\sfrac\theta2 + d_2 + \pi) + d_5 \cos(\theta + d_4 + 2\pi)\\
+            &= d_1 + d_3 \cos(\sfrac\theta2 + d_2) + d_5 \cos(\theta + d_4)\\
+                &\quad + d_1 - d_3 \cos(\sfrac\theta2 + d_2) + d_5 \cos(\theta + d_4)\\
+            &= 2 d_1 + 2 d_5 \cos(\theta + d_4)\\
+            &= 2 d_1 + 2 y_2(\theta)\\
+        \Rightarrow y_2(\theta) &= \frac12 (y(\theta) + y(\theta + 2\pi) - 2 d_1)
     \end{split}
 \end{equation}
 
 Again, the interference of this function with itself can be used to eliminate
-yet another part of it.
-
-\begin{equation}
-    \label{eq:y+2pi+pi}
-    \begin{split}
-        y_{+2\pi}(\theta) + y_{+2\pi}(\theta + \pi)
-            &= 2 d_1 + 2 d_5 \cos(\theta + d_4) \\
-                &\quad + 2 d_1 + 2 d_5 \cos(\theta + \pi + d_4) \\
-            &= 2 d_1 + 2 d_5 \cos(\theta + d_4) \\
-                &\quad + 2 d_1 - 2 d_5 \cos(\theta + d_4) \\
-            &= 4 d_1
-    \end{split}
-\end{equation}
-
-This way, we can derive $d_1$ from the original equation as follows using four
-evaluations of the quantum circuit.
+$y_2$.
 
 \begin{equation}
     \label{eq:d1}
     \begin{split}
-        d_1
-            &= \frac14 (y_{+2\pi}(\theta) + y_{+2\pi}(\theta + \pi)) \\
-            &= \frac14 (y(\theta) + y(\theta + 2\pi) + y(\theta + \pi) + y(\theta + 3\pi))
+        &\quad y(\theta) + y(\theta + \pi) + y(\theta + 2\pi) + y(\theta + 3\pi)\\
+            &= y(\theta) + y(\theta + 2\pi) + y(\theta + \pi) + y((\theta + \pi) + 2\pi)\\
+            &\stackrel{\ref{eq:d1+y2}}= 2d_1 + 2d_5\cos(\theta + d_4) + 2d_1 + 2d_5\cos(\theta + \pi + d_4)\\
+            &= 2d_1 + 2d_5\cos(\theta + d_4) + 2d_1 - 2d_5\cos(\theta + d_4)\\
+            &= 4d_1\\
+        \Rightarrow d_1 &= \frac14(y(\theta) + y(\theta + \pi) + y(\theta + 2\pi) + y(\theta + 3\pi))
     \end{split}
 \end{equation}
 
-With $d_1$, we can now also derive $d_4$ and $d_5$ from $y_{+2\pi}$, requiring
-two additional evaluations of the quantum circuit.
+With $d_1$, we can now work with $y_2$ to determine $d_4$ and $_5$.
+To do so, we first need to catch an edge case.
+If $d_5 = 0$, then $y_2(\theta)$ is $0$ for all angles $\theta$ and $d_4$ can be
+chosen arbitrarily.
+Since $\sin$ and $\cos$ have distinct zeros, we can check for this condition
+with two evaluations $y_2(\theta)$ and $y_2(\theta + \sfrac32\pi)$.
+
+\begin{equation}
+    \label{eq:d5-0}
+    d_5 = 0 \quad\Leftrightarrow\quad\bigwedge
+    \begin{cases}
+        0 = d_5 \cos(\theta + d_4) = y_2(\theta) \\
+        0 = d_5 \sin(\theta + d_4) = \cos(\theta + d_4 + \sfrac32\pi) = y(\theta + \sfrac32\pi)
+    \end{cases}
+\end{equation}
+
+If $y_2(\theta) = 0$ and $y_2(\theta + \sfrac32\pi) \neq 0$, we can derive
+$d_4$ and $d_5$ as follows.
+Note that we restrict the zeros of $\cos$ to be $\sfrac12\pi$ or $\sfrac32\pi$
+without loss of generality since $\cos$ is $2\pi$-periodic.
+We can further eliminate $\sfrac32\pi$ since choosing $\sfrac32\pi$ over
+$\sfrac12\pi$ only changes the sign of the function, which can also be chosen
+through its amplitude $d_5$.
+
+\begin{equation}
+    \label{eq:whateverman}
+    \begin{split}
+        0 &= y_2(\theta) = d_5 \cos(\theta + d_4) \\
+        &\stackrel{d_5 \neq 0}\Rightarrow\quad \theta + d_4 = \sfrac12\pi\\
+        &\Rightarrow\quad d_4 =\sfrac12\pi - \theta
+    \end{split}
+\end{equation}
+
+The corresponding amplitude can then be computed as
+
+\begin{equation}
+    \label{eq:whateverman2}
+    \begin{split}
+        y_2(\theta + \sfrac32\pi)
+            &= d_5 \cos(\theta + d_4 + \sfrac32\pi)\\
+            &= d_5 \cos(\sfrac12\pi + \sfrac32\pi)\\
+            &= d_5 \cos(2\pi)\\
+            &= d_5\,.
+    \end{split}
+\end{equation}
+
+If $y_2(\theta) \neq 0$, we can use the inverse of the $\tan$ function to
+compute $d_4$.
 
 \begin{equation}
     \label{eq:d4}
     \begin{split}
-        \frac{y_{+2\pi}(\theta + \sfrac32 \pi) - 2 d_1}{y_{+2\pi}(\theta) - 2 d_1}
-            &= \frac{2 d_1 + d_5 \cos(\theta + \sfrac32 \pi + d_4) - 2 d_1}{2 d_1 + d_5 \cos(\theta + d_4) - 2 d_1} \\
+        \frac{y_2(\theta + \sfrac32 \pi)}{y_2(\theta)}
+            &= \frac{d_5 \cos(\theta + \sfrac32 \pi + d_4)}{d_5 \cos(\theta + d_4)} \\
             &= \frac{\sin(\theta + d_4)}{\cos(\theta + d_4)} \\
             &= \tan(\theta + d_4) \\
         \Rightarrow \theta + d_4
-            &= \arctan\left(\frac{y_{+2\pi}(\theta + \sfrac32 \pi) - 2 d_1}{y_{+2\pi}(\theta) - 2 d_1}\right) \\
+            &= \arctan\left(\frac{y_2(\theta + \sfrac32 \pi)}{y_2(\theta)}\right) \\
         \Rightarrow d_4
-            &= \arctan\left(\frac{y_{+2\pi}(\theta + \sfrac32 \pi) - 2 d_1}{y_{+2\pi}(\theta) - 2 d_1}\right) - \theta \\
-            &= \arctan\left(\frac{y(\theta + \sfrac32 \pi) + y(\theta + \sfrac72 \pi) - 2 d_1}{y(\theta) + y(\theta + 2\pi) - 2 d_1}\right) - \theta
+            &= \arctan\left(\frac{y_2(\theta + \sfrac32 \pi)}{y_2(\theta)}\right) - \theta
+            % TODO reduce to y
     \end{split}
 \end{equation}
 
@@ -280,11 +322,11 @@ The computation of $d_5$ then needs no additional circuit evaluations.
 \begin{equation}
     \label{eq:d5}
     \begin{split}
-        y_{+2\pi}(\theta)
-            &= 2 d_1 + 2 d_5 \cos(\theta + d_4) \\
+        y_2(\theta)
+            &= d_5 \cos(\theta + d_4) \\
         \Rightarrow d_5
-            &= \frac{y_{+2\pi}(\theta) - 2 d_1}{2 \cos(\theta + d_4)} \\
-            &= \frac{y(\theta) + y(\theta + 2\pi) - 2 d_1}{2 \cos(\theta + d_4)}
+            &= \frac{y_2(\theta)}{\cos(\theta + d_4)}
+            % TODO reduce to y
         % TODO: is this safe? could divide by zero but we have lots of thetas to choose from!
     \end{split}
 \end{equation}
@@ -295,45 +337,82 @@ Again, we use an interference of $y$ with a phase-shifted version of itself to
 find an equation with only the missing constants.
 
 \begin{equation}
-    \label{eq:y-2pi}
+    \label{eq:y1}
     \begin{split}
-        y_{-2\pi}(\theta)
-            &:= y(\theta) - y(\theta - 2\pi) \\
-            &= d_1 + d_3 \cos(\sfrac\theta2 + d_2) + d_5 \cos(\theta + d_4) \\
-                &\quad - d_1 - d_3 \cos(\sfrac\theta2 + \pi + d_2) - d_5 \cos(\theta + 2\pi + d_4) \\
-            &= d_1 + d_3 \cos(\sfrac\theta2 + d_2) + d_5 \cos(\theta + d_4) \\
-                &\quad - d_1 + d_3 \cos(\sfrac\theta2 + d_2) - d_5 \cos(\theta + d_4) \\
-            &= 2 d_3 \cos(\sfrac\theta2 + d_2)
+        y(\theta) - y(\theta + 2\pi)
+            &= d_1 + d_3 \cos(\sfrac\theta2 + d_2) + d_5 \cos(\theta + d_4)\\
+                &\quad - d_1 - d_3 \cos(\sfrac\theta2 + \pi + d_2) - d_5 \cos(\theta + 2\pi + d_4)\\
+            &= d_1 + d_3 \cos(\sfrac\theta2 + d_2) + d_5 \cos(\theta + d_4)\\
+                &\quad - d_1 + d_3 \cos(\sfrac\theta2 + d_2) - d_5 \cos(\theta + d_4)\\
+            &= 2 d_3 \cos(\sfrac\theta2 + d_2)\\
+            &= 2 y_1(\theta)\\
+        \Rightarrow y_1(\theta) &= \frac12\left(y(\theta) - y(\theta + 2\pi)\right)
     \end{split}
 \end{equation}
 
-And, again similary to \ref{eq:d5} and \ref{eq:d4}, the missing constants can be
-derived from this equation.
-No additional evaluations of the quantum circuit are required for this.
+And, again similary to \ref{eq:d1+y2} to \ref{eq:d4}, the missing constants can
+be derived from this equation.
+First, we handle the case where $y_1$ zeroes out and $d_2$ can be chosen
+arbitrarily.
+
+\begin{equation}
+    \label{eq:d3-0}
+    d_3 = 0 \quad\Leftrightarrow\quad \bigwedge
+    \begin{cases}
+        0 = d_3 \cos(\sfrac\theta2 + d_2) = y_1(\theta) \\
+        0 = d_3 \sin(\sfrac\theta2 + d_2) = d_3 \cos(\sfrac\theta2 + d_2 + \sfrac32\pi) = y_1(\theta + 3\pi)
+    \end{cases}
+\end{equation}
+
+Second, if $y_1(\theta) = 0$ but $y_1(\theta + 3\pi) \neq 0$, $d_4$ and $d_5$ can
+be determined by choosing $\sfrac\theta2 + d_2$ as a zero point of $\cos$.
+
+\begin{equation}
+    \label{eq:whateverman-the-second}
+    \begin{split}
+        0 = y_1(\theta) &= d_3 \cos(\sfrac\theta2 + d_2)\\
+        \stackrel{d_3 \neq 0}\Rightarrow \sfrac12\pi &= \sfrac\theta2 + d_2\\
+        \Rightarrow \sfrac12\pi - \sfrac\theta2 &= d_2
+    \end{split}
+\end{equation}
+
+\begin{equation}
+    \label{eq:whateverman2-the-second}
+    \begin{split}
+        y_1(\theta + 3\pi)
+            &= d_3 \cos(\sfrac\theta2 + d_2 + \sfrac32\pi)\\
+            &= d_3 \cos(\sfrac12\pi + \sfrac32\pi)\\
+            &= d_3 \cos(2\pi)\\
+            &= d_3
+    \end{split}
+\end{equation}
+
+And third, we can determine $d_2$ and $d_3$ with the use of $\tan$'s inverse if
+$y_1(\theta) \neq 0$.
 
 \begin{equation}
     \label{eq:d2}
     \begin{split}
-        \frac{y_{-2\pi}(\theta + 3\pi)}{y_{-2\pi}(\theta)}
-            &= \frac{2 d_3 \cos(\sfrac\theta2 + \sfrac32 \pi + d_2)}{2 d_3 \cos(\sfrac\theta2 + d_2)} \\
+        \frac{y_1(\theta + 3\pi)}{y_1(\theta)}
+            &= \frac{d_3 \cos(\sfrac\theta2 + \sfrac32 \pi + d_2)}{d_3 \cos(\sfrac\theta2 + d_2)} \\
             &= \frac{\sin(\sfrac\theta2 + d_2)}{\cos(\sfrac\theta2 + d_2)} \\
             &= \tan(\sfrac\theta2 + d_2) \\
         \Rightarrow \sfrac\theta2 + d_2
-            &= \arctan\left(\frac{y_{-2\pi}(\theta + 3\pi)}{y_{-2\pi}(\theta)}\right) \\
+            &= \arctan\left(\frac{y_1(\theta + 3\pi)}{y_1(\theta)}\right) \\
         \Rightarrow d_2
-            &= \arctan\left(\frac{y_{-2\pi}(\theta + 3\pi)}{y_{-2\pi}(\theta)}\right) - \sfrac\theta2 \\
-            &= \arctan\left(\frac{y(\theta + 3\pi) - y(\theta + \pi)}{y(\theta) - y(\theta - 2\pi)}\right) - \sfrac\theta2
+            &= \arctan\left(\frac{y_1(\theta + 3\pi)}{y_1(\theta)}\right) - \sfrac\theta2
+            % TODO resolve for y
     \end{split}
 \end{equation}
 
 \begin{equation}
     \label{eq:d3}
     \begin{split}
-        y_{-2\pi}(\theta)
-            &= 2 d_3 \cos(\sfrac\theta2 + d_2) \\
+        y_1(\theta)
+            &= d_3 \cos(\sfrac\theta2 + d_2) \\
         \Rightarrow d_3
-            &= \frac{y_{-2\pi}(\theta)}{2 \cos(\sfrac\theta2 + d_2)} \\
-            &= \frac{y(\theta) - y(\theta - 2\pi)}{2 \cos(\sfrac\theta2 + d_2)}
+            &= \frac{y_1(\theta)}{\cos(\sfrac\theta2 + d_2)}
+            % TODO: resolve for y
     \end{split}
 \end{equation}
 
@@ -356,5 +435,6 @@ For convenience, they are summarized in the following.
             \label{eq:constants-d2}\\
         d_3 &= \frac{y(\theta) - y(\theta - 2\pi)}{2 \cos(\sfrac\theta2 + d_2)}
             \label{eq:constants-d3}
+            %TODO reorder
     \end{align}
 \end{subequations}
