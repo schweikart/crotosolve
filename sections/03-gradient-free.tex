@@ -420,21 +420,65 @@ Therefore, the constants $d_1, \dots, d_5$ can be determined with a total of six
 quantum circuit evaluations
 $y(\theta), y(\theta + \pi), y(\theta + \sfrac32\pi), y(\theta + 2\pi), y(\theta + 3\pi)$
 and $y(\theta + \sfrac72\pi)$.
-For convenience, they are summarized in the following.
+For convenience, they are summarized in the following as
 
 \begin{subequations}
     \label{eq:constants}
     \begin{align}
         d_1 &= \frac14 (y(\theta) + y(\theta + 2\pi) + y(\theta + \pi) + y(\theta + 3\pi))
             \label{eq:constants-d1}\\
-        d_4 &= \arctan\left(\frac{y(\theta + \sfrac32 \pi) + y(\theta + \sfrac72 \pi) - 2 d_1}{y(\theta) + y(\theta + 2\pi) - 2 d_1}\right) - \theta
-            \label{eq:constants-d4}\\
-        d_5 &= \frac{y(\theta) + y(\theta + 2\pi) - 2 d_1}{2 \cos(\theta + d_4)}
-            \label{eq:constants-d5}\\
-        d_2 &= \arctan\left(\frac{y(\theta + 3\pi) - y(\theta + \pi)}{y(\theta) - y(\theta - 2\pi)}\right) - \sfrac\theta2
+        d_2 &=
+            \begin{cases}
+                *
+                    \,, & \textrm{if } y_1(\theta) = 0 = y_1(\theta + 3\pi)\\
+                \sfrac12\pi - \sfrac\theta2
+                    \,, & \textrm{if } y_1(\theta) = 0 \neq y_1(\theta + 3\pi)\\
+                \arctan\left(\frac{y_1(\theta + 3\pi)}{y_1(\theta)}\right) - \sfrac\theta2
+                    \,, & \textrm{if }y_1(\theta) \neq 0
+            \end{cases}
             \label{eq:constants-d2}\\
-        d_3 &= \frac{y(\theta) - y(\theta - 2\pi)}{2 \cos(\sfrac\theta2 + d_2)}
-            \label{eq:constants-d3}
-            %TODO reorder
+        d_3 &=
+            \begin{cases}
+                0
+                    \,, & \textrm{if } y_1(\theta) = 0 = y_1(\theta + 3\pi)\\
+                y_1(\theta + 3\pi)
+                    \,, & \textrm{if } y_1(\theta) = 0 \neq y_1(\theta + 3\pi)\\
+                \frac{y_1(\theta)}{\cos(\sfrac\theta2 + d_2)}
+                    \,, & \textrm{if } y_1(\theta) \neq 0
+            \end{cases}
+            \label{eq:constants-d3}\\
+        d_4 &=
+            \begin{cases}
+                *
+                    \,, & \textrm{if } y_2(\theta) = 0 = y_2(\theta + \sfrac32\pi)\\
+                \sfrac12\pi - \theta
+                    \,, & \textrm{if } y_2(\theta) = 0 \neq y_2(\theta + \sfrac32\pi)\\
+                \arctan\left(\frac{y_2(\theta + \sfrac32 \pi)}{y_2(\theta)}\right) - \theta
+                    \,, & \textrm{if } y_2(\theta) \neq 0
+            \end{cases}
+            \label{eq:constants-d4}\\
+        d_5 &=
+            \begin{cases}
+                0
+                    \,, & \textrm{if } y_2(\theta) = 0 = y_2(\theta + \sfrac32\pi)\\
+                y_2(\theta + \sfrac32\pi)
+                    \,, & \textrm{if } y_2(\theta) = 0 \neq y_2(\theta + \sfrac32\pi)\\
+                \frac{y_2(\theta)}{\cos(\theta + d_4)}
+                    \,, & \textrm{if } y_2(\theta) \neq 0
+            \end{cases}
+            \label{eq:constants-d5}
+    \end{align}
+\end{subequations}
+
+with
+
+\begin{subequations}
+    \label{eq:measurements}
+    \begin{align}
+        y_1(\theta) &= \frac12(y(\theta) - y(\theta + 2\pi))\\
+        y_1(\theta + 3\pi) &= \frac12(y(\theta + 3\pi) - y(\theta + \pi))\\
+        y_2(\theta) &= \frac12(y(\theta) + y(\theta + 2\pi) - 2d_1)\\
+        y_2(\theta + \sfrac32\pi) &= \frac12(y(\theta + \sfrac32\pi) + y(\theta + \sfrac72\pi) - 2d_1)
+        \,.
     \end{align}
 \end{subequations}
