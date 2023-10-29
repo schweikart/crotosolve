@@ -186,6 +186,35 @@ $\ket{-+} = CX \ket{++}$ state, changing the control qubit but not the target
 qubit.
 
 \section{Quantum Machine Learning}
+Parameterized quantum circuits realize a mapping from an input state to an
+output state.
+This mapping can be considered an algorithm that is determined by parameters of
+the PQC.
+If the PQC is expressible enough, tweaking the parameters can lead to an
+arbitrary function.
+
+This setup is very similar to the one used in classical machine learning.
+In supervised learning scenarios, the labeled training data is typically fed
+into a black-box model to generate an output that is supposed to be similar to
+the data's label.
+The black-box model is an algorithm -- for example, a neural network -- expected
+to be capable of expressing the mapping from the input data to its labels that
+can be tweaked using a potentially large set of parameters.
+Comparing the output of the model and the expected output yields a loss value,
+quantitatively representing the error of the model.
+Using this loss value, an optimizer's task then is to change the black-box
+model's parameters so that the loss in the next iteration will be smaller.
+
+\begin{figure}[h]
+    \label{fig:ml-training-loop}
+    \centering
+    \includegraphics[width=0.8\textwidth]{ml-training-loop}
+    \caption{A typical machine learning optimization loop}
+\end{figure}
+
+Quantum machine learning makes use of this exact same setup by using a
+parameterized quantum circuit as the parameterizable black-box model in the
+optimization loop.
 
 \subsection{Optimization techniques}
 
