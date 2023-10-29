@@ -163,21 +163,19 @@ The problem gets more interesting with two-qubit gates.
 For example, the controlled $X$ gate (also known as $CNOT$) works on a system
 of two qubits and maps the basis states as follows:
 
-\begin{equation}
+\begin{gather}
     \label{eq:cx-zbasis}
-    \begin{align}
-        CX &= \begin{pmatrix}
-            1&&&\\
-            &1&&\\
-            &&&1\\
-            &&1&
-        \end{pmatrix}
-        CX \ket{00} &= \ket{00}\\
-        CX \ket{01} &= \ket{01}\\
-        CX \ket{10} &= \ket{11}\\
-        CX \ket{11} &= \ket{10}
-    \end{align}
-\end{equation}
+    CX = \begin{pmatrix}
+        1&&&\\
+        &1&&\\
+        &&&1\\
+        &&1&
+    \end{pmatrix}\\
+    CX \ket{00} = \ket{00}\\
+    CX \ket{01} = \ket{01}\\
+    CX \ket{10} = \ket{11}\\
+    CX \ket{11} = \ket{10}
+\end{gather}
 
 When applying the $CX$ gate to states from the computational basis, the second
 bit is flipped ($X$ is applied) iff the first bit is $\ket 1$.
