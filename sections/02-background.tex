@@ -102,6 +102,90 @@ are described by unitary matrices\footnote{
 % COMMONLY USED EXAMPLE GATES, PARAMETERIZABLE (CONTROLLED) ROTATIONAL PAULI
 %  GATES IN PARTICULAR
 % UNIVERSAL GATE SETS
+% TODO: MEASUREMENTS
+
+In Quantum Computing, every manipulation of the quantum state can be described
+by a so-called gate.
+A gate is a unitary transformation of the quantum-state.
+Gates can act on one or multiple qubits and we can compose bigger gates by
+computing the outer product of gates.
+
+We can visualize the application of gates to a system of qubits through
+quantum circuits.
+In these circuits, each qubit is displayed as a horizontal line and gates are
+displayed as boxes that overlay the lines of the qubits they are applied to.
+Measurements are indicated by a box with a meter inside.
+
+Take for example the Hadamard gate $H$,
+
+\begin{equation}
+    H = \begin{pmatrix}1 & 1 \\1 & -1\end{pmatrix}\,.    
+\end{equation}
+
+Applying the Hadamard gate to a single qubit will transform the
+$\ket 0$ state into $\frac{1}{\sqrt 2}\ket 0 + \frac{1}{\sqrt 2}\ket 1$ and
+$\ket 1$ into $\frac{1}{\sqrt 2}\ket 0 - \frac{1}{\sqrt 2}\ket 1$, which are
+both equal superpositions of the original states.
+
+\begin{figure}[h]
+    \label{fig:H-circuit}
+    \centering
+    \begin{quantikz}
+        \lstick{\ket{0}}    & \gate{H}  & \meter\qw
+    \end{quantikz}
+    \caption{
+        In this single-qubit quantum circuit, a Hadamard gate is applied to the
+        qubit before it is measured.
+        This circuit will probablistically output $\ket 0$ just as often as
+        $\ket 1$.
+    }
+\end{figure}
+
+All single-qubit gates $U \in \mathbb{C}^{2 \times 2}$ can be represented by
+products of \emph{pauli rotation gates} $RX(\varphi), RY(\varphi)$ and
+$RZ(\varphi)$,
+
+\begin{equation}
+    \label{eq:rotational-pauli-gates}
+    RP\left(\varphi\right) = \cos\left(\frac\theta2\right) \cdot I_2 - i \cdot \sin\left(\frac\theta2\right) \cdot P,\quad
+    P \in \left\{X, Y, Z\right\}
+\end{equation}
+
+These gates are called \emph{parameterized gates} since they can be adjusted by a
+continuous parameter $\varphi \in \left[0, 2\pi\right]$.
+The Hadamard gate, for example, can be written as
+$H = RX(\pi) \cdot RY(0.5\pi)$.
+
+Single-qubit operations can be simulated trivially by computing the product of
+the gate matrices and the state vector.
+
+The problem gets more interesting with two-qubit gates.
+For example, the controlled $X$ gate (also known as $CNOT$) works on a system
+of two qubits and maps the basis states as follows:
+
+\begin{equation}
+    \label{eq:cx-zbasis}
+    \begin{align}
+        CX &= \begin{pmatrix}
+            1&&&\\
+            &1&&\\
+            &&&1\\
+            &&1&
+        \end{pmatrix}
+        CX \ket{00} &= \ket{00}\\
+        CX \ket{01} &= \ket{01}\\
+        CX \ket{10} &= \ket{11}\\
+        CX \ket{11} &= \ket{10}
+    \end{align}
+\end{equation}
+
+When applying the $CX$ gate to states from the computational basis, the second
+bit is flipped ($X$ is applied) iff the first bit is $\ket 1$.
+States other than those from the computational basis might, however, not follow
+this simple principle.
+The $\ket{++}$ state, for example, is transformed into the
+$\ket{-+} = CX \ket{++}$ state, changing the control qubit but not the target
+qubit.
 
 \section{Quantum Machine Learning}
 
