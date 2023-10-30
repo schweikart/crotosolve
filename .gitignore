@@ -17,3 +17,6 @@
 
 # output files
 *.pdf
+
+# python cache files
+__pycache__
