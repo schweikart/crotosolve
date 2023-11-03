@@ -59,7 +59,21 @@ def reconstruct(original_function, theta = 0, debug = False):
 
 
     # and finally, reconstruct the cost function
-    def reconstructed_function(theta):
-        return d1 + d3 * math.cos(theta / 2 + d2) + d5 * math.cos(theta + d4)
+    def reconstructed_y1(theta):
+        return d3 * math.cos(theta / 2 + d2)
     
-    return reconstructed_function
+    def reconstructed_y2(theta):
+        return d5 * math.cos(theta + d4)
+
+    def reconstructed_function(theta):
+        return d1 + reconstructed_y1(theta) + reconstructed_y2(theta)
+    
+    return reconstructed_function, {
+        "d1": d1,
+        "d2": d2,
+        "d3": d3,
+        "d4": d4,
+        "d5": d5,
+        "y1": reconstructed_y1,
+        "y2": reconstructed_y2
+    }
