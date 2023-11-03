@@ -482,3 +482,53 @@ with
         \,.
     \end{align}
 \end{subequations}
+
+\section{Minimizing the reconstruction}
+With a complete reconstruction, we can now compute the \texttt{CRP} gate
+parameter $\theta$ that minimizes the cost function $y(\theta)$.
+
+\textbf{Note:} This section hasn't been verified yet.
+Many of these statements are unchecked and some of them might be plain wrong.
+% TODO: check and un-wrong these statements!
+
+\subsubsection*{Analytical approach}
+Since $y$ is a composition of well-known differentiable functions, we can
+attempt to determine its minimum by first finding the zeros of its derivative
+$\sfrac{\partial}{\partial \theta}y$.
+
+\begin{equation}
+    \begin{split}
+        0 &\stackrel!= \frac{\partial}{\partial\theta} y(\theta)\\
+            &= -\frac{d_3}{2} \sin(\sfrac\theta2 + d_2) - d_5 \sin(\theta + d_4)\\
+            &= -\frac{d_3}{2} (\sin(\sfrac\theta2)\cos(d_2) + \cos(\sfrac\theta2)\sin(d_2))\\
+                &\quad - d_5 (\sin(\theta)\cos(d_4) + \cos(\theta)\sin(d_4))\\
+            &= -\frac{d_3}{2} (\sin(\sfrac\theta2)\cos(d_2) + \cos(\sfrac\theta2)\sin(d_2))\\
+                &\quad - d_5 (2\sin(\sfrac\theta2)\cos(\sfrac\theta2)\cos(d_4) + (2\cos^2(\sfrac\theta2) - 1)\sin(d_4))\\
+            &\approx a \cos(\sfrac\theta2 + b) \cdot (c + \cos(\sfrac\theta2))???
+    \end{split}
+\end{equation}
+% TODO: maybe find citation that no analytical solution is known for this problem?
+
+So... what now?
+
+\subsubsection*{Numerical approach}
+Alternatively, we can just throw a numerical minimizer at the problem to find
+the function's minimum.
+Since $y$ is $4\pi$-periodic, it has an infinite amount of minima, so we'll
+focus on finding the minimum within $\theta \in [0, 4\pi]$.
+Within these boundaries, $y_1$ has a single minimum $x_1$, $y_2$ has two equal
+minima $x_{2a}, x_{2b}$ and $y$ has up to two local minima.
+The lowest minimum $x_0$ of $y$ is always located between $x_1$ and the minimum
+of $y_2$ that is the closest to $x_1$.
+Mathematically, this can be expressed as
+
+\begin{equation}
+    \begin{gathered}
+        x_2 = \underset{x = x_{2a}, x_{2b}}{\operatorname{argmin}} \left|x_1 - x\right|\\
+        \min_\theta y(\theta) \in [\min(x_1, x_2), \max(x_1, x_2)]
+    \end{gathered}
+\end{equation}
+% TODO: take care of proximity through the periodic boundaries!
+
+Within this interval, there can only be a single local minimum so any gradient-
+based numerical minimizer should be able to find it.
