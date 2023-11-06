@@ -4,7 +4,7 @@ import pennylane.numpy as np
 from numpy.typing import NDArray
 
 class CrotosolveOptimizer:
-    def step_and_cost(self, circuit, initial_params: NDArray[np.float_], updates_dataset=[], debug=False):
+    def step_and_cost(self, circuit, initial_params: NDArray[np.float_], updates_dataset=[], debug=False, full_output=False):
         """
         reconstruct and optimize the univariate cost functions independently
 
@@ -13,6 +13,7 @@ class CrotosolveOptimizer:
 
         prev = circuit(initial_params)
         params = initial_params.copy()
+        y_output = []
 
         iterator = np.nditer(params, flags=['multi_index'])
         for old_param_value in iterator:
@@ -24,6 +25,11 @@ class CrotosolveOptimizer:
             if debug: print(f"Parameter update for {param_index} from {old_param_value} to {new_param_value} ({new_fun_value})")
             params[param_index] = new_param_value
             updates_dataset.append(new_fun_value)
+            if full_output:
+                y_output.append(new_fun_value)
+        
+        if full_output:
+            return params, prev, y_output
         
         return params, prev
 
