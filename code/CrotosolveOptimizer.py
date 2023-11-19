@@ -16,7 +16,7 @@ class CrotosolveOptimizer:
         crp_params = initial_crp_params.copy()
 
         for params, gate in [(rp_params, "RP"), (crp_params, "CRP")]:
-            iterator = np.nditer(params, flags=['multi_index'])
+            iterator = np.nditer(params, flags=['multi_index', 'zerosize_ok'])
             for old_param_value in iterator:
                 param_index = iterator.multi_index
                 if debug: print(f"Optimizing {gate} parameter {param_index}...")
