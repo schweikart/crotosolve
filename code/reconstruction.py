@@ -1,9 +1,9 @@
 import math
 import numpy as np
 
-def reconstruct_rp(original_function, theta = 0, debug = False):
+def reconstruct_rp(original_function, theta: float, value_at_theta: float, debug = False):
     # measure function at three chosen points
-    y_0 = original_function(theta + 0)
+    y_0 = value_at_theta # cached result of original_function(theta + 0)
     y_pi = original_function(theta + math.pi)
     y_32pi = original_function(theta + (3/2) * math.pi)
 
@@ -40,7 +40,7 @@ def reconstruct_rp(original_function, theta = 0, debug = False):
         "y2": lambda theta: reconstructed_function(theta) - d1
     }
 
-def reconstruct_crp(original_function, theta = 0, debug = False):
+def reconstruct_crp(original_function, theta: float, value_at_theta: float, debug = False):
     """
     Reconstructs a function f(x) = a + b cos(x + c) + d cos(x/2 + e) given as
     the `original_function` using six targeted evaluations.
@@ -48,7 +48,7 @@ def reconstruct_crp(original_function, theta = 0, debug = False):
     """
 
     # measure function at six chosen points
-    y_0 = original_function(theta + 0)
+    y_0 = value_at_theta # cached result of original_function(theta + 0)
     if debug: print(f"y_0={y_0}")
 
     y_pi = original_function(theta + math.pi)
@@ -118,10 +118,10 @@ def reconstruct_crp(original_function, theta = 0, debug = False):
         "y2": reconstructed_y2
     }
 
-def reconstruct(original_function, theta = 0, debug = False, gate = "CRP"):
+def reconstruct(original_function, theta: float, value_at_theta: float, debug = False, gate = "CRP"):
     if gate == "RP":
-        return reconstruct_rp(original_function, theta, debug)
+        return reconstruct_rp(original_function, theta, value_at_theta, debug)
     elif gate == "CRP":
-        return reconstruct_crp(original_function, theta, debug)
+        return reconstruct_crp(original_function, theta, value_at_theta, debug)
     else:
         raise ValueError("unrecognized gate!", gate)

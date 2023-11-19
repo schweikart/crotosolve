@@ -15,6 +15,9 @@ class CrotosolveOptimizer:
         rp_params = initial_rp_params.copy()
         crp_params = initial_crp_params.copy()
 
+        # by caching the final value after each step, we can save #steps evaluations!
+        cache = prev
+
         for params, gate in [(rp_params, "RP"), (crp_params, "CRP")]:
             iterator = np.nditer(params, flags=['multi_index', 'zerosize_ok'])
             for old_param_value in iterator:
@@ -26,13 +29,15 @@ class CrotosolveOptimizer:
                 else:
                     univariate = self._create_univariate_crp(circuit, rp_params, crp_params, param_index)
                 
-                reconstruction, constants = reconstruct(univariate, gate=gate)
+                reconstruction, constants = reconstruct(univariate, theta=old_param_value, value_at_theta=cache, gate=gate)
                 new_param_value, new_fun_value = minimize_reconstruction(reconstruction, constants)
 
                 if debug: print(f"{gate} parameter update for {param_index} from {old_param_value} to {new_param_value} -> y = {new_fun_value}")
                 params[param_index] = new_param_value
                 updates_dataset.append(new_fun_value)
                 y_output.append(new_fun_value)
+
+                cache = new_fun_value
 
         if full_output:
             return (rp_params, crp_params), prev, y_output
