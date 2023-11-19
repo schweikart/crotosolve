@@ -26,8 +26,7 @@ class CrotosolveOptimizer:
                 else:
                     univariate = self._create_univariate_crp(circuit, rp_params, crp_params, param_index)
                 
-                # TODO: use more efficient reconstruction and minimization method for RP gates
-                reconstruction, constants = reconstruct(univariate)
+                reconstruction, constants = reconstruct(univariate, gate=gate)
                 new_param_value, new_fun_value = minimize_reconstruction(reconstruction, constants)
 
                 if debug: print(f"{gate} parameter update for {param_index} from {old_param_value} to {new_param_value} -> y = {new_fun_value}")

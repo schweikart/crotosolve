@@ -1,6 +1,46 @@
 import math
+import numpy as np
 
-def reconstruct(original_function, theta = 0, debug = False):
+def reconstruct_rp(original_function, theta = 0, debug = False):
+    # measure function at three chosen points
+    y_0 = original_function(theta + 0)
+    y_pi = original_function(theta + math.pi)
+    y_32pi = original_function(theta + (3/2) * math.pi)
+
+    d1 = (1/2) * (y_0 + y_pi)
+
+    y2_0 = y_0 - d1
+    y2_pi = y_pi - d1
+    y2_32pi = y_32pi - d1
+
+    if y2_0 == 0 and y2_32pi == 0:
+        d4 = 0 # arbitrary choice
+        d5 = 0
+    elif y2_0 == 0 and y2_32pi != 0:
+        d4 = (1/2) * math.pi - theta
+        d5 = y2_32pi
+    else:
+        d4 = math.atan(y2_32pi / y2_0) - theta
+        # most_x = [0, math.pi, 1.5 * math.pi][np.argmax([y_0, y_pi, y_32pi])]
+        d5 = y2_0 / math.cos(theta + d4)
+
+    def reconstructed_function(theta):
+        return d1 + d5 * math.cos(theta + d4)
+    
+    if abs(d5) > 1:
+        print(f"alarm alarm! {(0.0, float(y_0 - d1))}, {(math.pi, float(y_pi - d1))}, {(1.5 * math.pi, float(y_32pi - d1))} // d4={d4}, d5={d5}")
+
+    return reconstructed_function, {
+        "d1": d1,
+        "d2": 0,
+        "d3": 0,
+        "d4": d4,
+        "d5": d5,
+        "y1": lambda _: 0,
+        "y2": lambda theta: reconstructed_function(theta) - d1
+    }
+
+def reconstruct_crp(original_function, theta = 0, debug = False):
     """
     Reconstructs a function f(x) = a + b cos(x + c) + d cos(x/2 + e) given as
     the `original_function` using six targeted evaluations.
@@ -77,3 +117,11 @@ def reconstruct(original_function, theta = 0, debug = False):
         "y1": reconstructed_y1,
         "y2": reconstructed_y2
     }
+
+def reconstruct(original_function, theta = 0, debug = False, gate = "CRP"):
+    if gate == "RP":
+        return reconstruct_rp(original_function, theta, debug)
+    elif gate == "CRP":
+        return reconstruct_crp(original_function, theta, debug)
+    else:
+        raise ValueError("unrecognized gate!", gate)
