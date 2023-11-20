@@ -4,6 +4,9 @@ from numpy.typing import NDArray
 
 default_num_layers = 5
 default_num_qubits = 4
+default_qnode_kwargs = {
+    "diff_method": "parameter-shift"
+}
 
 def default_device(num_qubits: int) -> qml.Device:
     return qml.device("default.qubit", wires=num_qubits)
@@ -15,7 +18,7 @@ def _R_layer(r_gate, rp_params: NDArray[np.float_], num_qubits: int):
 def sim_01(num_layers: int = default_num_layers, num_qubits: int = default_num_qubits):
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         for layer in range(num_layers):
             _R_layer(qml.RX, rp_params[layer, :, 0], num_qubits)
@@ -29,7 +32,7 @@ def sim_01(num_layers: int = default_num_layers, num_qubits: int = default_num_q
 def sim_02(num_layers: int = default_num_layers, num_qubits: int = default_num_qubits):
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         for layer in range(num_layers):
             _R_layer(qml.RX, rp_params[layer, :, 0], num_qubits)
@@ -46,7 +49,7 @@ def sim_02(num_layers: int = default_num_layers, num_qubits: int = default_num_q
 def sim_03(num_layers: int = default_num_layers, num_qubits: int = default_num_qubits):
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         """
         rp_params is a three-dimensional array (#layers, #qubits, 2) where
@@ -70,7 +73,7 @@ def sim_03(num_layers: int = default_num_layers, num_qubits: int = default_num_q
 def sim_04(num_layers: int = default_num_layers, num_qubits: int = default_num_qubits):
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         """
         rp_params is a three-dimensional array (#layers, #qubits, 2) where
@@ -103,7 +106,7 @@ def _full_stairs(cgate, stairs_params: NDArray[np.float_], num_qubits: int = def
 def sim_05(num_layers: int = default_num_layers, num_qubits: int = default_num_qubits):
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         for layer in range(num_layers):
             _R_layer(qml.RX, rp_params[layer, :, 0], num_qubits)
@@ -121,7 +124,7 @@ def sim_05(num_layers: int = default_num_layers, num_qubits: int = default_num_q
 def sim_06(num_layers: int = default_num_layers, num_qubits: int = default_num_qubits):
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         for layer in range(num_layers):
             _R_layer(qml.RX, rp_params[layer, :, 0], num_qubits)
@@ -148,18 +151,10 @@ def _even_controlled_gate_wires(num_qubits: int = default_num_qubits):
         for control in range(2, num_qubits, 2) # note: control >= 2
     ]
 
-def _odd_crps(gate, crp_params: NDArray[np.float_], num_qubits: int = default_num_qubits):
-    for (control, target) in _odd_controlled_gate_wires(num_qubits):
-        gate(crp_params[control - 1], wires=(control, target))
-
-def _even_crps(gate, crp_params: NDArray[np.float_], num_qubits: int = default_num_qubits):
-    for (control, target) in _even_controlled_gate_wires(num_qubits):
-        gate(crp_params[control - 1], wires=(control, target))
-
 def sim_07(num_layers: int = default_num_layers, num_qubits: int = default_num_qubits):
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         for layer in range(num_layers):
             _R_layer(qml.RX, rp_params[layer, :, 0], num_qubits)
@@ -181,7 +176,7 @@ def sim_07(num_layers: int = default_num_layers, num_qubits: int = default_num_q
 def sim_08(num_layers: int = default_num_layers, num_qubits: int = default_num_qubits):
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         for layer in range(num_layers):
             _R_layer(qml.RX, rp_params[layer, :, 0], num_qubits)
@@ -203,7 +198,7 @@ def sim_08(num_layers: int = default_num_layers, num_qubits: int = default_num_q
 def sim_09(num_layers: int = default_num_layers, num_qubits: int = default_num_qubits) -> qml.QNode:
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         for layer in range(num_layers):
             for qubit in range(num_qubits):
@@ -222,7 +217,7 @@ def sim_09(num_layers: int = default_num_layers, num_qubits: int = default_num_q
 def sim_10(num_layers: int = default_num_layers, num_qubits: int = default_num_qubits) -> qml.QNode:
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         for qubit in range(num_qubits):
             qml.RY(rp_params[0, qubit], wires=qubit)
@@ -242,7 +237,7 @@ def sim_11(num_layers: int = default_num_layers) -> qml.QNode:
     num_qubits = 4 # no idea how to generalize this
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         for layer in range(num_layers):
             _R_layer(qml.RY, rp_params[layer, :, 0], num_qubits)
@@ -269,7 +264,7 @@ def sim_12(num_layers: int = default_num_layers) -> qml.QNode:
     num_qubits = 4 # no idea how to generalize this
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         for layer in range(num_layers):
             _R_layer(qml.RY, rp_params[layer, :, 0], num_qubits)
@@ -304,7 +299,7 @@ def _stairs(start: int = 0, num_qubits: int = default_num_qubits, direction: int
 def sim_13(num_layers: int = default_num_layers, num_qubits: int = default_num_qubits):
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         for layer in range(num_layers):
             _R_layer(qml.RY, rp_params[layer, :, 0], num_qubits)
@@ -324,7 +319,7 @@ def sim_13(num_layers: int = default_num_layers, num_qubits: int = default_num_q
 def sim_14(num_layers: int = default_num_layers, num_qubits: int = default_num_qubits):
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         for layer in range(num_layers):
             _R_layer(qml.RY, rp_params[layer, :, 0], num_qubits)
@@ -344,7 +339,7 @@ def sim_14(num_layers: int = default_num_layers, num_qubits: int = default_num_q
 def sim_15(num_layers: int = default_num_layers, num_qubits: int = default_num_qubits) -> qml.QNode:
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         for layer in range(num_layers):
             _R_layer(qml.RY, rp_params[layer, :, 0], num_qubits)
@@ -364,7 +359,7 @@ def sim_15(num_layers: int = default_num_layers, num_qubits: int = default_num_q
 def sim_16(num_layers: int = default_num_layers, num_qubits: int = default_num_qubits) -> qml.QNode:
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         for layer in range(num_layers):
             _R_layer(qml.RX, rp_params[layer, :, 0], num_qubits)
@@ -381,7 +376,7 @@ def sim_16(num_layers: int = default_num_layers, num_qubits: int = default_num_q
 def sim_17(num_layers: int = default_num_layers, num_qubits: int = default_num_qubits) -> qml.QNode:
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         for layer in range(num_layers):
             _R_layer(qml.RX, rp_params[layer, :, 0], num_qubits)
@@ -398,7 +393,7 @@ def sim_17(num_layers: int = default_num_layers, num_qubits: int = default_num_q
 def sim_18(num_layers: int = default_num_layers, num_qubits: int = default_num_qubits) -> qml.QNode:
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         for layer in range(num_layers):
             _R_layer(qml.RX, rp_params[layer, :, 0], num_qubits)
@@ -414,7 +409,7 @@ def sim_18(num_layers: int = default_num_layers, num_qubits: int = default_num_q
 def sim_19(num_layers: int = default_num_layers, num_qubits: int = default_num_qubits) -> qml.QNode:
     dev = default_device(num_qubits)
 
-    @qml.qnode(dev)
+    @qml.qnode(dev, **default_qnode_kwargs)
     def circuit(rp_params: NDArray[np.float_], crp_params: NDArray[np.float_]):
         for layer in range(num_layers):
             _R_layer(qml.RX, rp_params[layer, :, 0], num_qubits)
