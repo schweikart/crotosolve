@@ -68,12 +68,75 @@ The algorithm pseudocode is stated in listing \ref{alg:crotosolve}.
 
 \section{Optimizer comparison}
 \label{sec:optimizer-comparison}
+\subsubsection*{Methodology}
+
+We want to examine \texttt{Crotosolve}'s performance by comparing its loss curve
+with state-of-the-art QML optimizers.
+This comparison includes the Gradient Descent family of optimizers, namely
+standard gradient descent with a fixed learning rate, % TODO: cite! and isnt this really stochastic GD?
+\texttt{Adam} \cite{kingma_adam_2017} and
+\texttt{Adagrad} \cite{duchi_adaptive_2011}.
+Additionally, we test our \texttt{Crotosolve} implementation against PennyLane's
+implementation of the \texttt{Rotosolve} algorithm
+\cite{ostaszewski_structure_2021,bergholm_pennylane_2022}, which is extended by
+Wierich's paper on ``General parameter-shift rules for quantum gradients'' to
+support further types of gates \cite{wierichs_general_2022}.
+
+To get meaningful results, we chose to look at loss curves of these optimizers
+when applied to well-known and widely-used quantum circuits.
+Here, we use the set of circuit templates presented in a paper on
+``Expressibility and Entangling Capability [...]'' metrics by Sukin Sim et al.
+\cite{sim_expressibility_2019}.
+As shown in this paper, these circuits have various degrees of expressibility
+and entangling capability. % TODO why is that good
+% TODO mention that this set of circuits has also been used as a benchmark in
+%      other cases
+
+To reduce statistical noise, we generate random initial parameter values
+for all evaluated circuits and run each optimizer several times for each pair
+of circuit and initial state.
+These runs are then averaged and the average loss curves from various optimizers
+are combined within a chart for each combination.
+% TODO: is this clear enough
+Note that we record the loss curve with respect to the number of circuit
+evaluations, not the number of iterations or time taken to optimize a circuit's
+parameters.
+While time is the metric that will be the most interesting long-term,
+today's quantum devices and simulators vary heavily in this regard.
+For example, gradient-based optimizers benefit from PennyLanes gradient
+evaluation optimizations which won't be available on real quantum hardware.
+% TODO: cite!
+Meanwhile, gradient-free optimizers like \texttt{Crotosolve} and
+\texttt{Rotosolve} can't take advantage of these simulation tricks.
+Iterations, on the other hand, put both \texttt{Crotosolve} and
+\texttt{Rotosolve} in favor since they have to optimize each parameter
+individually within each iteration step, which is much more computational work
+than a single gradient descent step regardless of the execution environment.
+Circuit evaluations, however, are proportional to the execution time on real
+quantum hardware as long as the classical work required between evaluations is
+negligible.
+
+% TODO describe the device this has been run on
+
+\subsubsection*{Results}
+
+Figure X shows an example loss curve chart, featuring the average results of all
+optimizers for a random circuit Y instance. % TODO mention actual numbers
+This chart has been selected as it shows all key characteristics described in
+the following but many more of these charts can be found in the appendix.
+% TODO actually put them in the appendix
+% TODO this sounds a lot like results were selected, emphasis should be on this
+%      chart showing ALL characterists that can also be found in other charts
+
+Comparison to gradient-based optimizers: 
+
+
+
+\subsubsection*{Discussion}
 
 \begin{itemize}
-    \item mention which circuits we compare \cite{sim_expressibility_2019}
+    \item mention complexity, compare number of evaluations
 \end{itemize}
-
-% TODO explain why not just extend Rotosolve
 
 \section{Outline}
 \begin{itemize}
