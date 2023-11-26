@@ -15,8 +15,9 @@
 *.run.xml
 *.synctex.gz
 
-# output files
+# output files, except for the images folder
 *.pdf
+!images/*.pdf
 
 # python cache files
 __pycache__
