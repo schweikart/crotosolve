@@ -2,35 +2,76 @@
 \label{chap:evaluation}
 
 To evaluate the quality of the algorithm proposed in chapter
-\ref{chap:gradient-free}, a proof-of-concept optimizer has been implemented
-and benchmarked with well-known circuits.
+\ref{chap:gradient-free}, we implement a proof-of-concept optimizer.
+We compare our optimizer to a number of other optimizers frequently used in QML
+by creating a loss curve benchmark for all optimizers.
+The benchmark features parameterizable quantum circuits with various degrees of
+expressibility and from various research applications.
 
 \section{Proof of Concept}
 To put the approach proposed in chapter \ref{chap:gradient-free} to test,
-we are implementing a proof-of-concept application.
-The application should fulfill the following requirements:
+we implement a proof-of-concept application with PennyLane
+\cite{bergholm_pennylane_2022}.
+PennyLane is a popular \cite{unitary_fund_team_results_2022} quantum computing
+SDK with extensive documentation and a number of QML optimizers already
+implemented.
+Particularly, PennyLane is currently the only quantum SDK to implement the
+\texttt{Rotosolve} optimizer, to which we want to compare our optimizer in
+section \ref{sec:optimizer-comparison}.
+
+While the circuits we want to optimize can be composed of arbitrary static
+(i.e., non-parameterized) gates, we limit the types of parameterizable gates to
+rotational pauli gates and controlled rotational pauli gates.
+Additionally, we assume all parameters are independent from each other and used
+without any preprocessing (e.g., having a $RP(x^2)$ gate for a parameter $x$).
+% TODO comment on whether this is an actual limitation?
+
+For our algorithm to work, we also need to know which parameters belong to which
+type of parameterized gate.
+As a simple solution, we assume all $RP$ parameters are passed as an array
+separate from the $CRP$ parameters array.
+It is in theory, however, also possible to detect the type of gate through static analysis
+of the circuit, which is beyond the scope of this thesis.
+
+Similar to the \texttt{Rotosolve} algorithm \cite{ostaszewski_structure_2021},
+our \texttt{Crotosolve} implementation optimizes each parameter individually.
+Each parameter corresponding to an uncontrolled rotational pauli gate can be
+optimized following the exact approach presented by Ostaszewski et al..
+And for each parameter corresponding to a controlled rotational pauli gate, we
+first reconstruct the univariate cost function (see section \ref{sec:constants})
+and then use a numerical optimizer to find the minimizing parameter value (see
+section \ref{sec:minimization}).
+The algorithm pseudocode is stated in listing \ref{alg:crotosolve}.
+
+\begin{algorithm}
+    \caption{The \texttt{Crotosolve} algorithm updates parameter individually}
+    \label{alg:crotosolve}
+    %
+    \SetKwFunction{ReconstructCrp}{ReconstructCrp}
+    \SetKwFunction{RotosolveUpdate}{RotosolveUpdate}
+    \SetKwFunction{MakeUnivariate}{MakeUnivariate}
+    %
+    \KwData{$prev\_params \in \mathbb R^n$, $circuit$}
+    \KwResult{$params \in \mathbb R^n$}
+    \BlankLine
+    $params \gets copy(prev\_params)$\;
+    \For{$p \gets 1$ \KwTo $n$}{
+        $uni \gets $ \MakeUnivariate{$circuit$, $params$, $p$}\;
+        \eIf{$p$ belongs to controlled gate}{
+            $recon \gets $ \ReconstructCrp{$uni$} \Comment*[r]{see section \ref{sec:constants}}
+            $next\_params[p] \gets \underset{x \in [0, 4\pi]}{\operatorname{argmin}}\, recon(x)$ \Comment*[r]{using numerical minimizer}
+        }{
+            $next\_params[p] \gets $ \RotosolveUpdate{$uni$}\;
+        }
+    }
+\end{algorithm}
+
+\section{Optimizer comparison}
+\label{sec:optimizer-comparison}
 
 \begin{itemize}
-    \item
-        It should be implemented in a popular quantum computing SDK.
-    \item
-        It should be able to handle quantum circuits with arbitrary gates.
-        Each parameter of the circuit should only be used in a single rotational
-        pauli gate or in a single controlled rotational pauli gate.
-        The parameters of the circuit should must be used in these gates without
-        further preprocessing.
-        For example $CRP(\theta)$ is a valid parameterized gate but
-        $CRP(2\theta)$, $CRP(\theta - \pi)$ and $CRP(\theta^2)$ are not.
-    \item
-        The algorithm should perform univariate parameter optimization for the
-        given circuit using \texttt{Rotosolve} \cite{ostaszewski_structure_2021}
-        for rotational pauli gates and the approach developed in
-        chapter \ref{chap:gradient-free} for controlled rotational pauli gates.
+    \item mention which circuits we compare \cite{sim_expressibility_2019}
 \end{itemize}
-
-For the proof-of-concept implementation, we chose Pennylane
-\cite{bergholm_pennylane_2022}, since it already has an implementation for the
-\texttt{Rotosolve} algorithm \cite{ostaszewski_structure_2021}.
 
 % TODO explain why not just extend Rotosolve
 

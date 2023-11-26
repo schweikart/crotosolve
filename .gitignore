@@ -14,6 +14,7 @@
 *.blg
 *.run.xml
 *.synctex.gz
+*.synctex(busy)
 
 # output files, except for the images folder
 *.pdf

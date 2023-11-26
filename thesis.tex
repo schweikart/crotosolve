@@ -10,6 +10,15 @@
 % for typesetting frequently used fractions with less vertical space (\sfrac)
 \usepackage{xfrac}
 
+% for typesetting pseudocode algorithms
+\usepackage[
+    linesnumbered,
+    ruled % algorithm styling similar to booktabs
+]{algorithm2e}
+%% This declares a command \Comment
+%% The argument will be surrounded by /* ... */
+\SetKwComment{Comment}{/* }{ */}
+
 \usepackage[citestyle=numeric,style=numeric,backend=biber]{biblatex}
 \addbibresource{thesis.bib}
 
