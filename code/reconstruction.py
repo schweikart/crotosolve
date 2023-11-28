@@ -1,11 +1,12 @@
 import math
+from math import pi
 import numpy as np
 
 def reconstruct_rp(original_function, theta: float, value_at_theta: float, debug = False):
     # measure function at three chosen points
     y_0 = value_at_theta # cached result of original_function(theta + 0)
-    y_pi = original_function(theta + math.pi)
-    y_32pi = original_function(theta + (3/2) * math.pi)
+    y_pi = original_function(theta + pi)
+    y_32pi = original_function(theta + (3/2) * pi)
 
     d1 = (1/2) * (y_0 + y_pi)
 
@@ -17,18 +18,17 @@ def reconstruct_rp(original_function, theta: float, value_at_theta: float, debug
         d4 = 0 # arbitrary choice
         d5 = 0
     elif y2_0 == 0 and y2_32pi != 0:
-        d4 = (1/2) * math.pi - theta
+        d4 = (1/2) * pi - theta
         d5 = y2_32pi
     else:
         d4 = math.atan(y2_32pi / y2_0) - theta
-        # most_x = [0, math.pi, 1.5 * math.pi][np.argmax([y_0, y_pi, y_32pi])]
         d5 = y2_0 / math.cos(theta + d4)
 
     def reconstructed_function(theta):
         return d1 + d5 * math.cos(theta + d4)
     
     if abs(d5) > 1:
-        print(f"alarm alarm! {(0.0, float(y_0 - d1))}, {(math.pi, float(y_pi - d1))}, {(1.5 * math.pi, float(y_32pi - d1))} // d4={d4}, d5={d5}")
+        print(f"alarm alarm! {(0.0, float(y_0 - d1))}, {(pi, float(y_pi - d1))}, {(1.5 * pi, float(y_32pi - d1))} // d4={d4}, d5={d5}")
 
     return reconstructed_function, {
         "d1": d1,
@@ -37,7 +37,12 @@ def reconstruct_rp(original_function, theta: float, value_at_theta: float, debug
         "d4": d4,
         "d5": d5,
         "y1": lambda _: 0,
-        "y2": lambda theta: reconstructed_function(theta) - d1
+        "y2": lambda theta: reconstructed_function(theta) - d1,
+        "points": [
+            (theta,                 y_0),
+            (theta + pi,            y_pi),
+            (theta + (3/2) * pi,    y_32pi)
+        ]
     }
 
 def reconstruct_crp(original_function, theta: float, value_at_theta: float, debug = False):
@@ -51,19 +56,19 @@ def reconstruct_crp(original_function, theta: float, value_at_theta: float, debu
     y_0 = value_at_theta # cached result of original_function(theta + 0)
     if debug: print(f"y_0={y_0}")
 
-    y_pi = original_function(theta + math.pi)
+    y_pi = original_function(theta + pi)
     if debug: print(f"y_pi={y_pi}")
 
-    y_32pi = original_function(theta + 3 / 2 * math.pi)
+    y_32pi = original_function(theta + 3 / 2 * pi)
     if debug: print(f"y_3/2pi={y_32pi}")
 
-    y_2pi = original_function(theta + 2 * math.pi)
+    y_2pi = original_function(theta + 2 * pi)
     if debug: print(f"y_2pi={y_2pi}")
 
-    y_3pi = original_function(theta + 3 * math.pi)
+    y_3pi = original_function(theta + 3 * pi)
     if debug: print(f"y_3pi={y_3pi}")
 
-    y_72pi = original_function(theta + 7 / 2 * math.pi)
+    y_72pi = original_function(theta + 7 / 2 * pi)
     if debug: print(f"y_7/2pi={y_72pi}\n")
 
 
@@ -77,7 +82,7 @@ def reconstruct_crp(original_function, theta: float, value_at_theta: float, debu
         d2 = 0 # arbitrary choice
         d3 = 0
     elif y1_0 == 0 and y1_3pi != 0:
-        d2 = (1/2) * math.pi - theta / 2
+        d2 = (1/2) * pi - theta / 2
         d3 = y1_3pi
     else:
         d2 = math.atan(y1_3pi / y1_0) - theta / 2
@@ -90,7 +95,7 @@ def reconstruct_crp(original_function, theta: float, value_at_theta: float, debu
         d4 = 0 # arbitrary choice
         d5 = 0
     elif y2_0 == 0 and y2_32pi != 0:
-        d4 = (1/2) * math.pi - theta
+        d4 = (1/2) * pi - theta
         d5 = y2_32pi
     else:
         d4 = math.atan(y2_32pi / y2_0) - theta
@@ -115,7 +120,15 @@ def reconstruct_crp(original_function, theta: float, value_at_theta: float, debu
         "d4": d4,
         "d5": d5,
         "y1": reconstructed_y1,
-        "y2": reconstructed_y2
+        "y2": reconstructed_y2,
+        "points": [
+            (theta,                 y_0),
+            (theta + pi,            y_pi),
+            (theta + (3/2) * pi,    y_32pi),
+            (theta + 2 * pi,        y_2pi),
+            (theta + 3 * pi,        y_3pi),
+            (theta + (7/2) * pi,    y_72pi)
+        ]
     }
 
 def reconstruct(original_function, theta: float, value_at_theta: float, debug = False, gate = "CRP"):

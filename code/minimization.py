@@ -1,6 +1,10 @@
 import math
-from scipy.optimize import minimize
+from scipy.optimize import minimize, Bounds
 import numpy as np
+
+def minimum_point(points: list[tuple[float, float]]) -> tuple[float, float]:
+    return min(points, key = lambda point: point[1])
+
 
 def minimize_rp_reconstruction(reconstruction, constants, debug = False):
     if constants['d5'] > 0:
@@ -15,10 +19,15 @@ def minimize_crp_reconstruction(reconstruction, constants, debug = False):
     closer_min_y2 = min_y2[np.argmin(np.abs(min_y2 - min_y1))]
     x0 = (min_y1 + closer_min_y2) / 2
     
-    res = minimize(reconstruction, x0, method='Nelder-Mead', tol=1e-6)
+    res = minimize(reconstruction, x0, bounds=Bounds(0, 4 * math.pi), method='Nelder-Mead', tol=1e-6)
 
-    if debug: print(res)
-    return res.x[0], res.fun
+    # sanity check: make sure to be lower than measured points
+    x, y = minimum_point(constants['points'])
+    if y < res.fun:
+        print("yodl")
+        return x, y
+    else:
+        return res.x[0], res.fun
 
 def minimize_reconstruction(reconstruction, constants, debug = False, gate = "CRP"):
     if gate == "RP":
