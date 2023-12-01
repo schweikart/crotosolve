@@ -40,25 +40,34 @@ This means that a quantum computer with a single qubit can work with continuous,
 multidimensional data, while a classical computer with a single bit can only
 work with this single bit.
 
-Unfortunalely, however, this multidimensional state of a quantum computer
-collapses into a discrete state upon observation.
-This means, if we try to find out what state the quantum computer is in, the
-superposition will either turn into $\ket 0$ (i.e., $\alpha_0 = 1, \alpha_1 = 0$)
-or $\ket 1$ (i.e., $\alpha_0 = 0, \alpha_1 = 1$).
+Due to the laws of quantum mechanics, this multidimensional superposition state
+collapses into one of its discrete basis states upon observation.
+More specifically, this means that \emph{measuring} the value of a qubit cannot
+yield its probability amplitudes and instead turns the state into either
+$\ket 0$ (i.e., $\alpha_0 = 1, \alpha_1 = 0$) or
+$\ket 1$ (i.e., $\alpha_0 = 0, \alpha_1 = 1$)\footnote{
+    Technically, it is possible to measure the state in a different basis, like
+    $\ket + = \frac{\ket 0 + \ket 1}{\sqrt 2}$ and
+    $\ket - = \frac{\ket 0 - \ket 1}{\sqrt 2}$.
+    However, this will not be necessary for the development of
+    \texttt{Crotosolve}.
+}.
 The probability of the qubit collapsing into either of these states is given by
 the squared absolute value of its probability amplitude,
 
-$$\mathbb P(M = \ket n) = \left| \alpha_n \right|^2.$$
+$$\mathbb P(M = \ket n) = \left| \alpha_n \right|^2,\, n \in \left\{0, 1\right\}.$$
 
 Thus, the normalization of the probability amplitudes, 
 $\sum_{n \in \left\{0, 1\right\}} \alpha_n \ket n$, is in fact a normalization
 of the probability distribution over the given basis states.
-While we cannot measure $\alpha_0$ and $\alpha_1$ directly, our observation is
-still influenced by them.
-If we know how to reproduce a state with the same (unknown) amplitudes
-$\alpha_1, \alpha_2$, we can measure the same state multiple times.
-Doing so many times gives us an empirical probability distribution for the basis
-states.
+While it is physically impossible to observe $\alpha_0$ and $\alpha_1$ directly,
+their squared absolute values still influence the outcome of observation $M$.
+If I know how to prepare the same quantum state\footnote{
+    Two quantum states $\sum \alpha_n \ket n$, $\sum \beta_n \ket n$ are the
+    same if all of their probability amplitudes are the same,
+    i.e., $\alpha_n = \beta_n \forall n$.
+} many times, I can estimate $\left|\alpha_n\right|^2$ as the relative frequency from the
+empirical probability distribution of $M$.
 % GLOBAL PHASE
 % BLOCH SPHERE
 
