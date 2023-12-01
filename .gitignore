@@ -22,3 +22,6 @@
 
 # python cache files
 __pycache__
+
+# VS Code Editor settings
+.vscode/
