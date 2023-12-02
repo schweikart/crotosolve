@@ -68,8 +68,51 @@ If I know how to prepare the same quantum state\footnote{
     i.e., $\alpha_n = \beta_n \forall n$.
 } many times, I can estimate $\left|\alpha_n\right|^2$ as the relative frequency from the
 empirical probability distribution of $M$.
-% GLOBAL PHASE
-% BLOCH SPHERE
+
+Since only the absolute value of $\alpha_0$ and $\alpha_1$ influences the
+measurement outcome, it is common to rewrite the state as follows.
+
+\begin{equation}
+    \begin{split}
+        \ket \psi
+            &= \alpha_0 \ket 0 + \alpha_1 \ket 1\\
+            &= e^{i\gamma} \left(\cos \frac\theta2 \ket 0 + e^{i\varphi} \sin \frac\theta2 \ket 1\right)
+    \end{split}
+\end{equation}
+
+\begin{figure}
+    \label{fig:blochsphere}
+    \centering
+    \begin{blochsphere}[radius=3 cm,tilt=15,rotation=-20,opacity=0]
+        \drawBallGrid[style={opacity=0.1}]{30}{30}
+
+        \drawAxis[]{0}{0} % Z axis
+        \labelLatLon{up}{90}{0};
+        \labelLatLon{down}{-90}{90};
+        \node[above] at (up) {{$\left|0\right>$ }};
+        \node[below] at (down) {{$\left|1\right>$}};
+
+        \drawAxis[]{90}{0} % Y axis
+        \labelLatLon{right}{0}{0};
+        \labelLatLon{left}{0}{180};
+        \node[right] at (right) {{$\left|R\right>$ }};
+        \node[left] at (left) {{$\left|L\right>$}};
+
+        \drawAxis[]{90}{90} % X axis
+        \labelLatLon{front}{0}{90};
+        \labelLatLon{back}{0}{-90};
+        \node[below] at (front) {{$\left|+\right>$ }};
+        \node[above] at (back) {{$\left|-\right>$}};
+    \end{blochsphere}
+    \caption{The Bloch sphere can represent the state of a single qubit,
+        ignoring its global phase.}
+\end{figure}
+
+In this representation, $e^{i\gamma}$ has no effect on the outcome of
+measurement $M$.
+The remaining two variables $\theta$ and $\varphi$ can be interpreted as
+coordinates on the so-called Bloch sphere, which is shown in figure
+\ref{fig:blochsphere}.
 
 \subsection{Multi-qubit-systems}
 The separated state of several qubits can be combined to one multi-qubit state
