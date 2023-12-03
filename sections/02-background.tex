@@ -6,44 +6,44 @@ behind \texttt{Crotosolve}.
 Rather than giving a complete overview of the field, this text is strictly
 limited to aspects critical to proving the optimizer's correctness.
 I will first present an introduction to the theory of quantum information
-processing using qubits, gates and circuits.
+processing using qubits, gates, and circuits.
 Following this introduction, I will also give a quick introduction to the field
 of machine learning.
 I will show how Quantum Machine Learning applies the ideas from machine learning
 to quantum processing devices.
-This section will focus on state-of-the-art classical and quantum optimization techniques in
-particular.
+This section will focus on state-of-the-art classical and quantum optimization
+techniques in particular.
 One of these optimization methods is \texttt{Rotosolve}, which I will present
 with further detail.
 These basic ideas are also fundamental for the \texttt{Crotosolve}, which will
 be introduced in the next chapter.
 
 \section{A brief introduction to Quantum Computing}
-At its core, the operation of a quantum computer revolves around the gates and
+At its core, the operation of a quantum computer revolves around gates and
 qubits.
 
 Qubits (quantum bits) make up the data register of a quantum computer.
-Just like a classical bit can be in the $0$ or $1$ state, a qubit can be in the
+Just like a classical bit can be in the $0$ or $1$ state, a qubit can be in a
 corresponding $\ket 0$ or $\ket 1$ state.
-In addition to these two basis states, however, quantum bits can be in a
-superposition of these two states,
+Besides these two basis states, however, quantum bits can be in a superposition
+of these two states,
 
-$$\ket \psi = \alpha_0 \cdot \ket 0 + \alpha_1 \cdot \ket 1,$$
+$$\ket \psi = \alpha_0 \cdot \ket 0 + \alpha_1 \cdot \ket 1\,,$$
 
 where the probability amplitudes $\alpha_0, \alpha_1 \in \mathbb C$ can be any
 complex numbers with $\left|\alpha_0\right|^2 + \left|\alpha_1\right|^2 = 1$.
-This essentially increases the expressibility of a qubit in comparison to a
-classical, digital bit from the discrete set $\left\{0, 1\right\}$ to the complex,
-two-dimensional sphere surface
+The superposable character of a qubit essentially increases its expressibility
+in comparison to a classical, digital bit from the discrete set
+$\left\{0, 1\right\}$ to the complex, two-dimensional sphere surface
 $\left\{\vec \alpha \in \mathbb C^2 \mid \left|\vec\alpha\right|^2\right\}$.
-This means that a quantum computer with a single qubit can work with continuous,
+Thus, a quantum computer with a single qubit can work with continuous,
 multidimensional data, while a classical computer with a single bit can only
-work with this single bit.
+work with a single boolean value.
 
 Due to the laws of quantum mechanics, this multidimensional superposition state
 collapses into one of its discrete basis states upon observation.
 More specifically, this means that \emph{measuring} the value of a qubit cannot
-yield its probability amplitudes and instead turns the state into either
+reveal its probability amplitudes and instead turns the state into either
 $\ket 0$ (i.e., $\alpha_0 = 1, \alpha_1 = 0$) or
 $\ket 1$ (i.e., $\alpha_0 = 0, \alpha_1 = 1$)\footnote{
     Technically, it is possible to measure the state in a different basis, like
@@ -66,8 +66,8 @@ If I know how to prepare the same quantum state\footnote{
     Two quantum states $\sum \alpha_n \ket n$, $\sum \beta_n \ket n$ are the
     same if all of their probability amplitudes are the same,
     i.e., $\alpha_n = \beta_n \forall n$.
-} many times, I can estimate $\left|\alpha_n\right|^2$ as the relative frequency from the
-empirical probability distribution of $M$.
+} many times, I can estimate $\left|\alpha_n\right|^2$ as the relative frequency
+from an empirical probability distribution of $M$.
 
 Since only the absolute value of $\alpha_0$ and $\alpha_1$ influences the
 measurement outcome, it is common to rewrite the state as follows.
@@ -115,7 +115,7 @@ coordinates on the so-called Bloch sphere, which is shown in figure
 \ref{fig:blochsphere}.
 
 \subsection{Multi-qubit-systems}
-The separated state of several qubits can be combined to one multi-qubit state
+The separated state of several qubits can be combined into a multi-qubit state
 through the outer product.
 With two qubits, this results in
 
@@ -129,17 +129,32 @@ With two qubits, this results in
 \end{equation}
 
 with $\sum_{n \in \left\{00, 01, 10, 11\right\}} \left|\gamma_n\right|^2 = 1$.
+I will use natural numbers instead of bitstrings to simplify the notation in
+the following.
+For example, equation \ref{eq:separate-state} can be compactly rewritten to the
+following.
 
-Similarly, every system with $n$ qubits can be described in a state
+\begin{equation}
+    \label{eq:separate-state-natural-numbers}
+    \begin{gathered}
+            \gamma_{00} \ket{00} + \gamma_{01} \ket{01} + \gamma_{10} \ket{10} + \gamma_{11} \ket{11}\\
+        =   \gamma_0 \ket 0 + \gamma_1 \ket 1 + \gamma_2 \ket 2 + \gamma_3 \ket 3\\
+        =   \sum_{j=0}^3 \gamma_j \ket j
+    \end{gathered}
+\end{equation}
+
+Similarly to this two-qubit example, a system with $n$ separate qubit states
+$\ket{psi_i}, 1 \leq i \leq n$ can be described with a product state.
+In this system, the probability amplitudes
+$\gamma_0, \dots, \gamma_{2^n -1} \in \mathbb C$ of the standard basis states
+$\ket 0, \dots, \ket{2^n -1}$ are again given by the multiplication and form a
+probability distribution through their squared absolute values.
 
 \begin{equation}
     \label{eq:separate-state-n}
     \ket\psi = \bigotimes_{i=1}^n \ket{\psi_i} = \sum_{j=0^n}^{1^n} \gamma_j \ket j
+        \quad\text{with}\quad \sum_{j=0}^{2^n -1} \left|\gamma_j\right|^2 = 1
 \end{equation}
-
-with the probability amplitudes
-$\gamma_n \in \mathbb C, \sum_n \left|\gamma_n\right|^2 = 1$ for the standard
-basis states $\ket{0^n}, \dots, \ket{1^n}$.
 
 \subsection{Gates and circuits}
 
@@ -175,7 +190,7 @@ are described by unitary matrices\footnote{
 
 In Quantum Computing, every manipulation of the quantum state can be described
 by a so-called gate.
-A gate is a unitary transformation of the quantum-state.
+A gate is a unitary transformation of the quantum state.
 Gates can act on one or multiple qubits and we can compose bigger gates by
 computing the outer product of gates.
 
@@ -188,7 +203,7 @@ Measurements are indicated by a box with a meter inside.
 Take for example the Hadamard gate $H$,
 
 \begin{equation}
-    H = \begin{pmatrix}1 & 1 \\1 & -1\end{pmatrix}\,.    
+    H = \frac{1}{\sqrt 2}\begin{pmatrix}1 & 1 \\1 & -1\end{pmatrix}\,.    
 \end{equation}
 
 Applying the Hadamard gate to a single qubit will transform the
@@ -211,12 +226,12 @@ both equal superpositions of the original states.
 \end{figure}
 
 All single-qubit gates $U \in \mathbb{C}^{2 \times 2}$ can be represented by
-products of \emph{pauli rotation gates} $RX(\varphi), RY(\varphi)$ and
-$RZ(\varphi)$,
+products of \emph{pauli rotation gates} $RX(\theta), RY(\theta)$ and
+$RZ(\theta)$,
 
 \begin{equation}
     \label{eq:rotational-pauli-gates}
-    RP\left(\varphi\right) = \cos\left(\frac\theta2\right) \cdot I_2 - i \cdot \sin\left(\frac\theta2\right) \cdot P,\quad
+    RP\left(\theta\right) = \cos\left(\frac\theta2\right) \cdot I_2 - i \cdot \sin\left(\frac\theta2\right) \cdot P,\quad
     P \in \left\{X, Y, Z\right\}
 \end{equation}
 
@@ -235,10 +250,10 @@ of two qubits and maps the basis states as follows:
 \begin{gather}
     \label{eq:cx-zbasis}
     CX = \begin{pmatrix}
-        1&&&\\
-        &1&&\\
-        &&&1\\
-        &&1&
+        1&0&0&0\\
+        0&1&0&0\\
+        0&0&0&1\\
+        0&0&1&0
     \end{pmatrix}\\
     CX \ket{00} = \ket{00}\\
     CX \ket{01} = \ket{01}\\
