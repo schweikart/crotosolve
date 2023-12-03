@@ -25,3 +25,6 @@ __pycache__
 
 # VS Code Editor settings
 .vscode/
+
+# Python virtual environment
+.venv/
