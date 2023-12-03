@@ -24,7 +24,7 @@ def minimize_crp_reconstruction(reconstruction, constants, debug = False):
     # sanity check: make sure to be lower than measured points
     x, y = minimum_point(constants['points'])
     if y < res.fun:
-        print("yodl")
+        if debug: print("yodl")
         return x, y
     else:
         return res.x[0], res.fun

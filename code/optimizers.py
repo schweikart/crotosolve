@@ -138,7 +138,7 @@ def optimize_rotosolve(task: OptimizationTask) -> OptimizationResult:
 
     return OptimizationResult(loss=cost)
 
-def optimize_gradientdescent(task: OptimizationTask) -> OptimizationResult:
+def optimize_gradientdescent(task: OptimizationTask, debug = False) -> OptimizationResult:
     max_iterations = task.max_evaluations // 2 # 2 evals per iteration
 
     optimizer = qml.GradientDescentOptimizer()
@@ -161,12 +161,12 @@ def optimize_gradientdescent(task: OptimizationTask) -> OptimizationResult:
         if np.abs(current_cost - prev_cost) <= task.convergence_threshold:
             print("abort", iteration)
             break
-        if iteration % 20 == 0:
+        if debug and iteration % 20 == 0:
             print(iteration, current_cost)
 
     return OptimizationResult(loss=cost)
 
-def optimize_adam(task: OptimizationTask) -> OptimizationResult:
+def optimize_adam(task: OptimizationTask, debug: bool = False) -> OptimizationResult:
     max_iterations = task.max_evaluations // 2 # 2 evals per iteration
     optimizer = qml.AdamOptimizer()
     params = task.initial_params
@@ -188,12 +188,12 @@ def optimize_adam(task: OptimizationTask) -> OptimizationResult:
         if np.abs(task.circuit(*params) - prev_cost) <= task.convergence_threshold:
             print("abort", iteration)
             break
-        if iteration % 20 == 0:
+        if debug and iteration % 20 == 0:
             print(iteration, current_cost)
 
     return OptimizationResult(loss=cost)
 
-def optimize_adagrad(task: OptimizationTask) -> OptimizationResult:
+def optimize_adagrad(task: OptimizationTask, debug = False) -> OptimizationResult:
     max_iterations = task.max_evaluations // 2 # 2 evals per iteration
     optimizer = qml.AdagradOptimizer()
     params = task.initial_params
@@ -215,7 +215,7 @@ def optimize_adagrad(task: OptimizationTask) -> OptimizationResult:
         if np.abs(task.circuit(*params) - prev_cost) <= task.convergence_threshold:
             print("abort", iteration)
             break
-        if iteration % 20 == 0:
+        if debug and iteration % 20 == 0:
             print(iteration, current_cost)
 
     return OptimizationResult(loss=cost)
