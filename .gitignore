@@ -28,3 +28,6 @@ __pycache__
 
 # Python virtual environment
 .venv/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
