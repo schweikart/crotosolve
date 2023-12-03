@@ -45,7 +45,7 @@ class OptimizationResult:
     def __init__(self, loss: list[tuple[int, float]]) -> None:
         self.loss = loss
 
-def optimize_crotosolve(task: OptimizationTask) -> OptimizationResult:
+def optimize_crotosolve(task: OptimizationTask, debug: bool = False) -> OptimizationResult:
     max_iterations = task.max_evaluations // (1 + 2 * task.initial_params[0].size + 5 * task.initial_params[1].size)
     optimizer = CrotosolveOptimizer()
 
@@ -85,12 +85,12 @@ def optimize_crotosolve(task: OptimizationTask) -> OptimizationResult:
         ])
 
         if np.abs(task.circuit(*params) - prev_cost) <= task.convergence_threshold:
-            print("abort", iteration)
+            if debug: print("abort", iteration)
             break
 
     return OptimizationResult(loss=cost)
 
-def optimize_rotosolve(task: OptimizationTask) -> OptimizationResult:
+def optimize_rotosolve(task: OptimizationTask, debug: bool = False) -> OptimizationResult:
     max_iterations = task.max_evaluations // (3 * task.initial_params[0].size + 5 * task.initial_params[1].size)
 
     optimizer = qml.RotosolveOptimizer()
@@ -133,7 +133,7 @@ def optimize_rotosolve(task: OptimizationTask) -> OptimizationResult:
         ])
 
         if np.abs(task.circuit(*params) - prev_cost) <= task.convergence_threshold:
-            print("abort", iteration)
+            if debug: print("abort", iteration)
             break
 
     return OptimizationResult(loss=cost)
@@ -159,7 +159,7 @@ def optimize_gradientdescent(task: OptimizationTask, debug = False) -> Optimizat
         cost.append((evaluations_so_far + evaluations_here, current_cost))
 
         if np.abs(current_cost - prev_cost) <= task.convergence_threshold:
-            print("abort", iteration)
+            if debug: print("abort", iteration)
             break
         if debug and iteration % 20 == 0:
             print(iteration, current_cost)
@@ -186,7 +186,7 @@ def optimize_adam(task: OptimizationTask, debug: bool = False) -> OptimizationRe
         cost.append((evaluations_so_far + evaluations_here, current_cost))
 
         if np.abs(task.circuit(*params) - prev_cost) <= task.convergence_threshold:
-            print("abort", iteration)
+            if debug: print("abort", iteration)
             break
         if debug and iteration % 20 == 0:
             print(iteration, current_cost)
@@ -213,7 +213,7 @@ def optimize_adagrad(task: OptimizationTask, debug = False) -> OptimizationResul
         cost.append((evaluations_so_far + evaluations_here, current_cost))
 
         if np.abs(task.circuit(*params) - prev_cost) <= task.convergence_threshold:
-            print("abort", iteration)
+            if debug: print("abort", iteration)
             break
         if debug and iteration % 20 == 0:
             print(iteration, current_cost)
