@@ -421,3 +421,25 @@ def sim_19(num_layers: int = default_num_layers, num_qubits: int = default_num_q
             qml.Barrier(only_visual=True)
         return qml.expval(qml.PauliZ(0))
     return circuit
+
+circuit_generators = {
+    "sim01": sim_01,
+    "sim02": sim_02,
+    "sim03": sim_03,
+    "sim04": sim_04,
+    "sim05": sim_05,
+    "sim06": sim_06,
+    "sim07": sim_07,
+    "sim08": sim_08,
+    "sim09": sim_09,
+    "sim10": sim_10,
+    "sim11": sim_11,
+    "sim12": sim_12,
+    "sim13": sim_13,
+    "sim14": sim_14,
+    "sim15": sim_15,
+    "sim16": sim_16,
+    "sim17": sim_17,
+    "sim18": sim_18,
+    "sim19": sim_19
+}

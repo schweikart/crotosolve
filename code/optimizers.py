@@ -5,19 +5,41 @@ from numpy.typing import NDArray
 from CrotosolveOptimizer import CrotosolveOptimizer
 from typing import Callable
 
+from circuits import circuit_generators
 
 class OptimizationTask:
     def __init__(
             self,
-            circuit: QNode,
+            circuit_id: str,
+            num_qubits: int,
+            num_layers: int,
             initial_params: tuple[NDArray[np.float_], NDArray[np.float_]],
             max_evaluations: int = 250,
             convergence_threshold: float = 1e-6,
     ) -> None:
-        self.circuit = circuit
+        self.circuit_id = circuit_id
+        self.num_qubits = num_qubits
+        self.num_layers = num_layers
+        self.circuit = circuit_generators[self.circuit_id](
+            num_qubits=self.num_qubits,
+            num_layers=self.num_layers
+        )
+
         self.max_evaluations = max_evaluations
         self.convergence_threshold = convergence_threshold
         self.initial_params = initial_params
+    
+    def __getstate__(self) -> dict:
+        state = self.__dict__.copy()
+        del state["circuit"]
+        return state
+
+    def __setstate__(self, state: dict):
+        self.__dict__.update(state)
+        self.circuit = circuit_generators[self.circuit_id](
+            num_qubits=self.num_qubits,
+            num_layers=self.num_layers
+        )
 
 class OptimizationResult:
     def __init__(self, loss: list[tuple[int, float]]) -> None:

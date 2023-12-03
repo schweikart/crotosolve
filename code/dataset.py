@@ -1,24 +1,33 @@
 import pennylane.numpy as np
 from numpy.typing import NDArray
-from optimizers import OptimizationResult
+from optimizers import OptimizationResult, OptimizationTask
 import os
 import pickle
 from pathlib import Path
+from uuid import uuid4
 
 class Instance:
     def __init__(
             self,
-            circuit_name: str,
-            num_qubits: int,
-            num_layers: int,
-            initial_params: tuple[NDArray[np.float_], NDArray[np.float_]],
-            results: dict[str, OptimizationResult]
+            task: OptimizationTask,
+            results: dict[str, OptimizationResult],
+            uuid: str = None,
     ) -> None:
-        self.circuit_name = circuit_name
-        self.num_qubits = num_qubits
-        self.num_layers = num_layers
-        self.initial_params = initial_params
+        self.task = task
         self.results = results
+        self.uuid = uuid if uuid is not None else uuid4()
+    
+    def save(self, folder: str) -> None:
+        file = os.path.join(folder, f"{self.task.circuit_id}_{self.task.num_qubits}x{self.task.num_layers}_{self.uuid}.instance")
+        pickle.dump(self, open(file, "wb"))
+    
+    def valid(self) -> bool:
+        # TODO: check contained data too!
+        return (
+            self.task is not None
+            and self.results is not None
+            and self.uuid is not None
+        )
 
 class Dataset:
     def __init__(self, instances: dict[str, Instance] = {}) -> None:
@@ -28,5 +37,9 @@ class Dataset:
         files = os.listdir(folder)
         for filename in files:
             filepath = Path(folder, filename)
-            instance = pickle.load(open(filepath, "rb"))
-            self.instances[filepath.stem] = instance
+            instance: Instance = pickle.load(open(filepath, "rb"))
+
+            if isinstance(instance, Instance) and instance.valid():
+                self.instances[instance.uuid] = instance
+            else:
+                print(f"Invalid instance {filename}!")
