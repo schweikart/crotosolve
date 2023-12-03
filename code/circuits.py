@@ -233,8 +233,9 @@ def sim_10(num_layers: int = default_num_layers, num_qubits: int = default_num_q
     
     return circuit
 
-def sim_11(num_layers: int = default_num_layers) -> qml.QNode:
-    num_qubits = 4 # no idea how to generalize this
+def sim_11(num_layers: int = default_num_layers, num_qubits: int = 4) -> qml.QNode:
+    assert num_qubits == 4, "Circuit 11 cannot work with num_qubits != 4"
+
     dev = default_device(num_qubits)
 
     @qml.qnode(dev, **default_qnode_kwargs)
@@ -260,8 +261,8 @@ def sim_11(num_layers: int = default_num_layers) -> qml.QNode:
 
     return circuit
 
-def sim_12(num_layers: int = default_num_layers) -> qml.QNode:
-    num_qubits = 4 # no idea how to generalize this
+def sim_12(num_layers: int = default_num_layers, num_qubits: int = 4) -> qml.QNode:
+    assert num_qubits == 4, "Circuit 12 cannot work with num_qubits != 4"
     dev = default_device(num_qubits)
 
     @qml.qnode(dev, **default_qnode_kwargs)
