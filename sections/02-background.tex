@@ -129,8 +129,8 @@ With two qubits, this results in
 \end{equation}
 
 with $\sum_{n \in \left\{00, 01, 10, 11\right\}} \left|\gamma_n\right|^2 = 1$.
-I will use natural numbers instead of bitstrings to simplify the notation in
-the following.
+I use natural numbers instead of bitstrings to simplify the notation in the
+following.
 For example, equation \ref{eq:separate-state} can be compactly rewritten to the
 following.
 
@@ -144,7 +144,7 @@ following.
 \end{equation}
 
 Similarly to this two-qubit example, a system with $n$ separate qubit states
-$\ket{psi_i}, 1 \leq i \leq n$ can be described with a product state.
+$\ket{\psi_i}, 1 \leq i \leq n$ can be described with a product state.
 In this system, the probability amplitudes
 $\gamma_0, \dots, \gamma_{2^n -1} \in \mathbb C$ of the standard basis states
 $\ket 0, \dots, \ket{2^n -1}$ are again given by the multiplication and form a
@@ -152,7 +152,7 @@ probability distribution through their squared absolute values.
 
 \begin{equation}
     \label{eq:separate-state-n}
-    \ket\psi = \bigotimes_{i=1}^n \ket{\psi_i} = \sum_{j=0^n}^{1^n} \gamma_j \ket j
+    \ket\psi = \bigotimes_{i=1}^n \ket{\psi_i} = \sum_{j=0}^{2^n -1} \gamma_j \ket j
         \quad\text{with}\quad \sum_{j=0}^{2^n -1} \left|\gamma_j\right|^2 = 1
 \end{equation}
 
