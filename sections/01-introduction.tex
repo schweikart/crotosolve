@@ -12,75 +12,118 @@ While the first theoretical foundations of quantum computers have already been
 developed in the 1980s, quantum computers have only recently gathered widespread
 attention with the development and availability of real quantum computing
 hardware \cite{nielsen_quantum_2007,hidary_quantum_2021}.
-The field is currently evolving rapidly with new tools, algorithms and hardware
-being released every month. % TODO: source?
+The field is evolving rapidly, with new tools, algorithms, and hardware being
+released every month. % TODO: source?
 Still, today's quantum devices are subject to high amounts of noise, have a very
-limited number of qubits and are not fully connected, which often further
-reduces the number of available qubits and gates needed to perform a given task.
+limited number of qubits, and are not fully connected.
+These limitations often further reduce the number of available qubits and gates
+needed to perform a given task.
+Researchers often refer to these limited quantum devices as
+\emph{noisy intermediate-scale quantum} (NISQ) devices.
 % TODO: source?
 % TODO: given? really?
 
-One promising idea is to apply the concept of (classical) machine learning to
-quantum computers because (a) machine learning can often be used to approximate
-complex functions without much knowledge about their nature and
+One promising idea for harnessing the computational power of quantum devices
+within the NISQ era is to apply machine learning methodology to quantum
+computers.
+Machine learning can often be used to approximate complex functions without much
+knowledge about their nature.
 % TODO: cite! and is this too vague?
-(b) machine learning can work with or even benefit from a limited amount of
-noise \cite{ciliberto_quantum_2018}.
-One common approach to quantum machine learning (QML) is to use a classical
-gradient-based optimizer with a parameterized quantum circuit (PQC) to
-approximate a given probability distribution.
-% TODO: this enters the topic too quickly! PQCs must be explained
-However, this approach requires both a lot of shots to calculate the gradient
-and a lot of refinement steps to perform the gradient walk.
-% TODO: is refinement really the right word for this? (same for gradient walk)
+Moreover, machine learning can work with or even benefit from a limited amount
+of noise \cite{ciliberto_quantum_2018}.
+
+A typical machine learning workflow uses a parameterizable function as a
+so-called model.
+Machine learning aims to choose parameters for the model so that the model maps
+given input data closely to given output data.
+In many iterations, an \emph{optimizer} evaluates the model function to compute
+the \emph{loss value}, which indicates how much the calculated value deviates
+from the correct one.
+% TODO: Mention data & labels?
+The optimizer uses these evaluations to produce new parameter values and then
+repeats its assessment.
+This process is known as \emph{training}.
+Many state-of-the-art optimizers use an approach called \emph{gradient descent}
+to improve the model's parameters.
+% TODO: explain gradient descent briefly?
+Machine learning has recently made a tremendous leap due to the availability of
+computational resources and improvements in model function design.
+% TODO cite!
+These improvements allow machine-learning applications to train billions of
+parameters with terabytes of training data in many iterations.
+
+A parameterized quantum circuit can replace the classical model function to
+transfer the machine-learning methodology to quantum computers.
+\emph{Parameterized quantum circuits} (PQCs) explanation here. %TODO
+While gradient-based optimizers can be used for quantum machine learning,
+the cost of NISQ devices does not allow for large amounts of data and large
+numbers of iterations.
+Additionally, each evaluation of a quantum circuit involves multiple shots to
+decrease statistical noise introduced by qubit measurement.
 % TODO: cite
+% TODO: last sentence inconclusive
 
 In ``\emph{\citefield{ostaszewski_structure_2021}{title}}''
 \cite{ostaszewski_structure_2021}, Ostaszewski et al. explore a different
 optimization approach.
-Instead of optimizing a circuit through a gradient-based approach, they observed
-the sinusoid effect of rotational gate parameters on the expectation value of a
-PQC and calculate the optimal parameters analytically by determining the
-properties of the sine wave through a small number of circuit evaluations. 
-Just like with gradient-based optimizers, this approach does not necessarily
-find the global optimum because it optimizes parameters individually.
-% TODO: what about the shots?
-% TODO: gradient descent does not optimize parameters individually
+They observed that the univariate expectation value of a PQC w.r.t. a single
+rotational Pauli gate parameter is always sinusoidal.
+% TODO: this sentence is very complicated
+Using three circuit evaluations with select parameter values, they could
+reconstruct this univariate loss function for every parameter value.
+Since the curve of sine functions is well-understood, they could then
+analytically calculate the parameter value that minimizes this univariate loss
+function.
+The \texttt{Rotosolve} optimizer uses this approach to optimize each parameter
+individually.
+While univariate optimization does not guarantee convergence to the global
+minimum, experiments show good results with this approach compared to
+state-of-the-art optimizers like Adam \cite{kingma_adam_2017},
+Gradient Descent and Quantum Natural Gradient \cite{stokes_quantum_2020}.
+% TODO: cite! and remove QNG? SPSA instead?
 It has only been tested for optimizing the rotation parameters and directions
 for single-qubit rotational gates within arbitrary quantum circuits.
 % TODO: that's not true, they just haven't contributed a solution for other
 %       types of gates yet! There's even a plot about CRP gates!
 % TODO: the general parameter shift rules paper does this for all PQCs already
-However, experiments show good results with this approach compared to
-state-of-the-art optimizers like Adam \cite{kingma_adam_2017},
-Gradient Descent and Quantum Natural Gradient \cite{stokes_quantum_2020}.
 % TODO: cite? and QNG is not a thing any more, the new paper cites SPSA
-These promising results naturally pose the question whether this approach can be
-extended to other types of gates.
 
-Because of their similarity with the studied rotational gates, this bachelor
-thesis attempts to find a similar optimization technique for controlled
-rotational gates (i.e., \texttt{CRX}, \texttt{CRY} and \texttt{CRZ}).
-After some theoretical backgrounds on quantum computing and QML in general, we
-will derive an analytic optimization method for parameters of controlled
-rotation gates in PQCs.
-We will then present a proof-of-concept implementation%
-\footnote{The implementation will be made available with an open-source license
-on GitHub}
-that extends the \texttt{Rotosolve} optimizer proposed by Ostaszewski et al.
-We will evaluate the accuracy and the performance of this optimizer both
-analytically and through experiments, comparing it to both the original
-implementation for rotational gates and to state-of-the-art QML optimizers.
-We will hopefully be able to conclude that our extension can further improve the
-gradient-free QML optimizer.
+These promising results naturally pose the question of whether this approach can
+be extended to other types of gates.
+Because of their similarity with the studied rotational gates, this bachelor's
+thesis presents \texttt{Crotosolve}, a similar optimization technique for
+controlled rotational Pauli gates (i.e., \texttt{CRX}, \texttt{CRY} and
+\texttt{CRZ}).
 
-\section{Outline}
-\begin{itemize}
-    \item
-        Explicate the goals, limits and structure of the bachelor thesis.
-    \item
-        Name the contributions of this thesis.
-    \item
-        Provide a realistic outlook on the possible impacts of these
-        contributions.
-\end{itemize}
+% TODO: explain results
+
+This thesis is structured as follows.
+First, in chapter \ref{chap:background}, I summarize the theoretical background
+in quantum computing, machine learning, and quantum machine learning required to
+understand the idea and proof behind \texttt{Crotosolve}.
+Chapter \ref{chap:gradient-free} analyzes the mathematical structure of a
+controlled rotational Pauli gate parameter's effect on the univariate
+expectation value of a quantum circuit.
+It also contains a constructive proof for an algorithm that can be used to
+determine the prefactors and offsets characterizing the effect function's
+specific curve.
+This algorithm is put to the test in chapter \ref{chap:evaluation}, where I
+first present a proof-of-concept implementation\footnote{I have published all
+code related to this thesis on GitHub.} of the \texttt{Crotosolve} optimizer
+and then compare it to other optimizers analytically and experimentally.
+% TODO further details?
+Finally, in chapter \ref{chap:conclusion}, I sketch out a few ideas for future
+work on this topic and conclude that ???.
+% TODO insert conclusion when ready
+
+% TODO: check again in the end
+% \section{Outline}
+% \begin{itemize}
+%     \item
+%         Explicate the goals, limits and structure of the bachelor thesis.
+%     \item
+%         Name the contributions of this thesis.
+%     \item
+%         Provide a realistic outlook on the possible impacts of these
+%         contributions.
+% \end{itemize}
