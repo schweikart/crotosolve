@@ -37,7 +37,11 @@ class Dataset:
         files = os.listdir(folder)
         for filename in files:
             filepath = Path(folder, filename)
-            instance: Instance = pickle.load(open(filepath, "rb"))
+            try:
+                instance: Instance = pickle.load(open(filepath, "rb"))
+            except EOFError:
+                print(f"EOFError reading {filename}!")
+                continue
 
             if isinstance(instance, Instance) and instance.valid():
                 self.instances[instance.uuid] = instance
