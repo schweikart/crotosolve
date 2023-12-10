@@ -1,30 +1,29 @@
-\chapter{Gradient-free \texttt{CRX}/\texttt{CRY}/\texttt{CRZ} optimization}
+\chapter{\texttt{Crotosolve}: Gradient-free controlled rotational Pauli gate optimization}
 \label{chap:gradient-free}
 
-\section{Outline}
-\begin{itemize}
-    \item
-        Explain the concept of gradient-free optimization for the example of
-        uncontrolled rorational gates (i.e., \texttt{RX}, \texttt{RY},
-        \texttt{RZ}) from
-        \cite{wendenius_gradient-free_2023,ostaszewski_structure_2021}.
-    % \item TODO: we won't cite wendenius, criticize other paper
-    %     Criticize \cite{wendenius_gradient-free_2023}'s incomplete
-    %     analysis of the sinisoidal effect of rotational gate parameters on
-    %     the measurement result.
-    %     For example, the paper does not explain why the sinisoidal effect of
-    %     rotational gate parameters also appears in circuits with more than
-    %     one qubit.
-    \item
-        Explain how I plan to implement this for controlled rotational gates
-        (i.e., \texttt{CRX}, \texttt{CRY}, \texttt{CRZ}).
-    \item
-        Express the effect of controlled rotational gate parameters on the
-        expected values mathematically and describe how the properties of
-        this expression can be extracted from measurements.
-\end{itemize}
+In chapter \ref{chap:background}, I have presented how quantum machine learning
+uses optimizers to gradually minimize the expectation value of a parameterized
+quantum circuit.
+While many of these optimizers are gradient-based, the \texttt{Rotosolve}
+optimizer by Ostaszewski et al. treats the different parameters of PQCs
+independently.
+By reconstructing the univariate loss function of a rotational Pauli gate
+parameter, the minimizing parameter value can be calculated analytically.
+
+In this chapter, I present \texttt{Crotosolve}, a similar method for parameters
+of controlled rotational Pauli gates.
+I first show in section \ref{sec:gradient-free:effect} that the univariate loss
+curve of a controlled rotational Pauli gate can be described as the sum of two
+sinusoidal functions with different frequencies.
+To reproduce the concrete loss curve, the amplitudes of these functions as well
+as their offsets in $x$- and $y$-direction need to be determined.
+In section \ref{sec:constants}, I show how to determine these constants
+algorithmically using a minimum number of circuit evaluations.
+Finally, I outline how to minimize this reconstruction in section
+\ref{sec:minimization}.
 
 \section{Effect}
+\label{sec:gradient-free:effect}
 Consider a quantum circuit -- any two-bit quantum circuit -- with a
 parameterized controlled pauli rotation gate.
 
