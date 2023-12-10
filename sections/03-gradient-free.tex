@@ -24,21 +24,39 @@ Finally, I outline how to minimize this reconstruction in section
 
 \section{Effect}
 \label{sec:gradient-free:effect}
-Consider a quantum circuit -- any two-bit quantum circuit -- with a
-parameterized controlled pauli rotation gate.
 
-\begin{center}
-\begin{quantikz}
-\lstick{\ket{0}}    & \gate[wires=2]{U} & \ctrl{1}          & \gate[wires=2]{V}\slice[style=black]{$\ket{\varphi}$}  & \meter\qw \\
-\lstick{\ket{0}}    &                   & \gate{RP(\theta)} & \qw                               & \qw
-\end{quantikz}
-\end{center}
+\begin{figure}
+    \label{fig:crp-circuit}
+    \centering
+    \begin{quantikz}
+        \lstick{\ket{0}}    & \gate[wires=2]{U} & \ctrl{1}          & \gate[wires=2]{V}\slice[style=black]{$\ket{\varphi}$}  & \meter\qw \\
+        \lstick{\ket{0}}    &                   & \gate{RP(\theta)} & \qw                               & \qw
+    \end{quantikz}
+    \caption{The analyzed quantum circuit is composed of gates $U$, a controlled
+    rotational Pauli gate $CRP(\theta)$, gates $V$ and a single measurement.}
+\end{figure}
 
-If we measure the first qubit\footnote{
-    This can in fact be any of the qubits.
-    If we want to measure any other qubit, we can just append a corresponding
-    swap gate to $V$ and the equation will remain the same.
-}, we can describe the probability of measuring a $\ket 0$ by the following.
+I analyze the mathematical structure of the loss curve with respect to the
+parameter $\theta$ of a single $CRP(\theta)$ gate.
+Without loss of generality, I will assume a quantum circuit with only two
+qubits, as shown in Figure \ref{fig:crp-circuit}.
+% TODO: generality explanation
+The circuit can contain arbitrary gates that do not depend on $\theta$ before
+and after the $CRP(\theta)$ gate, which have been summarized as the $U$ and $V$
+gates.
+Following the gates, a single qubit is measured.
+Note that both the choice of the measured qubit and the choice of the
+controlling qubit in the $CRP(\theta)$ gate are irrelevant for this analysis.
+Different choices can be covered with this circuit structure by appending or
+prepending swap gates to $U$ and $V$.
+
+The possible outcomes of the measurement are distributed randomly and this
+distribution depends on $\theta$ since the circuit depends on $\theta$.
+The probability of measuring $\ket 0$ in the measured qubit can be computed as
+the combination of all outcomes' probabilites where the measured qubit is
+$\ket 0$.
+Here, $\ket{\varphi} = V \cdot CRP(\theta) \cdot U \cdot \ket{00}$ denotes the
+quantum state just before the measurement.
 
 \begin{equation}
     \label{eq1}
@@ -48,8 +66,6 @@ If we measure the first qubit\footnote{
             &= \lvert\braket{00}{\varphi}\rvert^2 + \lvert\braket{01}{\varphi}\rvert^2
     \end{split}
 \end{equation}
-
-with $\ket{\varphi} = V \cdot CRP(\theta) \cdot U \cdot \ket{00}$.
 
 To resolve this result, let's compute the more general
 $p_{\alpha\beta} = \bra{\alpha} \cdot V \cdot CRP(\theta) \cdot U \cdot \ket{\beta}$.
