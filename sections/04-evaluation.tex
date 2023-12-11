@@ -2,46 +2,32 @@
 \label{chap:evaluation}
 
 To evaluate the quality of the algorithm proposed in chapter
-\ref{chap:gradient-free}, we implement a proof-of-concept optimizer.
-We compare our optimizer to a number of other optimizers frequently used in QML
-by creating a loss curve benchmark for all optimizers.
+\ref{chap:gradient-free}, I have implemented a proof-of-concept optimizer.
+I will compare \texttt{Crotosolve} to several other optimizers frequently used
+in QML by creating a loss curve benchmark for all optimizers.
 The benchmark features parameterizable quantum circuits with various degrees of
 expressibility and from various research applications.
 
 \section{Proof of Concept}
 To put the approach proposed in chapter \ref{chap:gradient-free} to test,
-we implement a proof-of-concept application with PennyLane
+I have implemented a proof-of-concept application with PennyLane
 \cite{bergholm_pennylane_2022}.
-PennyLane is a popular \cite{unitary_fund_team_results_2022} quantum computing
-SDK with extensive documentation and a number of QML optimizers already
-implemented.
+PennyLane is a popular quantum computing SDK with extensive documentation and a
+library of readily implemented optimizers \cite{unitary_fund_team_results_2022}.
 Particularly, PennyLane is currently the only quantum SDK to implement the
-\texttt{Rotosolve} optimizer, to which we want to compare our optimizer in
-section \ref{sec:optimizer-comparison}.
+\texttt{Rotosolve} optimizer, to which I want to compare my \texttt{Crotosolve}
+optimizer in section \ref{sec:optimizer-comparison}.
 
-While the circuits we want to optimize can be composed of arbitrary static
-(i.e., non-parameterized) gates, we limit the types of parameterizable gates to
-rotational pauli gates and controlled rotational pauli gates.
-Additionally, we assume all parameters are independent from each other and used
-without any preprocessing (e.g., having a $RP(x^2)$ gate for a parameter $x$).
-% TODO comment on whether this is an actual limitation?
-
-For our algorithm to work, we also need to know which parameters belong to which
-type of parameterized gate.
-As a simple solution, we assume all $RP$ parameters are passed as an array
-separate from the $CRP$ parameters array.
-It is in theory, however, also possible to detect the type of gate through static analysis
-of the circuit, which is beyond the scope of this thesis.
-
-Similar to the \texttt{Rotosolve} algorithm \cite{ostaszewski_structure_2021},
-our \texttt{Crotosolve} implementation optimizes each parameter individually.
-Each parameter corresponding to an uncontrolled rotational pauli gate can be
-optimized following the exact approach presented by Ostaszewski et al..
-And for each parameter corresponding to a controlled rotational pauli gate, we
-first reconstruct the univariate cost function (see section \ref{sec:constants})
-and then use a numerical optimizer to find the minimizing parameter value (see
-section \ref{sec:minimization}).
-The algorithm pseudocode is stated in listing \ref{alg:crotosolve}.
+Like the \texttt{Rotosolve} algorithm, \texttt{Crotosolve} optimizes each
+parameter individually.
+For each parameter corresponding to a controlled rotational Pauli gate,
+\texttt{Crotosolve} first reconstructs the univariate cost function (see section
+\ref{sec:constants}) and then use a numerical optimizer to find the minimizing
+parameter value (see section \ref{sec:minimization}).
+Each parameter corresponding to an uncontrolled rotational Pauli gate can be
+optimized following the exact approach presented by Ostaszewski et al.
+\cite{ostaszewski_structure_2021}.
+The pseudocode for this algorithm is stated in algorithm \ref{alg:crotosolve}.
 
 \begin{algorithm}
     \caption{The \texttt{Crotosolve} algorithm updates parameter individually}
@@ -65,6 +51,25 @@ The algorithm pseudocode is stated in listing \ref{alg:crotosolve}.
         }
     }
 \end{algorithm}
+
+This algorithm allows the optimization of parameterized quantum circuits where
+all parameterized gates are either RP or CRP gates.
+Furthermore, it is assumed that all gate parameters are used without
+preprocessing (e.g., having a $RP(x^2)$ gate for a parameter $x$) in only a
+single gate.
+The algorithm needs to know which parameters belong to CRP and which belong to
+RP gates.
+Technically, the optimization approach presented for CRP gates could also be
+used for RP gates since a CRP gate's loss function structure is a generalization
+of an RP gate's loss function structure.
+However, using the CRP optimization approach for RP gates would double the
+number of circuit evaluations required to reconstruct its loss function.
+While it is trivial to see if a parameter is used in a CRP or RP gate on paper,
+looking up this relationship in a given PennyLane circuit is non-trivial,
+although certainly possible.
+% TODO: really?
+Thus, the proof-of-concept implementation always stores the RP and CRP gate
+parameters as separate arrays.
 
 \section{Optimizer comparison}
 \label{sec:optimizer-comparison}
@@ -136,6 +141,7 @@ Comparison to gradient-based optimizers:
 
 \begin{itemize}
     \item mention complexity, compare number of evaluations
+    \item comment on generality/limitations: parameter independence, universal gate sets, ...
 \end{itemize}
 
 \section{Outline}
