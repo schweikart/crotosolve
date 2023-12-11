@@ -12,82 +12,50 @@ All tests use circuits with four qubits and three template layers.
 The source code for the dataset generation and visualization is available with
 the \texttt{Crotosolve} implementation \cite{crotosolve}.
 
+\newcommand{\losscurve}[1]{%
+    \subfloat[Circuit #1 with 4 qubits and 3 layers]{
+        \includegraphics[width=0.5\textwidth]{loss-curve_sim#1_4x3.pdf}
+    }
+}
+
 \begin{figure}
     \centering
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim01_4x3.pdf}
-    }
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim02_4x3.pdf}
-    }
+    \losscurve{01}
+    \losscurve{02}
     \caption{Caption goes here}
 \end{figure}
 \begin{figure}\ContinuedFloat
     \centering
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim03_4x3.pdf}
-    }
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim04_4x3.pdf}
-    }
+    \losscurve{03}
+    \losscurve{04}
     \hspace{0mm}
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim05_4x3.pdf}
-    }
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim06_4x3.pdf}
-    }
+    \losscurve{05}
+    \losscurve{06}
     \hspace{0mm}
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim07_4x3.pdf}
-    }
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim08_4x3.pdf}
-    }
+    \losscurve{07}
+    \losscurve{08}
     \caption{Caption goes here}
 \end{figure}
 \begin{figure}\ContinuedFloat
     \centering
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim09_4x3.pdf}
-    }
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim10_4x3.pdf}
-    }
+    \losscurve{09}
+    \losscurve{10}
     \hspace{0mm}
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim11_4x3.pdf}
-    }
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim12_4x3.pdf}
-    }
+    \losscurve{11}
+    \losscurve{12}
     \hspace{0mm}
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim13_4x3.pdf}
-    }
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim14_4x3.pdf}
-    }
+    \losscurve{13}
+    \losscurve{14}
     \caption{Caption goes here}
 \end{figure}
 \begin{figure}\ContinuedFloat
     \centering
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim15_4x3.pdf}
-    }
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim16_4x3.pdf}
-    }
+    \losscurve{15}
+    \losscurve{16}
     \hspace{0mm}
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim17_4x3.pdf}
-    }
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim18_4x3.pdf}
-    }
+    \losscurve{17}
+    \losscurve{18}
     \hspace{0mm}
-    \subfloat[subcaption]{
-        \includegraphics[width=0.5\textwidth]{loss-curve_sim19_4x3.pdf}
-    }
+    \losscurve{19}
     \caption{Caption goes here}
 \end{figure}
