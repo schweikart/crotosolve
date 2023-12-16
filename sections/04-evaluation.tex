@@ -149,6 +149,27 @@ well as the recorded loss curve data is available on GitHub \cite{crotosolve}.
 
 \subsubsection*{Results}
 
+\texttt{Crotosolve}'s loss curve generally is very similar to
+\texttt{Rotosolve}'s loss curve, although consistently below.
+For RP gates, this is easy to explain since both algorithms are identical.
+For CRP gates, both algorithms use the same strategy, although different methods
+to achieve their common goal.
+PennyLane's implementation of the \texttt{Rotosolve} algorithm proposed by
+Ostaszewski et al. is augmented with the work of Wierichs et al.
+\cite{ostaszewski_structure_2021,wierichs_general_2022,bergholm_pennylane_2022}.
+Wierichs' work allows the algorithm to reconstruct univariate loss functions
+from almost any quantum circuit through a discrete Fourier series transform.
+While both \texttt{Crotosolve} and \texttt{Rotosolve} cache an evaluation value
+between RP gate optimization steps, only \texttt{Crotosolve} does so for
+CRP gates too.
+This enhanced caching ensures that \texttt{Crotosolve}'s loss curve is always
+slightly better than \texttt{Rotosolve}'s.
+
+Additionally, \texttt{Rotosolve} has to compute the circuit parameter
+frequencies to reconstruct the univariate loss curves.
+It is sufficient to compute these frequencies once before the first
+\texttt{Rotosolve} iteration.
+
 Figure X shows an example loss curve chart, featuring the average results of all
 optimizers for a random circuit Y instance. % TODO mention actual numbers
 
