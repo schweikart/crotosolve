@@ -122,8 +122,13 @@ negligible.
 \begin{figure}
     \label{fig:avg-loss-curve}
     \centering
-    \includegraphics[width=0.7\textwidth]{loss-curve_sim11_4x3.pdf}
-    \caption{Various optimizers minimize the expectation of circuit 11 from
+    \subfloat[Circuit 11]{
+        \includegraphics[width=0.5\textwidth]{loss-curve_sim11_4x3.pdf}
+    }
+    \subfloat[Circuit 14]{
+        \includegraphics[width=0.5\textwidth]{loss-curve_sim14_4x3.pdf}
+    }
+    \caption{Various optimizers minimize the expectation of two circuits from
         \cite{sim_expressibility_2019} with four qubits and three layers.
         Full lines show the average loss curve.
         Transparent areas show the error, which is the average $\pm$ its
@@ -165,49 +170,67 @@ CRP gates too.
 This enhanced caching ensures that \texttt{Crotosolve}'s loss curve is always
 slightly better than \texttt{Rotosolve}'s.
 
-Additionally, \texttt{Rotosolve} has to compute the circuit parameter
-frequencies to reconstruct the univariate loss curves.
-It is sufficient to compute these frequencies once before the first
-\texttt{Rotosolve} iteration.
+\texttt{Crotosolve}'s loss curves are also well below loss curves from
+gradient-based optimizers in most instances.
+While \texttt{Crotosolve}, \texttt{Rotosolve} and \texttt{Adam} typically
+approach the minimum value, $-1$, within the first 250 circuit evaluations,
+\texttt{Stochastic Gradient Descent} and \texttt{Adagrad}'s loss curves progress
+much slower towards this value.
+In direct comparison with \texttt{Adam}, \texttt{Crotosolve}'s loss curve
+typically descends much quicker in the beginning and reaches a point close to
+the minimum much more quickly.
+Still, \texttt{Adam} consistently reaches loss values as low or even lower than
+\texttt{Crotosolve} eventually within the shown 250 iterations.
+TODO: adam intersects rotosolve.
+An exception to this observation is shown by the loss curves of circuit 14.
+In this case, TODO.
 
-Figure X shows an example loss curve chart, featuring the average results of all
-optimizers for a random circuit Y instance. % TODO mention actual numbers
-
-% TODO actually put them in the appendix
-% TODO this sounds a lot like results were selected, emphasis should be on this
-%      chart showing ALL characterists that can also be found in other charts
-
-Comparison to gradient-based optimizers: 
-
-
+It is worth noting that the loss curves of both \texttt{Rotosolve} and
+\texttt{Crotosolve} have a low variance throughout the optimization process in
+all evaluate instances.
+This means that the quick descent to the minimum value happens consistently
+across the evaluated instances.
+On the other hand, the gradient-based optimizers show a much higher variance in
+these experiments.
+More specifically, \texttt{Stochastic Gradient Descent} and \texttt{Adagrad}
+typically demonstrate a standard deviation of more than $0.2$ thoughout the
+entire optimization process.
+Meanwhile, \texttt{Adam} shows a similar standard deviation in the beginning and
+quickly progresses towards a standard deviation near zero as it approaches the
+$250$ iterations.
 
 \subsubsection*{Discussion}
 
-\begin{itemize}
-    \item mention complexity, compare number of evaluations
-    \item comment on generality/limitations: parameter independence, universal gate sets, ...
-\end{itemize}
+As demonstrated in this evaluation, \texttt{Crotosolve} can outperform
+gradient-based methods consistently on the circuits considered here.
+However, it should be noted that the gradient-based optimizers have been used
+with their default hyperparameter values for this evaluation.
+In many cases, achieving good results with machine learning optimizers requires
+elaborate hyper-parameter tweaking.
+While this suggests that these optimizers could potentially yield better results
+with hyper-parameter tweaking, it also demonstrates that \texttt{Crotsolve}
+produces competitive and consistent results without relying on hyper-parameter
+settings.
+% TODO: but if Crotosolve is outperformed, there is no way to improve it
 
-\section{Outline}
-\begin{itemize}
-    \item
-        Evaluate the accuracy of the model, the number of steps in the
-        optimization loop and the number of circuit evaluations
-        \cite{wendenius_gradient-free_2023,ostaszewski_structure_2021}.
-    \item
-        Compare the results with the performance of other established
-        optimizers (e.g., Adam \cite{kingma_adam_2017}, Gradient Descent and
-        Quantum Natural Gradient \cite{stokes_quantum_2020}) as well as the
-        \emph{Sine Exact} and \emph{Sine Iterative} variants proposed in
-        \cite{wendenius_gradient-free_2023}.
-        % TODO: sources for other optimizers
-        For this purpose, evaluate at least the circuits from
-        \cite{sim_expressibility_2019} that were also evaluated in the
-        Wendenius et al. paper \cite{wendenius_gradient-free_2023}.
-        % TODO: more circuits to evaluate? eileen might have access to
-        %       something...
-    \item
-        Think about the effects of barren plateaus on this optimizer.
-        % TODO: do think about this and come up with a concrete task!
-        % TODO: cite barren plateaus
-\end{itemize}
+While \texttt{Crotosolve} shows slightly better results, PennyLane's
+\texttt{Rotosolve} implementation is more general due to Wierichs' work on the
+reconstruction of arbitrary univariate loss functions.
+This generality enables two use cases that are not covered by \texttt{Crotosolve}.
+First, it allows \texttt{Rotosolve} to optimizer parameters used in gate types
+not explicitly covered in the optimizer implementation whereas
+\texttt{Crotosolve} requires specific implementations for each parameterized
+gate type.
+% TODO: mention maintainability
+Second, it enables \texttt{Rotosolve} to optimize parameters used in multiple
+gates.
+While this is uncommon in parameterized quantum circuits designed to be used
+with one parameter per gate, other variational algorithms like QAOA use
+parameters to configure whole groups of gates.
+% TODO: check if QAOA needs this. also, this is unclear.
+However, this generality comes at the cost of having to compute the frequency
+spectrum for each parameter.
+This is computationally expensive but still polynomial.
+It is sufficient to compute these frequencies once before the first
+\texttt{Rotosolve} iteration.
+% TODO: do better
