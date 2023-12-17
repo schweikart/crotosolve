@@ -5,15 +5,22 @@ As discussed in chapter \ref{chap:gradient-free}, our gradient-free optimization
 algorithm extends the idea of the \texttt{Rotosolve}
 \cite{ostaszewski_structure_2021} algorithm.
 
-A study by Wierichs et al. \cite{wierichs_general_2022} presents a method to
-reconstruct the univariate cost function for arbitrary PQCs, given the spectrum
-of each individual parameter.
-% TODO: only linear parameters?
-% TODO: explain spectrum
-The spectrum of a parameter can be used to describe the corresponding univariate
-cost function with a fourier sum.
-These spectra can be obtained by finding the eigenvalues of ???.
-% TODO: cite articles from pennylane site
+While in this thesis, I have presented an extension of the \texttt{Rotosolve}
+algorithm for a second type of parameterized gates, a different approach with a
+similar outcome has been introduced Wierichs et al..
+In ``\emph{\citefield{wierichs_general_2022}{title}}'', they present\dots
+
+TODO:
+\begin{itemize}
+    \item explain how they use discrete fourier series to reconstruct univariate
+        loss functions
+    \item Also explain what the spectrum and frequencies are in this context
+    \item Name limitations of this approach (preprocessing?)
+    \item Explain how pennylane adopts this into their implementation of the
+        rotosolve algorithm.
+    \item Note how both my approach and this one result in the same method in
+        the end (at least if only RP and CRP gates are present)
+\end{itemize}. . . 
 
 % ADOPTION
 To my knowledge, Pennylane \cite{bergholm_pennylane_2022} is currently the only
