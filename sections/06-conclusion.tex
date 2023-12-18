@@ -1,28 +1,49 @@
 \chapter{Conclusion}
 \label{chap:conclusion}
 
-\section{Outline}
-\begin{itemize}
-    \item
-        Mention how the concept of gradient-free optimization can be
-        extended from rotational gates to controlled rotational gates.
-    \item
-        Mention the proof-of-concept implementation and its evaluation.
-    \item
-        Conclude whether these contributions are a
-        significant improvement to the underlying optimization technique
-        and compare its performance to other state-of-the-art optimizers.
-    \item
-        Present some ideas for future work.
-        This might included the extension of this concept to even more
-        gates, so that this approach can eventually cover a universal gate
-        set to optimize arbitrary PQCs.
-        % TODO: unproven guess: If we apply this to \tt{CCX} gates, we might
-        %       be able to optimize arbitrary circuits with this approach.
-        % note: future work must not be straight-forward and may branch out
-        %       into different directions!
-        \begin{itemize}
-            \item Detect CRP or RP from the code
-            \item Implement better caching in Rotosolve
-        \end{itemize}
-\end{itemize}
+In this thesis, I have presented a generalization of Ostaszewski's
+\texttt{Rotosolve} algorithm to controlled rotational Pauli gates.
+Through mathematical analysis, I have characterized the structure of a
+measurement expectation with respect to a CRP gate parameter.
+I have demonstrated how targeted evaluations of the circuit with special
+parameter values can be used to reconstruct this function.
+
+Using this technique, I have implemented a proof-of-concept optimizer for
+parameterized quantum circuits with parameterized rotational Pauli gates and
+parameterized controlled rotational Pauli gates.
+In a benchmark with circuits from \cite{sim_expressibility_2019}, I have shown
+that my \texttt{Crotosolve} implementation consistently converges quicker
+towards an optimal value than other optimizers.
+
+Meanwhile, PennyLane's \texttt{Rotosolve} implementation uses results from
+Wierichs et al. \cite{wierichs_general_2022} to reconstruct univariate loss
+functions of arbitrary PQCs.
+While \texttt{Crotosolve}'s loss curve is consistently below PennyLane's
+\texttt{Rotosolve} loss curve, their implementation is more general.
+It can handle PQCs where multiple gates have a common parameter and does not
+rely on specialized implementations for different types of parameterized gates.
+
+As \texttt{Rotosolve} and \texttt{Crotosolve} show competitive results compared
+to gradient-based optimizers, their application should continue to be
+investigated.
+Future work on the approach presented in this thesis could extend the optimizer
+to support more types of PQCs.
+Three extensions come to mind: 1) the extension to support parameterized gates
+with more than two qubits, for example the Deutsch gate $CCU(\theta)$, 2) the
+extension to PQCs where multiple gates may be parameterized by the same
+parameter, and 3) the extension to support gates that preprocess their
+parameter, for example $CRP(5\theta^2)$.
+Furthermore, a real implementation of \texttt{Crotosolve} could be improved by
+removing the need to separate parameters for $RP$ and $CRP$ gates.
+To remove this separation, the implementation needs to detect which parameter
+belongs to which type of gate.
+
+In PennyLane's \texttt{Rotosolve} implementation, many of these improvements
+have already been incorporated through the use of general parameter-shift rules
+\cite{wierichs_general_2022}.
+Thus, future work could combine Wierichs' general reconstruction approach with
+the optimizations presented in this thesis.
+%
+% further ideas:
+% - combination with other types of solvers?
+% - parallelization?
