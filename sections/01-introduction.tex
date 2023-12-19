@@ -1,31 +1,27 @@
 \chapter{Introduction}
 \label{chap:intro}
-% draft for the introduction to the thesis
 
-%note: eileen recommends ~half a page
-%todo: what is this thesis about?
 %todo: why is the topic important?
-%todo: what do i plan to find out and what is the solution supposed to look like?
-%todo: which steps and tasks am I willing to take as part of this thesis?
 
 While the first theoretical foundations of quantum computers have already been
 developed in the 1980s, quantum computers have only recently gathered widespread
 attention with the development and availability of real quantum computing
 hardware \cite{nielsen_quantum_2007,hidary_quantum_2021}.
 The field is evolving rapidly, with new tools, algorithms, and hardware being
-released every month. % TODO: source?
+released every month.
+% TODO: source?
 Still, today's quantum devices are subject to high amounts of noise, have a very
 limited number of qubits, and are not fully connected.
 These limitations often further reduce the number of available qubits and gates
-needed to perform a given task.
+needed to perform a given task \cite{cerezo_variational_2021}.
 Researchers often refer to these limited quantum devices as
-\emph{noisy intermediate-scale quantum} (NISQ) devices.
-% TODO: source?
-% TODO: given? really?
+\emph{noisy intermediate-scale quantum} (NISQ) devices
+\cite{preskill_quantum_2018}.
 
 One promising idea for harnessing the computational power of quantum devices
 within the NISQ era is to apply machine learning methodology to quantum
-computers.
+computers \cite{cerezo_variational_2021}.
+% TODO: citation is for VQAs, not for QML in general!
 Machine learning can often be used to approximate complex functions without much
 knowledge about their nature.
 % TODO: cite! and is this too vague?
@@ -63,12 +59,10 @@ decrease statistical noise introduced by qubit measurement.
 % TODO: cite
 % TODO: last sentence inconclusive
 
-In ``\emph{\citefield{ostaszewski_structure_2021}{title}}''
-\cite{ostaszewski_structure_2021}, Ostaszewski et al. explore a different
-optimization approach.
+In ``\emph{\citefield{ostaszewski_structure_2021}{title}}'', Ostaszewski et al.
+explore a different optimization approach \cite{ostaszewski_structure_2021}.
 They observed that the univariate expected value of a PQC w.r.t. a single
 rotational Pauli gate parameter is always sinusoidal.
-% TODO: this sentence is very complicated
 Using three circuit evaluations with select parameter values, they could
 reconstruct this univariate loss function for every parameter value.
 Since the curve of sine functions is well-understood, they could then
@@ -81,6 +75,8 @@ minimum, experiments show good results with this approach compared to
 state-of-the-art optimizers like Adam \cite{kingma_adam_2017},
 Gradient Descent and Quantum Natural Gradient \cite{stokes_quantum_2020}.
 % TODO: cite! and remove QNG? SPSA instead?
+The original \texttt{Rotosolve} approach only was limited to optimizing
+parameters of single-qubit gates.
 It has only been tested for optimizing the rotation parameters and directions
 for single-qubit rotational gates within arbitrary quantum circuits.
 % TODO: that's not true, they just haven't contributed a solution for other
@@ -95,25 +91,61 @@ thesis presents \texttt{Crotosolve}, a similar optimization technique for
 controlled rotational Pauli gates (i.e., \texttt{CRX}, \texttt{CRY} and
 \texttt{CRZ}).
 
-% TODO: explain results
-
-This thesis is structured as follows.
+To develop and investigate the \texttt{Crotosolve} idea, this thesis is
+structured as follows.
 First, in chapter \ref{chap:background}, I summarize the theoretical background
 in quantum computing, machine learning, and quantum machine learning required to
 understand the idea and proof behind \texttt{Crotosolve}.
 Chapter \ref{chap:gradient-free} analyzes the mathematical structure of a
 controlled rotational Pauli gate parameter's univariate effect on the
-expected value of a quantum circuit.
+expected value of a quantum circuit measurement.
 It also contains a constructive proof for an algorithm that can be used to
 determine the prefactors and offsets characterizing the effect function's
 specific curve.
-This algorithm is put to the test in chapter \ref{chap:evaluation}, where I
-first present a proof-of-concept implementation\footnote{I have published all
-code related to this thesis on GitHub.} of the \texttt{Crotosolve} optimizer
-and then compare it to other optimizers analytically and experimentally.
+
+The \texttt{Crotosolve} algorithm is put to the test in chapter
+\ref{chap:evaluation}.
+I present a proof-of-concept implementation in PennyLane, a major quantum
+computing SDF \cite{bergholm_pennylane_2022}.
+Using this implementation and PennyLane's
+\texttt{Rotosolve} \cite{ostaszewski_structure_2021},
+Adam \cite{kingma_adam_2017},
+Adagrad \cite{duchi_adaptive_2011}, and
+Stochastic Gradient Descent implementation, I will benchmark their loss curves.
+% TODO: cite Stoch. GD?
+The data gathered in this benchmark shows that \texttt{Crotosolve} outperforms
+the other optimizers in most cases.
+Its loss value progresses towards the minimum value much quicker and more
+consistently in comparison to its competitors.
+However, in cases with high numbers of parameters, the gradient-based Adam
+optimizer shows a slightly better final result.
+Even in this case, \texttt{Crotosolve} progression towards low loss values is
+much steeper. 
+A comprehensive discussion can be found in section
+\ref{sec:evaluation-discussion}.
+
+While I believe \texttt{Crotosolve} to be the only implementation that exploits
+the sinusoidal structure of CRP gate loss functions explicitly, other
+gradient-free approaches have been developed in the recent years.
+In chapter \ref{chap:related-work}, I outline how contributions by
+Wierichs et al. allow the reconstruction of univariate loss functions of almost
+arbitrary PQCs \cite{wierichs_general_2022}.
+These results have already been implemented in PennyLane's \texttt{Rotosolve}
+implementation and evaluated as part of chapter \ref{chap:evaluation}.
+
+Finally, in chapter \ref{chap:conclusion}, I present a summary of the
+contributions from this thesis.
+Furthermore, I outline how some of the optimizations of my \texttt{Crotosolve}
+implementation and the Wierichs-improved implementation of \texttt{Rotosolve}
+could be fused in an optimizer that combines their advantages.
+% TODO: conclusion
+
+The proof-of-concept implementation as well as the code and benchmark data of my
+evaluation are available on GitHub and Zenodo \cite{crotosolve}.
+
+
 % TODO further details?
-Finally, in chapter \ref{chap:conclusion}, I sketch out a few ideas for future
-work on this topic and conclude that ???.
+
 % TODO insert conclusion when ready
 
 % TODO: check again in the end
