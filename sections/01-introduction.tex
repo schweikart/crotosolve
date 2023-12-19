@@ -1,8 +1,6 @@
 \chapter{Introduction}
 \label{chap:intro}
 
-%todo: why is the topic important?
-
 While the first theoretical foundations of quantum computers have already been
 developed in the 1980s, quantum computers have only recently gathered widespread
 attention with the development and availability of real quantum computing
@@ -72,17 +70,10 @@ The \texttt{Rotosolve} optimizer uses this approach to optimize each parameter
 individually.
 While univariate optimization does not guarantee convergence to the global
 minimum, experiments show good results with this approach compared to
-state-of-the-art optimizers like Adam \cite{kingma_adam_2017},
-Gradient Descent and Quantum Natural Gradient \cite{stokes_quantum_2020}.
-% TODO: cite! and remove QNG? SPSA instead?
-The original \texttt{Rotosolve} approach only was limited to optimizing
+state-of-the-art optimizers like Adam \cite{kingma_adam_2017}, and SPSA
+\cite{spall_multivariate_1992}.
+However, the original \texttt{Rotosolve} approach was limited to optimizing
 parameters of single-qubit gates.
-It has only been tested for optimizing the rotation parameters and directions
-for single-qubit rotational gates within arbitrary quantum circuits.
-% TODO: that's not true, they just haven't contributed a solution for other
-%       types of gates yet! There's even a plot about CRP gates!
-% TODO: the general parameter shift rules paper does this for all PQCs already
-% TODO: cite? and QNG is not a thing any more, the new paper cites SPSA
 
 These promising results naturally pose the question of whether this approach can
 be extended to other types of gates.
@@ -106,12 +97,13 @@ specific curve.
 The \texttt{Crotosolve} algorithm is put to the test in chapter
 \ref{chap:evaluation}.
 I present a proof-of-concept implementation in PennyLane, a major quantum
-computing SDF \cite{bergholm_pennylane_2022}.
+computing SDK \cite{bergholm_pennylane_2022,unitary_fund_team_results_2022}.
 Using this implementation and PennyLane's
 \texttt{Rotosolve} \cite{ostaszewski_structure_2021},
 Adam \cite{kingma_adam_2017},
 Adagrad \cite{duchi_adaptive_2011}, and
-Stochastic Gradient Descent implementation, I will benchmark their loss curves.
+Stochastic Gradient Descent implementation, I create a benchmark of their loss
+curves.
 % TODO: cite Stoch. GD?
 The data gathered in this benchmark shows that \texttt{Crotosolve} outperforms
 the other optimizers in most cases.
@@ -121,7 +113,7 @@ However, in cases with high numbers of parameters, the gradient-based Adam
 optimizer shows a slightly better final result.
 Even in this case, \texttt{Crotosolve} progression towards low loss values is
 much steeper. 
-A comprehensive discussion can be found in section
+A comprehensive discussion of this evaluation can be found in section
 \ref{sec:evaluation-discussion}.
 
 While I believe \texttt{Crotosolve} to be the only implementation that exploits
@@ -131,7 +123,7 @@ In chapter \ref{chap:related-work}, I outline how contributions by
 Wierichs et al. allow the reconstruction of univariate loss functions of almost
 arbitrary PQCs \cite{wierichs_general_2022}.
 These results have already been implemented in PennyLane's \texttt{Rotosolve}
-implementation and evaluated as part of chapter \ref{chap:evaluation}.
+implementation and were evaluated as part of chapter \ref{chap:evaluation}.
 
 Finally, in chapter \ref{chap:conclusion}, I present a summary of the
 contributions from this thesis.
@@ -142,20 +134,3 @@ could be fused in an optimizer that combines their advantages.
 
 The proof-of-concept implementation as well as the code and benchmark data of my
 evaluation are available on GitHub and Zenodo \cite{crotosolve}.
-
-
-% TODO further details?
-
-% TODO insert conclusion when ready
-
-% TODO: check again in the end
-% \section{Outline}
-% \begin{itemize}
-%     \item
-%         Explicate the goals, limits and structure of the bachelor thesis.
-%     \item
-%         Name the contributions of this thesis.
-%     \item
-%         Provide a realistic outlook on the possible impacts of these
-%         contributions.
-% \end{itemize}
