@@ -306,72 +306,98 @@ produce results in this regime with high efficiency.
 
 \subsection{Classical Machine Learning}
 \begin{figure}
-    \label{fig:ml-training-loop}
     \centering
     \includegraphics[width=0.8\textwidth]{ml-training-loop}
     \caption{A typical machine learning optimization loop}
+    \label{fig:ml-training-loop}
 \end{figure}
 
-In supervised learning scenarios, the labeled training data is typically fed
-into a black-box model to generate an output that is supposed to be similar to
-the data's label.
-The black-box model is an algorithm -- for example, a neural network -- expected
-to be capable of expressing the mapping from the input data to its labels that
-can be tweaked using a potentially large set of parameters.
-Comparing the output of the model and the expected output yields a loss value,
-quantitatively representing the error of the model.
-Using this loss value, an optimizer's task then is to change the black-box
-model's parameters so that the loss in the next iteration will be smaller.
+According to Bishop \cite{bishop_pattern_2006}, Machine Learning typically aims
+to find and reproduce a pattern in a dataset.
+In a \emph{supervised} Machine Learning task, a set of input data is given
+together with its corresponding output data.
+This data could, for example, be the results of an experiment where the input
+represents the parameters of the experiment and the output represents the
+measurement results corresponding to these parameters.
+The goal of the supervised machine learning task is to recognize the relation
+between input and output data to predict output values from input values.
+We measure the quality of the machine learning results with a
+\emph{loss value}, which is a real number representing how much the predicted
+values deviate from the correct values from the output data set.
+% TODO: we!
+
+Many approaches in machine learning use a parameterizable \emph{model} function
+to express the mapping from input to output.
+An \emph{optimizer} feeds data into the model and compares the model's
+prediction with the correct output to determine the loss value.
+Based on this loss value, it updates the parameters of the model aiming to
+produce a better loss value in the next model evaluation. 
+The repeated process of evaluating test data with the model and updating the
+model's parameters based on the generated loss value is often referred to as the
+\emph{optimization loop}.
+The optimization loop of a supervised Machine Learning process is visualized in
+\autoref{fig:ml-training-loop}.
+% TODO: model selection, example NN.
+% TODO: learning
+% TODO: generalization
+
+It should be noted that supervised learning is not the only type of
+Machine Learning task.
+\emph{Unsupervised} learning tasks, for example, can be implemented without
+given output data.
+In this case, the loss value must be determined from the model output without
+relying on given ideal output data.
+When applying Machine Learning to an optimization problem, the loss value is
+typically the negative objective value of the output proposed by the model
+function.
+
+The success of a Machine Learning task depends the careful selection of training
+data, loss function, model, and the optimizer.
+I will present some commonly used optimizers in \autoref{sec:optimizers}.
 
 \subsection{Quantum Machine Learning}
-Parameterized quantum circuits realize a mapping from an input state to an
-output state.
-This mapping can be considered an algorithm that is determined by parameters of
-the PQC.
-If the PQC is expressible enough, tweaking the parameters can lead to an
-arbitrary function.
+\label{sec:real-qml-intro}
+% TODO: rename, sec and subsec have the same name
 
-This setup is very similar to the one used in classical machine learning.
+As Machine Learning can often learn patterns from given datasets even in the
+presence of noise, it is expected that Machine Learning applications can benefit
+from the computational power of quantum computers even in the NISQ era
+\cite{ciliberto_quantum_2018,cerezo_variational_2021}.
 
-Quantum machine learning makes use of this exact same setup by using a
-parameterized quantum circuit as the parameterizable black-box model in the
-optimization loop.
+One approach for using quantum computers for machine learning is to use
+PQCs as the model function of an otherwise classical optimization loop.
+This is referred to as a \emph{hybrid} approach
+\cite{benedetti_parameterized_2019,mitarai_quantum_2018}.
 
 \subsection{Optimization techniques}
+\label{sec:optimizers}
 
-\section{Outline}
-Background: Quantum computing and QML with PQCs
-\begin{itemize}
-    \item
-        Briefly explain the operation of a quantum computer
-        \cite{nielsen_quantum_2007}.
-        This section should mention qubits, gates, universal gate sets,
-        measurements and their mathematical representation.
-        Make sure to mention parameterizable gates like rotational pauli (RP)
-        gates and controlled rotational pauli (CRP) gates.
-    \item
-        Explain the setup for quantum machine learning with parameterized
-        quantum circuits (PQCs) \cite{mitarai_quantum_2018}.
-        Mention the analogy of quantum machine learning with PQCs with
-        classical machine learning setups \cite{bishop_pattern_2006}.
-        This section should include a few examples and cite demonstrations
-        as well as evaluations of the idea.
-    \item
-        Go into detail on the different optimization techniques used for
-        this approach.
-        This section should mention state-of-the-art optimizers such as
-        Adam \cite{kingma_adam_2017}, Gradient Descent and
-        % TODO: cite gradient descent?
-        (Quantum) Natural Gradient \cite{stokes_quantum_2020}.
-        % TODO: SPSA instead of QNG?
-        Also explain the parameter shift rule
-        \cite{mitarai_quantum_2018,schuld_evaluating_2019} as we are trying
-        to replace it.
-        % TODO: re-formulate
-        % TODO: maybe explain fourier sums too
-    \item
-        Explain the concept of gradient-free optimization for the example of
-        uncontrolled rorational gates (i.e., \texttt{RX}, \texttt{RY},
-        \texttt{RZ}) from
-        \cite{wendenius_gradient-free_2023,ostaszewski_structure_2021}.
-\end{itemize}
+... TODO ...
+
+% \begin{itemize}
+%     \item
+%         QC explanation should mention universal gate sets
+%         Make sure to mention parameterizable gates like rotational pauli (RP)
+%         gates and controlled rotational pauli (CRP) gates.
+%     \item
+%         PQC QML section should include a few examples and cite demonstrations
+%         as well as evaluations of the idea.
+%     \item
+%         Go into detail on the different optimization techniques used for
+%         this approach.
+%         This section should mention state-of-the-art optimizers such as
+%         Adam \cite{kingma_adam_2017}, Gradient Descent and
+%         % TODO: cite gradient descent?
+%         (Quantum) Natural Gradient \cite{stokes_quantum_2020}.
+%         % TODO: SPSA instead of QNG?
+%         Also explain the parameter shift rule
+%         \cite{mitarai_quantum_2018,schuld_evaluating_2019} as we are trying
+%         to replace it.
+%         % TODO: re-formulate
+%         % TODO: maybe explain fourier sums too
+%     \item
+%         Explain the concept of gradient-free optimization for the example of
+%         uncontrolled rorational gates (i.e., \texttt{RX}, \texttt{RY},
+%         \texttt{RZ}) from
+%         \cite{wendenius_gradient-free_2023,ostaszewski_structure_2021}.
+% \end{itemize}
