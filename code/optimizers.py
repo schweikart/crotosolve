@@ -6,6 +6,7 @@ from CrotosolveOptimizer import CrotosolveOptimizer
 from typing import Callable
 
 from circuits import circuit_generators
+from math import ceil
 
 class OptimizationTask:
     def __init__(
@@ -46,7 +47,7 @@ class OptimizationResult:
         self.loss = loss
 
 def optimize_crotosolve(task: OptimizationTask, debug: bool = False) -> OptimizationResult:
-    max_iterations = task.max_evaluations // (1 + 2 * task.initial_params[0].size + 5 * task.initial_params[1].size)
+    max_iterations = ceil(task.max_evaluations / (1 + 2 * task.initial_params[0].size + 5 * task.initial_params[1].size))
     optimizer = CrotosolveOptimizer()
 
     cost = [(0, float(task.circuit(*task.initial_params)))]
@@ -91,7 +92,7 @@ def optimize_crotosolve(task: OptimizationTask, debug: bool = False) -> Optimiza
     return OptimizationResult(loss=cost)
 
 def optimize_rotosolve(task: OptimizationTask, debug: bool = False) -> OptimizationResult:
-    max_iterations = task.max_evaluations // (3 * task.initial_params[0].size + 5 * task.initial_params[1].size)
+    max_iterations = ceil(task.max_evaluations / (3 * task.initial_params[0].size + 5 * task.initial_params[1].size))
 
     optimizer = qml.RotosolveOptimizer()
     params = task.initial_params
@@ -139,7 +140,7 @@ def optimize_rotosolve(task: OptimizationTask, debug: bool = False) -> Optimizat
     return OptimizationResult(loss=cost)
 
 def optimize_gradientdescent(task: OptimizationTask, debug = False) -> OptimizationResult:
-    max_iterations = task.max_evaluations // 2 # 2 evals per iteration
+    max_iterations = ceil(task.max_evaluations / 2) # 2 evals per iteration
 
     optimizer = qml.GradientDescentOptimizer()
     params = task.initial_params
@@ -167,7 +168,7 @@ def optimize_gradientdescent(task: OptimizationTask, debug = False) -> Optimizat
     return OptimizationResult(loss=cost)
 
 def optimize_adam(task: OptimizationTask, debug: bool = False) -> OptimizationResult:
-    max_iterations = task.max_evaluations // 2 # 2 evals per iteration
+    max_iterations = ceil(task.max_evaluations / 2) # 2 evals per iteration
     optimizer = qml.AdamOptimizer()
     params = task.initial_params
 
@@ -194,7 +195,7 @@ def optimize_adam(task: OptimizationTask, debug: bool = False) -> OptimizationRe
     return OptimizationResult(loss=cost)
 
 def optimize_adagrad(task: OptimizationTask, debug = False) -> OptimizationResult:
-    max_iterations = task.max_evaluations // 2 # 2 evals per iteration
+    max_iterations = ceil(task.max_evaluations / 2) # 2 evals per iteration
     optimizer = qml.AdagradOptimizer()
     params = task.initial_params
 
