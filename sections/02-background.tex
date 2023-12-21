@@ -270,6 +270,8 @@ The $\ket{++}$ state, for example, is transformed into the
 $\ket{-+} = CX \ket{++}$ state, changing the control qubit but not the target
 qubit.
 
+% TODO: Rotation and controlled rotation gates
+
 \section{Quantum Machine Learning}
 \label{sec:qml-intro}
 
@@ -351,9 +353,25 @@ When applying Machine Learning to an optimization problem, the loss value is
 typically the negative objective value of the output proposed by the model
 function.
 
-The success of a Machine Learning task depends the careful selection of training
-data, loss function, model, and the optimizer.
-I will present some commonly used optimizers in \autoref{sec:optimizers}.
+The success of a Machine Learning task depends on the careful selection of
+training data, loss function, model, and the optimizer.
+For the optimizer, a common choice is \emph{Gradient Descent}.
+In each optimizer iteration, the optimizer computes the gradient of the loss
+value from the model output w.r.t. the model parameters.
+As the gradient points towards the steepest ascent, its negative points towards
+the steepest descent.
+Altering the parameters in this direction should then decrease the loss value.
+This parameter update can be expressed with the following equation, where
+$\mathbf{\theta}_i$ is the parameter vector after the $i$-th iteration, $E$ is
+the loss function, $f$ is the model, $(x,y)$ is the training data, and $\eta$ is
+the learning rate.
+
+\begin{equation}
+    \mathbf{\theta}_{i+1} = \mathbf{\theta}_i - \eta\nabla E(f_{\mathbf{\theta}_i}(x), y)
+\end{equation}
+
+% TODO: explain learning rate and adam
+% TODO: mention adam and adagrad as two improvements
 
 \subsection{Quantum Machine Learning}
 \label{sec:real-qml-intro}
@@ -369,35 +387,32 @@ PQCs as the model function of an otherwise classical optimization loop.
 This is referred to as a \emph{hybrid} approach
 \cite{benedetti_parameterized_2019,mitarai_quantum_2018}.
 
+% TODO: cite schuld review?
+% TODO: parameter shift rule (schuld, mitarai)
+% TODO: VQE as an example
+% TODO: maybe QNG?
+
 \subsection{Optimization techniques}
 \label{sec:optimizers}
 
-... TODO ...
+Although gradient-based optimizers are widely used in the field of Machine
+Learning, other optimizers are available too.
+For the optimization of PQCs, Ostaszewski et al. present an alternative approach
+that optimizes model parameters independently \cite{ostaszewski_structure_2021}.
+In ``\emph{\citefield{ostaszewski_structure_2021}{title}}'', they observe that
+the expected loss value $\mathbb P(M = \ket 0)$ of a PQC w.r.t. a single
+rotational Pauli gate parameter $\theta$ always has the following mathematical
+structure.
 
-% \begin{itemize}
-%     \item
-%         QC explanation should mention universal gate sets
-%         Make sure to mention parameterizable gates like rotational pauli (RP)
-%         gates and controlled rotational pauli (CRP) gates.
-%     \item
-%         PQC QML section should include a few examples and cite demonstrations
-%         as well as evaluations of the idea.
-%     \item
-%         Go into detail on the different optimization techniques used for
-%         this approach.
-%         This section should mention state-of-the-art optimizers such as
-%         Adam \cite{kingma_adam_2017}, Gradient Descent and
-%         % TODO: cite gradient descent?
-%         (Quantum) Natural Gradient \cite{stokes_quantum_2020}.
-%         % TODO: SPSA instead of QNG?
-%         Also explain the parameter shift rule
-%         \cite{mitarai_quantum_2018,schuld_evaluating_2019} as we are trying
-%         to replace it.
-%         % TODO: re-formulate
-%         % TODO: maybe explain fourier sums too
-%     \item
-%         Explain the concept of gradient-free optimization for the example of
-%         uncontrolled rorational gates (i.e., \texttt{RX}, \texttt{RY},
-%         \texttt{RZ}) from
-%         \cite{wendenius_gradient-free_2023,ostaszewski_structure_2021}.
-% \end{itemize}
+\begin{equation}
+    \mathbb{P}(M = \ket 0 | \theta) = d_1 + d_3 \cdot \cos(\theta + d_2)
+    \text{ with } d_1,d_2,d_3 \in \mathbb R
+\end{equation}
+
+Here, $d_1, d_2, d_3$ are unknown constants, which are independent from
+$\theta$.
+By evaluating the PQC with three select values for $\theta$, the authors were
+able to reconstruct these constants.
+As sinusoidal functions are well understood, the minimum of this reconstructed
+function can be calculated analytically. it is mathematically easy to
+calculate their minimum once the function is reconstructed.
