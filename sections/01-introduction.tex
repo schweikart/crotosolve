@@ -20,40 +20,41 @@ One promising idea for harnessing the computational power of quantum devices
 within the NISQ era is to apply Machine Learning methodology to quantum
 computers \cite{cerezo_variational_2021}.
 % TODO: citation is for VQAs, not for QML in general!
-Machine Learning can often be used to approximate complex functions without much
-knowledge about their nature.
+Machine Learning can often be used to approximate complex functions without
+requiring intricate knowledge about their nature.
 % TODO: cite! and is this too vague?
-Moreover, Machine Learning can work with or even benefit from a limited amount
-of noise \cite{ciliberto_quantum_2018}.
+Moreover, Machine Learning can compensate for or even benefit from a limited
+amount of noise \cite{ciliberto_quantum_2018}.
 
 A typical Machine Learning workflow uses a parameterizable function as a
 so-called model.
 Machine Learning aims to choose parameters for the model so that the model maps
-given input data closely to given output data.
+any given input data closely to expected output data.
 In many iterations, an \emph{optimizer} evaluates the model function to compute
 the \emph{loss value}, which indicates how much the calculated value deviates
-from the correct one.
+from the expected output value.
 % TODO: Mention data & labels?
 The optimizer uses these evaluations to produce new parameter values and then
 repeats its assessment.
 This process is known as \emph{training}.
 Many state-of-the-art optimizers use an approach called \emph{gradient descent}
-to improve the model's parameters.
+to improve the model's parameters \cite{benedetti_parameterized_2019}.
 % TODO: explain gradient descent briefly?
 Machine Learning has recently made a tremendous leap due to the availability of
-computational resources and improvements in model function design.
-% TODO cite!
+computational resources and improvements in model function design
+\cite{jordan_machine_2015}.
 These improvements allow Machine-Learning applications to train billions of
 parameters with terabytes of training data in many iterations.
 
 A \emph{Parameterized Quantum Circuit} (PQC) can replace the classical model
 function to transfer the machine-learning methodology to quantum computers.
 PQCs are the quantum equivalent of parameterized algorithms like neural
-networks.
+networks \cite{benedetti_parameterized_2019}.
+% TODO: better wording
 Gradient-based optimizers can be used for Quantum Machine Learning (QML) too,
 but the current price of NISQ devices does not allow for large amounts of data
 and large numbers of iterations.
-Additionally, each evaluation of a quantum circuit involves multiple shots to
+Additionally, each evaluation of a quantum circuit comprises multiple shots to
 decrease statistical noise introduced by qubit measurement.
 % TODO: cite
 % TODO: last sentence inconclusive
@@ -71,16 +72,16 @@ The \texttt{Rotosolve} optimizer uses this approach to optimize each parameter
 individually.
 While univariate optimization does not guarantee convergence to the global
 minimum, experiments show good results with this approach compared to
-state-of-the-art optimizers like Adam \cite{kingma_adam_2017}, and SPSA
-\cite{spall_multivariate_1992}.
+state-of-the-art optimizers, namely Adam, and SPSA
+\cite{kingma_adam_2017,spall_multivariate_1992,ostaszewski_structure_2021}.
 However, the original \texttt{Rotosolve} approach was limited to optimizing
 parameters of single-qubit gates.
 
 These promising results naturally pose the question of whether this approach can
 be extended to other types of gates.
 Because of their similarity with the studied rotational gates, this bachelor's
-thesis presents \texttt{Crotosolve}, a similar optimization technique for
-controlled rotational Pauli gates.
+thesis presents \texttt{Crotosolve}, an extension of the \texttt{Rotosolve}
+optimization technique for controlled rotational Pauli gates.
 
 To develop and investigate the \texttt{Crotosolve} idea, this thesis is
 structured as follows.
@@ -116,7 +117,7 @@ much steeper.
 A comprehensive discussion of this evaluation can be found in section
 \ref{sec:evaluation-discussion}.
 
-While I believe \texttt{Crotosolve} to be the only implementation that exploits
+While I believe \texttt{Crotosolve} to be the first implementation that exploits
 the sinusoidal structure of CRP gate loss functions explicitly, other
 gradient-free approaches have been developed in the recent years.
 In chapter \ref{chap:related-work}, I outline how contributions by
