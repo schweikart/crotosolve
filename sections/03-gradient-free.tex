@@ -459,8 +459,8 @@ find an equation with only the missing constants.
     \end{split}
 \end{equation}
 
-And, again similary to \ref{eq:d1+y2} to \ref{eq:d4}, the missing constants can
-be derived from this equation.
+Similary to \ref{eq:d1+y2} to \ref{eq:d4}, the missing constants can be derived
+from this equation.
 First, we handle the case where $y_1$ zeroes out and $d_2$ can be chosen
 arbitrarily.
 
@@ -510,7 +510,6 @@ $y_1(\theta) \neq 0$.
             &= \arctan\left(\frac{y_1(\theta + 3\pi)}{y_1(\theta)}\right) \\
         \Rightarrow d_2
             &= \arctan\left(\frac{y_1(\theta + 3\pi)}{y_1(\theta)}\right) - \sfrac\theta2
-            % TODO resolve for y
     \end{split}
 \end{equation}
 
@@ -521,7 +520,6 @@ $y_1(\theta) \neq 0$.
             &= d_3 \cos(\sfrac\theta2 + d_2) \\
         \Rightarrow d_3
             &= \frac{y_1(\theta)}{\cos(\sfrac\theta2 + d_2)}
-            % TODO: resolve for y
     \end{split}
 \end{equation}
 
@@ -529,7 +527,9 @@ Therefore, the constants $d_1, \dots, d_5$ can be determined with a total of six
 quantum circuit evaluations
 $y(\theta), y(\theta + \pi), y(\theta + \sfrac32\pi), y(\theta + 2\pi), y(\theta + 3\pi)$
 and $y(\theta + \sfrac72\pi)$.
-For convenience, they are summarized in the following as
+For convenience, they are summarized in the following.
+In cases where the loss function is independent of a parameter $d_i$, the
+arbitrary choice has been denoted with an asterisk $*$.
 
 \begin{subequations}
     \label{eq:constants}
