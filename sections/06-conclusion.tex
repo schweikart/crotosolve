@@ -11,17 +11,18 @@ parameter values can be used to reconstruct this function.
 Using this technique, I have implemented a proof-of-concept optimizer for
 parameterized quantum circuits with parameterized rotational Pauli gates and
 parameterized controlled rotational Pauli gates.
-In a benchmark with circuits from \cite{sim_expressibility_2019}, I have shown
-that my \texttt{Crotosolve} implementation consistently converges quicker
-towards an optimal value than other optimizers.
+In a benchmark with circuit templates \cite{sim_expressibility_2019} commonly
+used in the field, I have shown that my \texttt{Crotosolve} implementation
+consistently converges quicker towards an optimal value than other optimizers.
 
 Meanwhile, PennyLane's \texttt{Rotosolve} implementation uses results from
 Wierichs et al. \cite{wierichs_general_2022} to reconstruct univariate loss
 functions of arbitrary PQCs.
-While \texttt{Crotosolve}'s loss curve is consistently below PennyLane's
-\texttt{Rotosolve} loss curve, their implementation is more general.
-It can handle PQCs where multiple gates have a common parameter and does not
+It can handle PQCs where multiple gates have a shared parameter and does not
 rely on specialized implementations for different types of parameterized gates.
+While PennyLane's \texttt{Rotosolve} implementation is more general than the
+\texttt{Crotosolve} extension, \texttt{Crotosolve}'s loss curves are
+consistently below theirs.
 
 As \texttt{Rotosolve} and \texttt{Crotosolve} show competitive results compared
 to gradient-based optimizers, their application should continue to be
@@ -33,10 +34,15 @@ with more than two qubits, for example the Deutsch gate $CCU(\theta)$, 2) the
 extension to PQCs where multiple gates may be parameterized by the same
 parameter, and 3) the extension to support gates that preprocess their
 parameter, for example $CRP(5\theta^2)$.
-Furthermore, a real implementation of \texttt{Crotosolve} could be improved by
+An actual implementation of \texttt{Crotosolve} could also be improved by
 removing the need to separate parameters for $RP$ and $CRP$ gates.
 To remove this separation, the implementation needs to detect which parameter
 belongs to which type of gate.
+Furthermore, \texttt{Crotosolve} could benefit from further work on the
+minimization of CRP loss functions.
+As pointed out in \autoref{sec:minimization}, the specific knowledge about CRP
+loss functions could be used to compute the minimum value analytically or to set
+a better initial value for the numerical minimizer.
 
 In PennyLane's \texttt{Rotosolve} implementation, many of these improvements
 have already been incorporated through the use of general parameter-shift rules
