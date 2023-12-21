@@ -22,7 +22,7 @@
 ## Evaluation Server
 This section describes the server installation used to run the evaluation.
 
-* Server: [Hetzner CAX41 cloud server](https://www.hetzner.com/cloud) with 16 shared vCPUs, 32GB of RAM, and 320GB of disk space.
+* Server: [Hetzner CAX41 ARM64 cloud server](https://www.hetzner.com/cloud) with 16 shared vCPUs, 32GB of RAM, and 320GB of disk space.
 * Software:
   * Operating system: Ubuntu 22.04
   * Package installation:
