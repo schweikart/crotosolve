@@ -101,7 +101,7 @@ and entangling capability. % TODO why is that good
 The optimizers are compared through loss curves generated from exemplary
 circuits.
 These loss curves are recorded with respect to the number of circuit
-evaluations, even though it would be more common in classical machine learning
+evaluations, even though it would be more common in classical Machine Learning
 to use the number of iterations or taken time instead of the evaluations.
 The time taken to run these quantum circuits on classical hardware using
 state-vector simulation is hardly representative of the actual runtime on
@@ -121,7 +121,6 @@ quantum hardware as long as the classical work required between evaluations is
 negligible.
 
 \begin{figure}
-    \label{fig:avg-loss-curve}
     \centering
     \subfloat[Circuit 11]{
         \includegraphics[width=0.5\textwidth]{loss-curve_sim11_4x3.pdf}
@@ -134,6 +133,7 @@ negligible.
         Full lines show the average loss curve.
         Transparent areas show the error, which is the average $\pm$ its
         standard deviation.}
+    \label{fig:avg-loss-curve}
 \end{figure}
 
 I have generated many random initial parameter values for each circuit to
@@ -143,7 +143,7 @@ record the loss curve of its optimization as a result.
 These results are then aggregated in average loss curves for each pair of
 circuits and optimizers.
 
-Figure \ref{fig:avg-loss-curve} shows the average loss curves for each
+\autoref{fig:avg-loss-curve} shows the average loss curves for each
 optimizer on circuit 11.
 I have selected this chart as it shows all the key characteristics described in
 the following, but the charts for all other evaluated circuits can be found in
@@ -208,7 +208,7 @@ As demonstrated in this evaluation, \texttt{Crotosolve} can outperform
 gradient-based methods consistently on the circuits considered here.
 However, it should be noted that the gradient-based optimizers have been used
 with their default hyperparameter values for this evaluation.
-In many cases, achieving good results with machine learning optimizers requires
+In many cases, achieving good results with Machine Learning optimizers requires
 elaborate hyper-parameter tweaking.
 While this suggests that these optimizers could potentially yield better results
 with hyper-parameter tweaking, it also demonstrates that \texttt{Crotosolve}

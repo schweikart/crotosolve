@@ -4,12 +4,12 @@
 This chapter introduces the theoretical background for understanding the idea
 behind \texttt{Crotosolve}.
 Rather than giving a complete overview of the field, this text is strictly
-focused on aspects critical to proving the optimizer's correctness.
+focused on aspects critical for proving the optimizer's correctness.
 I will first present an introduction to the theory of quantum information
 processing using qubits, gates, and circuits.
 Following this introduction, I will also give a quick introduction to the field
-of machine learning.
-I will show how Quantum Machine Learning applies the ideas from machine learning
+of Machine Learning.
+I will show how Quantum Machine Learning applies the ideas from Machine Learning
 to quantum processing devices.
 This section will focus on state-of-the-art classical and quantum optimization
 techniques in particular.
@@ -18,11 +18,11 @@ with further detail.
 These basic ideas are also fundamental for the \texttt{Crotosolve}, which will
 be introduced in the next chapter.
 
-\section{A brief introduction to Quantum Computing}
+\section{A brief introduction to quantum computing}
 \label{sec:quantum-intro}
+% TODO: Mention that this is an abstract level? quantum hardware implementation
 At its core, the operation of a quantum computer revolves around gates and
 qubits.
-
 Qubits (quantum bits) make up the data register of a quantum computer.
 Just like a classical bit can be in the $0$ or $1$ state, a qubit can be in a
 corresponding $\ket 0$ or $\ket 1$ state.
@@ -59,16 +59,17 @@ the squared absolute value of its probability amplitude,
 $$\mathbb P(M = \ket n) = \left| \alpha_n \right|^2,\, n \in \left\{0, 1\right\}.$$
 
 Thus, the normalization of the probability amplitudes, 
-$\sum_{n \in \left\{0, 1\right\}} \alpha_n \ket n$, is in fact a normalization
-of the probability distribution over the given basis states.
+$\sum_{n \in \left\{0, 1\right\}} \left|\alpha_n\right|^2 = 1$, is in fact a
+normalization of the probability distribution over the given basis states.
 While it is physically impossible to observe $\alpha_0$ and $\alpha_1$ directly,
 their squared absolute values still influence the outcome of observation $M$.
-If I know how to prepare the same quantum state\footnote{
+If the same\footnote{
     Two quantum states $\sum \alpha_n \ket n$, $\sum \beta_n \ket n$ are the
     same if all of their probability amplitudes are the same,
     i.e., $\alpha_n = \beta_n \forall n$.
-} many times, I can estimate $\left|\alpha_n\right|^2$ as the relative frequency
-from an empirical probability distribution of $M$.
+} quantum state can be prepared many times, $\left|\alpha_n\right|^2$ can be
+estimated as the relative frequency from an empirical probability distribution
+of $M$.
 
 Since only the absolute value of $\alpha_0$ and $\alpha_1$ influences the
 measurement outcome, it is common to rewrite the state as follows.
@@ -82,7 +83,6 @@ measurement outcome, it is common to rewrite the state as follows.
 \end{equation}
 
 \begin{figure}
-    \label{fig:blochsphere}
     \centering
     \begin{blochsphere}[radius=3 cm,tilt=15,rotation=-20,opacity=0]
         \drawBallGrid[style={opacity=0.1}]{30}{30}
@@ -105,15 +105,22 @@ measurement outcome, it is common to rewrite the state as follows.
         \node[below] at (front) {{$\left|+\right>$ }};
         \node[above] at (back) {{$\left|-\right>$}};
     \end{blochsphere}
-    \caption{The Bloch sphere can represent the state of a single qubit,
-        ignoring its global phase.}
+    \caption{The Bloch sphere can represent the state
+        $\ket\psi = e^{i\gamma} \left(\cos \frac\theta2 \ket 0 + e^{i\varphi} \sin \frac\theta2 \ket 1\right)$
+        of a single qubit, ignoring its global phase.
+        $\varphi$ specifies the rotation of the state around the $Z$ axis
+        ($\ket 0 \to \ket 1$).
+        $\theta$ specifies the rotation of the state relative to the $XY$ plane
+        ($X$ axis: $\ket - \to \ket +$, $Y$ axis: $\ket L \to \ket R$).}
+    \label{fig:blochsphere}
 \end{figure}
 
 In this representation, $e^{i\gamma}$ has no effect on the outcome of
-measurement $M$.
+measurement $M$ because $\left|e^{i\gamma}\right| = 1$.
+That is why the \emph{global phase} $\gamma$ is often ignored.
 The remaining two variables $\theta$ and $\varphi$ can be interpreted as
-coordinates on the so-called Bloch sphere, which is shown in figure
-\ref{fig:blochsphere}.
+coordinates on the so-called Bloch sphere, which is shown in
+\autoref{fig:blochsphere}.
 
 \subsection{Multi-qubit-systems}
 The separated state of several qubits can be combined into a multi-qubit state
@@ -161,9 +168,9 @@ probability distribution through their squared absolute values.
 
 Unlike with classical bits and gates, it is physically impossible for a quantum
 computer to create copies of a qubit.
-While classical computers typically read (copy), transform (think add) and write
-data from and to registers, quantum computers have to do all operations
-in-place.
+While classical computers typically read (i.e., copy), transform (e.g., add two
+numbers) and write data from and to registers, quantum computers can only
+perform in-place operations.
 
 Quantum states can be changed by applying operators to them.
 Since the state of an $n$-qubit-system can be described through its probability
@@ -189,7 +196,7 @@ are described by unitary matrices\footnote{
 % UNIVERSAL GATE SETS
 % TODO: MEASUREMENTS
 
-In Quantum Computing, every manipulation of the quantum state can be described
+In quantum computing, every manipulation of the quantum state can be described
 by a so-called gate.
 A gate is a unitary transformation of the quantum state.
 Gates can act on one or multiple qubits and we can compose bigger gates by
@@ -276,7 +283,7 @@ qubit.
 \label{sec:qml-intro}
 
 Today's quantum devices are far from ideal implementations of the qubits, gates,
-and circuits presented in Section \ref{sec:quantum-intro}.
+and circuits presented in \autoref{sec:quantum-intro}.
 Noise is a major limitation of today's quantum devices.
 Noise is hard to describe completely since it can be the result of a multitude
 of factors.
@@ -299,7 +306,7 @@ The limitations of today's quantum devices are collectively referred to as the
 Researchers suggest that Quantum Machine Learning and Variational Quantum
 Algorithms may produce useful results even in the presence of NISQ limitations.
 In the following section, I will first introduce a few ideas from classical
-machine learning.
+Machine Learning.
 Using these results, I will present several approaches to Quantum Machine
 Learning.
 I will focus on optimization techniques in particular, as from Chapter
@@ -310,7 +317,12 @@ produce results in this regime with high efficiency.
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{ml-training-loop}
-    \caption{A typical machine learning optimization loop}
+    \caption{In a typical supervised Machine Learning optimization loop, the
+        optimizer runs the model with training data to compute a loss value.
+        It updates the model's parameters to reduce the loss value in the next
+        evaluation.
+        Through many iterations of this process, the model learns the relation
+        between input and output data.}
     \label{fig:ml-training-loop}
 \end{figure}
 
@@ -321,14 +333,14 @@ together with its corresponding output data.
 This data could, for example, be the results of an experiment where the input
 represents the parameters of the experiment and the output represents the
 measurement results corresponding to these parameters.
-The goal of the supervised machine learning task is to recognize the relation
+The goal of the supervised Machine Learning task is to recognize the relation
 between input and output data to predict output values from input values.
-We measure the quality of the machine learning results with a
+We measure the quality of the Machine Learning results with a
 \emph{loss value}, which is a real number representing how much the predicted
 values deviate from the correct values from the output data set.
 % TODO: we!
 
-Many approaches in machine learning use a parameterizable \emph{model} function
+Many approaches in Machine Learning use a parameterizable \emph{model} function
 to express the mapping from input to output.
 An \emph{optimizer} feeds data into the model and compares the model's
 prediction with the correct output to determine the loss value.
@@ -382,7 +394,7 @@ presence of noise, it is expected that Machine Learning applications can benefit
 from the computational power of quantum computers even in the NISQ era
 \cite{ciliberto_quantum_2018,cerezo_variational_2021}.
 
-One approach for using quantum computers for machine learning is to use
+One approach for using quantum computers for Machine Learning is to use
 PQCs as the model function of an otherwise classical optimization loop.
 This is referred to as a \emph{hybrid} approach
 \cite{benedetti_parameterized_2019,mitarai_quantum_2018}.

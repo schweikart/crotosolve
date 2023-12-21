@@ -17,18 +17,18 @@ Researchers often refer to these limited quantum devices as
 \cite{preskill_quantum_2018}.
 
 One promising idea for harnessing the computational power of quantum devices
-within the NISQ era is to apply machine learning methodology to quantum
+within the NISQ era is to apply Machine Learning methodology to quantum
 computers \cite{cerezo_variational_2021}.
 % TODO: citation is for VQAs, not for QML in general!
-Machine learning can often be used to approximate complex functions without much
+Machine Learning can often be used to approximate complex functions without much
 knowledge about their nature.
 % TODO: cite! and is this too vague?
-Moreover, machine learning can work with or even benefit from a limited amount
+Moreover, Machine Learning can work with or even benefit from a limited amount
 of noise \cite{ciliberto_quantum_2018}.
 
-A typical machine learning workflow uses a parameterizable function as a
+A typical Machine Learning workflow uses a parameterizable function as a
 so-called model.
-Machine learning aims to choose parameters for the model so that the model maps
+Machine Learning aims to choose parameters for the model so that the model maps
 given input data closely to given output data.
 In many iterations, an \emph{optimizer} evaluates the model function to compute
 the \emph{loss value}, which indicates how much the calculated value deviates
@@ -40,25 +40,25 @@ This process is known as \emph{training}.
 Many state-of-the-art optimizers use an approach called \emph{gradient descent}
 to improve the model's parameters.
 % TODO: explain gradient descent briefly?
-Machine learning has recently made a tremendous leap due to the availability of
+Machine Learning has recently made a tremendous leap due to the availability of
 computational resources and improvements in model function design.
 % TODO cite!
-These improvements allow machine-learning applications to train billions of
+These improvements allow Machine-Learning applications to train billions of
 parameters with terabytes of training data in many iterations.
 
 A \emph{Parameterized Quantum Circuit} (PQC) can replace the classical model
 function to transfer the machine-learning methodology to quantum computers.
 PQCs are the quantum equivalent of parameterized algorithms like neural
 networks.
-Gradient-based optimizers can be used for quantum machine learning too, but
-the current price of NISQ devices does not allow for large amounts of data and
-large numbers of iterations.
+Gradient-based optimizers can be used for Quantum Machine Learning (QML) too,
+but the current price of NISQ devices does not allow for large amounts of data
+and large numbers of iterations.
 Additionally, each evaluation of a quantum circuit involves multiple shots to
 decrease statistical noise introduced by qubit measurement.
 % TODO: cite
 % TODO: last sentence inconclusive
 
-In ``\emph{\citefield{ostaszewski_structure_2021}{title}}'', Ostaszewski et al.
+In ``\emph{\citefield{ostaszewski_structure_2021}{title}},'' Ostaszewski et al.
 explore a different optimization approach \cite{ostaszewski_structure_2021}.
 They observed that the univariate expected value of a PQC w.r.t. a single
 rotational Pauli gate parameter is always sinusoidal.
@@ -80,13 +80,12 @@ These promising results naturally pose the question of whether this approach can
 be extended to other types of gates.
 Because of their similarity with the studied rotational gates, this bachelor's
 thesis presents \texttt{Crotosolve}, a similar optimization technique for
-controlled rotational Pauli gates (i.e., \texttt{CRX}, \texttt{CRY} and
-\texttt{CRZ}).
+controlled rotational Pauli gates.
 
 To develop and investigate the \texttt{Crotosolve} idea, this thesis is
 structured as follows.
 First, in chapter \ref{chap:background}, I summarize the theoretical background
-in quantum computing, machine learning, and quantum machine learning required to
+in quantum computing, Machine Learning, and Quantum Machine Learning required to
 understand the idea and proof behind \texttt{Crotosolve}.
 Chapter \ref{chap:gradient-free} analyzes the mathematical structure of a
 controlled rotational Pauli gate parameter's univariate effect on the
