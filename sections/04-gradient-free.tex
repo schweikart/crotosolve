@@ -622,20 +622,18 @@ minimum.
 The chances of running into the global minimum can be increased by providing an
 estimate of $\theta_{min}$ as the initial value of the minimizer.
 
-The calculation of such an estimate could by investigated in future work.
+The calculation of such an estimate could be investigated in future work.
 Although it is without proof or evidence from substantial experiments, I want to
 present a characteristic of the $y(\theta)$ function that I have observed to be
 a helpful initial value for the minimization.
-Within the boundaries of $[0, 4\pi]$, $y_1$ has a single minimum $\theta_1$ and
-$y_2$ has two equal minima $\theta_{2a}, \theta_{2b}$.
+Within the boundaries of $[0, 4\pi]$, $y_1(\theta)$ has a single minimum
+$\theta_1$ and $y_2(\theta)$ has two equal minima $\theta_{2a}, \theta_{2b}$.
 Let $\theta_2$ be the value of $\theta_{2a}$ or $\theta_{2b}$ that is the
 closest to $\theta_1$ and let $\theta_{min}^*$ be in the middle of $\theta_1$
 and $\theta_2$.
-% TODO: bounds!
-Then, the global mimum of $y(\theta)$ is between $\theta_1$ and $\theta_2$
-I have observed that the global minimum the global minimum of $y(\theta)$ 
-The lowest minimum $x_0$ of $y$ is always located between $x_1$ and the minimum
-of $y_2$ that is the closest to $x_1$.
-Here, the distance and middle of two values need to take the periodicity of
-$y(\theta)$ into account.
+Then, the global minimum of $y(\theta)$ is between $\theta_1$ and $\theta_2$
+and choosing $\theta_{min}^*$ as an initial value allows the numerical minimizer
+to converge towards the global minimum $\theta_{min}$.
+Here, the periodicity of $y(\theta)$ needs to be considered in the calculation
+of the distance and the middle of two values.
 Otherwise, a global minimum near $\theta = 0$ may not be recognized.
