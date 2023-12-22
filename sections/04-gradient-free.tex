@@ -592,51 +592,47 @@ with
 
 \section{Minimizing the reconstruction}
 \label{sec:minimization}
-With a complete reconstruction, we can now compute the \texttt{CRP} gate
-parameter $\theta$ that minimizes the cost function $y(\theta)$.
 
-\textbf{Note:} This section hasn't been verified yet.
-Many of these statements are unchecked and some of them might be plain wrong.
-% TODO: check and un-wrong these statements!
-
-\subsubsection*{Analytical approach}
-Since $y$ is a composition of well-known differentiable functions, we can
-attempt to determine its minimum by first finding the zeros of its derivative
-$\sfrac{\partial}{\partial \theta}y$.
+The previous sections have shown that the effect of a controlled rotational
+Pauli gate parameter on the expected value of a circuit measurement can be
+expressed as a sum of two sinusoidal functions.
+\texttt{Crotosolve} can use this cost-efficient reconstruction to optimize a
+single CRP gate parameter.
+Therefore, the optimizer needs to find
 
 \begin{equation}
-    \begin{split}
-        0 &\stackrel!= \frac{\partial}{\partial\theta} y(\theta)\\
-            &= -\frac{d_3}{2} \sin(\sfrac\theta2 + d_2) - d_5 \sin(\theta + d_4)\\
-            &= -\frac{d_3}{2} (\sin(\sfrac\theta2)\cos(d_2) + \cos(\sfrac\theta2)\sin(d_2))\\
-                &\quad - d_5 (\sin(\theta)\cos(d_4) + \cos(\theta)\sin(d_4))\\
-            &= -\frac{d_3}{2} (\sin(\sfrac\theta2)\cos(d_2) + \cos(\sfrac\theta2)\sin(d_2))\\
-                &\quad - d_5 (2\sin(\sfrac\theta2)\cos(\sfrac\theta2)\cos(d_4) + (2\cos^2(\sfrac\theta2) - 1)\sin(d_4))\\
-            &\approx a \cos(\sfrac\theta2 + b) \cdot (c + \cos(\sfrac\theta2))???
-    \end{split}
+    \theta_{min} = \underset{\theta \in [0, 4\pi]}{\operatorname{argmin}}\, y(\theta)\,.
 \end{equation}
-% TODO: maybe find citation that no analytical solution is known for this problem?
 
-So... what now?
+Since $y(\theta)$ is a univariate, real, and smooth function, a simple
+minimization strategy is to use a numerical optimizer like the
+\texttt{Nelder-Mead} method \cite{nelder_simplex_1965}.
+As a sum of two sinusoidal functions with frequencies $1$ and $\sfrac12$,
+$y(\theta)$ is $4\pi$-periodic and has either one or two local minima%
+\footnote{
+    If $y$ is constant, the number of minima is infinite.
+    In this case, however, $\theta$ is irrelevant and any minimization result is
+    optimal.}
+within the $[0, 4\pi]$ bounds.
+Thus, it is possible that the numerical optimizer converges to a non-global
+minimum.
+The chances of running into the global minimum can be increased by providing an
+estimate of $\theta_{min}$ as the initial value of the minimizer.
 
-\subsubsection*{Numerical approach}
-Alternatively, we can just throw a numerical minimizer at the problem to find
-the function's minimum.
-Since $y$ is $4\pi$-periodic, it has an infinite amount of minima, so we'll
-focus on finding the minimum within $\theta \in [0, 4\pi]$.
-Within these boundaries, $y_1$ has a single minimum $x_1$, $y_2$ has two equal
-minima $x_{2a}, x_{2b}$ and $y$ has up to two local minima.
+The calculation of such an estimate could by investigated in future work.
+Although it is without proof or evidence from substantial experiments, I want to
+present a characteristic of the $y(\theta)$ function that I have observed to be
+a helpful initial value for the minimization.
+Within the boundaries of $[0, 4\pi]$, $y_1$ has a single minimum $\theta_1$ and
+$y_2$ has two equal minima $\theta_{2a}, \theta_{2b}$.
+Let $\theta_2$ be the value of $\theta_{2a}$ or $\theta_{2b}$ that is the
+closest to $\theta_1$ and let $\theta_{min}^*$ be in the middle of $\theta_1$
+and $\theta_2$.
+% TODO: bounds!
+Then, the global mimum of $y(\theta)$ is between $\theta_1$ and $\theta_2$
+I have observed that the global minimum the global minimum of $y(\theta)$ 
 The lowest minimum $x_0$ of $y$ is always located between $x_1$ and the minimum
 of $y_2$ that is the closest to $x_1$.
-Mathematically, this can be expressed as
-
-\begin{equation}
-    \begin{gathered}
-        x_2 = \underset{x = x_{2a}, x_{2b}}{\operatorname{argmin}} \left|x_1 - x\right|\\
-        \min_\theta y(\theta) \in [\min(x_1, x_2), \max(x_1, x_2)]
-    \end{gathered}
-\end{equation}
-% TODO: take care of proximity through the periodic boundaries!
-
-Within this interval, there can only be a single local minimum so any gradient-
-based numerical minimizer should be able to find it.
+Here, the distance and middle of two values need to take the periodicity of
+$y(\theta)$ into account.
+Otherwise, a global minimum near $\theta = 0$ may not be recognized.
