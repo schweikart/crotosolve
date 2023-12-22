@@ -28,28 +28,28 @@ Finally, I outline how to minimize this reconstruction in
 \begin{figure}
     \centering
     \begin{quantikz}
-        \lstick{\ket{0}}    & \gate[wires=2]{U} & \ctrl{1}          & \gate[wires=2]{V}\slice[style=black]{$\ket{\varphi}$}  & \meter\qw \\
+        \lstick{\ket{0}}    & \gate[wires=2]{U} & \ctrl{1}          & \gate[wires=2]{V}\slice[style=black]{$\ket{\varphi(\theta)}$}  & \meter\qw \\
         \lstick{\ket{0}}    &                   & \gate{RP(\theta)} & \qw                               & \qw
     \end{quantikz}
     \caption{The analyzed quantum circuit is composed of gates $U$, a controlled
     rotational Pauli gate $CRP(\theta)$, gates $V$ and a single measurement.
-    $\ket\varphi$ denotes the quantum state immediately before the measurement.}
+    $\ket{\varphi(\theta)}$ denotes the quantum state immediately before the measurement.}
     \label{fig:crp-circuit}
 \end{figure}
 
 I analyze the mathematical structure of the loss curve with respect to the
 parameter $\theta$ of a single $CRP(\theta)$ gate.
 Without loss of generality, I will assume a quantum circuit with only two
-qubits, as shown in \autoref{fig:crp-circuit}.
+qubits and only a single $CRP(\theta)$ gate, as shown in
+\autoref{fig:crp-circuit}.
 % TODO: generality explanation
-The circuit can contain arbitrary gates that do not depend on $\theta$ before
-and after the $CRP(\theta)$ gate, which have been summarized as the $U$ and $V$
-gates.
-% TODO: un-understandable
+Before and after the $CRP(\theta)$ gate, the circuit can contain arbitrary gates
+that do not depend on $\theta$.
+These gates have been summarized as the $U$ and $V$ gates.
 Following the gates, a single qubit is measured.
 Note that both the choice of the measured qubit and the choice of the
-controlling qubit in the $CRP(\theta)$ gate are irrelevant for this analysis.
-Different choices can be covered with this circuit structure by appending or
+controlling qubit in the $CRP(\theta)$ gate are irrelevant for this analysis, as
+different choices can be covered with this circuit structure by appending or
 prepending swap gates to $U$ and $V$.
 
 The possible outcomes of the measurement are distributed randomly and this
@@ -57,14 +57,12 @@ distribution depends on $\theta$ since the circuit depends on $\theta$.
 The probability of measuring $\ket 0$ in the measured qubit can be computed as
 the combination of all outcomes' probabilites where the measured qubit is
 $\ket 0$.
-Here, $\ket{\varphi} = V \cdot CRP(\theta) \cdot U\ket{00}$ denotes the
-quantum state just before the measurement.
 
 \begin{equation}
     \label{eq1}
     \begin{split}
         \mathbb{P}(M_0 = \ket 0 \mid \theta)
-            &= \mathbb{P}(M = \ket{00}) + \mathbb{P}(M = \ket{01})
+            &= \mathbb{P}(M = \ket{00} \mid \theta) + \mathbb{P}(M = \ket{01} \mid \theta)
     \end{split}
 \end{equation}
 
@@ -80,7 +78,7 @@ of the same structure \cite{bronstejn_taschenbuch_2016}.
     \begin{split}
         \mathbb P\left(M_0 = \ket 0 \mid \theta\right)
             &\stackrel{(\ref{eq1})}=
-                \mathbb{P}(M = \ket{00}) + \mathbb{P}(M = \ket{01}) \\
+                \mathbb{P}(M = \ket{00} \mid \theta) + \mathbb{P}(M = \ket{01} \mid \theta) \\
             &\stackrel{(\ref{eq:single-prob-simplified-simplified})}=
                 d_1^{00} + d_3^{00} \cos\left(\sfrac\theta2 + d_2^{00}\right) + d_5^{00} \cos\left(\theta + d_4^{00}\right) \\
                 &\quad + d_1^{01} + d_3^{01} \cos\left(\sfrac\theta2 + d_2^{01}\right) + d_5^{01} \cos\left(\theta + d_4^{01}\right) \\
@@ -115,6 +113,8 @@ Let $\ket\alpha$ be any state from the basis of the measurement.
 The probability of the measurement to result in $\ket\alpha$ can be computed
 from its overlap with $\ket{\varphi(\theta)}$, as introduced in
 \autoref{sec:quantum-intro}.
+Here, $\ket{\varphi(\theta)} = V \cdot CRP(\theta) \cdot U\ket{00}$ denotes the
+quantum state just before the measurement.
 
 \begin{equation}
     \label{eq:single-outcome-prob}
@@ -155,17 +155,15 @@ term can be multiplied out further.
     \end{split}
 \end{equation}
 
-The summands in \autoref{eq:single-prob} can be further simplified using
-$RP\left(\theta\right) = \cos\left(\sfrac\theta2\right) I - i \sin\left(\sfrac\theta2\right) P$
-from \cite{ostaszewski_structure_2021} and the linearity of quantum gate
-application.
-% TODO: move this to background
 As $\ket1\bra1 \otimes RP(\theta)$ is a block matrix, any product
 $\bra x (\ket1\bra1 \otimes RP(\theta)) \ket y$ can be reduced to
 $\bra{x^\downarrow} RP(\theta) \ket{y^\downarrow}$ where $\ket{x^\downarrow}$
-contains the components from $\ket x$ corresponding to the non-zero matrix block.
-
-With these tricks, the second summand from equation \ref{eq:single-prob}
+contains the components from $\ket x$ corresponding to the non-zero matrix
+block.
+The summands in \autoref{eq:single-prob} can be further simplified by using this
+reduction and inserting the matrix definition for $RP(\theta)$ gates, which was
+presented in \autoref{eq:rotational-pauli-gates}.
+With these transformations, the second summand from \autoref{eq:single-prob}
 resolves to a sum of $\sin$ and $\cos$ functions of $\theta$ with frequency
 $\sfrac12$.
 
@@ -269,8 +267,8 @@ used \cite{bronstejn_taschenbuch_2016}.
         \sin^2\left(\theta\right)
             &= \frac12 - \frac12 \cos\left(2\theta\right)
             \label{eq:sin-squared} \\
-        \cos\left(\theta\right)\sin\left(\varphi\right)
-            &= \frac12\sin\left(\theta + \varphi\right) + \frac12 \sin\left(\theta - \varphi\right)
+        \cos\left(\theta\right)\sin\left(\psi\right)
+            &= \frac12\sin\left(\theta + \psi\right) + \frac12 \sin\left(\theta - \psi\right)
             \label{eq:cos-sin} \\
         a\cos x + b \sin x
             &= sgn(a) \sqrt{a^2 + b^2} \cos\left(x + \arctan\left(-\frac ba\right)\right)
@@ -331,7 +329,7 @@ determined through a few evaluations of the quantum circuit.
 We can analyze $y_1$ and $y_2$ separately by constructing interferences of $y$
 with a phase-shifted version of itself.
 Note that
-$\cos(\varphi + \pi) = -\cos(\varphi), \cos(\varphi + 2\pi) = \cos(\varphi)$.
+$\cos(\psi + \pi) = -\cos(\psi), \cos(\psi + 2\pi) = \cos(\psi)$.
 
 \begin{equation}
     \label{eq:d1+y2}
