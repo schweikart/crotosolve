@@ -136,36 +136,37 @@ negligible.
     \label{fig:avg-loss-curve}
 \end{figure}
 
-I have generated many random initial parameter values for each circuit to
-reduce statistical noise through averaging.
+I have generated 100 random initial parameter sets for each circuit to reduce
+statistical noise through averaging.
 Each pair of circuits and parameter values is run with each optimizer to
-record the loss curve of its optimization as a result.
+record the optimizer's loss curve as a result.
 These results are then aggregated in average loss curves for each pair of
 circuits and optimizers.
 
 \autoref{fig:avg-loss-curve} shows the average loss curves for each
-optimizer on circuit 11.
-I have selected this chart as it shows all the key characteristics described in
-the following, but the charts for all other evaluated circuits can be found in
-appendix \ref{chap:appendix}.
+optimizer on circuits 11 and 14.
+I have selected these charts as they show all the key characteristics described
+in the following, but the charts for all other evaluated circuits can be found
+in \autoref{chap:appendix}.
 Furthermore, the circuit and initial values data for all evaluated circuits, as
-well as the recorded loss curve data is available on GitHub
+well as the recorded loss curve datasets are available on GitHub
 \cite{schweikart_schweikartcrotosolve_2023}.
 
 % TODO describe the device this has been run on
 
 \subsubsection*{Results}
 
-\texttt{Crotosolve}'s loss curve generally is very similar to
-\texttt{Rotosolve}'s loss curve, although consistently below.
+\texttt{Crotosolve}'s loss curve is generally very similar to
+\texttt{Rotosolve}'s loss curve, although \texttt{Crotosolve} initially descends
+towards the minimum value slightly quicker.
 For RP gates, this is easy to explain since both algorithms are identical.
 For CRP gates, both algorithms use the same strategy, although different methods
 to achieve their common goal.
 PennyLane's implementation of the \texttt{Rotosolve} algorithm proposed by
 Ostaszewski et al. is augmented with the work of Wierichs et al.
-\cite{ostaszewski_structure_2021,wierichs_general_2022,bergholm_pennylane_2018}.
-Wierichs' work allows the algorithm to reconstruct univariate loss functions
-from almost any quantum circuit through a discrete Fourier series transform.
+\cite{wierichs_general_2022,bergholm_pennylane_2018}.
+This generalization allows the algorithm to reconstruct the univariate loss
+function from almost any type of gate (see \autoref{chap:related-work}).
 While both \texttt{Crotosolve} and \texttt{Rotosolve} cache an evaluation value
 between RP gate optimization steps, only \texttt{Crotosolve} does so for
 CRP gates too.
@@ -181,11 +182,14 @@ much slower towards this value.
 In direct comparison with \texttt{Adam}, \texttt{Crotosolve}'s loss curve
 typically descends much quicker in the beginning and reaches a point close to
 the minimum much more quickly.
-Still, \texttt{Adam} consistently reaches loss values as low or even lower than
-\texttt{Crotosolve} eventually within the shown 250 iterations.
-TODO: adam intersects rotosolve.
-An exception to this observation is shown by the loss curves of circuit 14.
-In this case, TODO.
+Still, \texttt{Adam} consistently reaches final loss values as low as
+\texttt{Crotosolve}'s within the shown 250 iterations.
+\texttt{Adam} can even reach lower final values in some cases.
+The cases in which \texttt{Adam} outperforms \texttt{Crotosolve} match the
+cases in which circuit templates with many parameters have been used (i.e.,
+circuit templates 05, 06, 13, and 14; see \autoref{chap:appendix}).
+However, further investigation would be required to confirm this correlation
+between the number of parameters and optimizer performance.
 
 It is worth noting that the loss curves of both \texttt{Rotosolve} and
 \texttt{Crotosolve} have a low variance throughout the optimization process in
