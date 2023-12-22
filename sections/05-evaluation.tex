@@ -31,14 +31,14 @@ optimized following the exact approach presented by Ostaszewski et al.
 The pseudocode for this algorithm is stated in algorithm \ref{alg:crotosolve}.
 
 \begin{algorithm}
-    \caption{The \texttt{Crotosolve} algorithm updates parameter individually}
+    \caption{The \texttt{Crotosolve} algorithm updates parameters individually}
     \label{alg:crotosolve}
     %
     \SetKwFunction{ReconstructCrp}{ReconstructCrp}
     \SetKwFunction{RotosolveUpdate}{RotosolveUpdate}
     \SetKwFunction{MakeUnivariate}{MakeUnivariate}
     %
-    \KwData{$prev\_params \in \mathbb R^n$, $circuit$}
+    \KwData{$prev\_params \in \mathbb R^n$, $circuit \in \mathrm{QNode}$}
     \KwResult{$params \in \mathbb R^n$}
     \BlankLine
     $params \gets copy(prev\_params)$\;
@@ -46,9 +46,9 @@ The pseudocode for this algorithm is stated in algorithm \ref{alg:crotosolve}.
         $uni \gets $ \MakeUnivariate{$circuit$, $params$, $p$}\;
         \eIf{$p$ belongs to controlled gate}{
             $recon \gets $ \ReconstructCrp{$uni$} \Comment*[r]{see section \ref{sec:constants}}
-            $next\_params[p] \gets \underset{x \in [0, 4\pi]}{\operatorname{argmin}}\, recon(x)$ \Comment*[r]{using numerical minimizer}
+            $params[p] \gets \underset{x \in [0, 4\pi]}{\operatorname{argmin}}\, recon(x)$ \Comment*[r]{using numerical minimizer}
         }{
-            $next\_params[p] \gets $ \RotosolveUpdate{$uni$}\;
+            $params[p] \gets $ \RotosolveUpdate{$uni$}\;
         }
     }
 \end{algorithm}
@@ -189,13 +189,13 @@ In this case, TODO.
 
 It is worth noting that the loss curves of both \texttt{Rotosolve} and
 \texttt{Crotosolve} have a low variance throughout the optimization process in
-all evaluate instances.
+all evaluated instances.
 This means that the quick descent to the minimum value happens consistently
 across the evaluated instances.
 On the other hand, the gradient-based optimizers show a much higher variance in
 these experiments.
 More specifically, \texttt{Stochastic Gradient Descent} and \texttt{Adagrad}
-typically demonstrate a standard deviation of more than $0.2$ thoughout the
+typically demonstrate a standard deviation of more than $0.2$ throughout the
 entire optimization process.
 Meanwhile, \texttt{Adam} shows a similar standard deviation in the beginning and
 quickly progresses towards a standard deviation near zero as it approaches the

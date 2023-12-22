@@ -52,10 +52,10 @@ controlling qubit in the $CRP(\theta)$ gate are irrelevant for this analysis, as
 different choices can be covered with this circuit structure by appending or
 prepending swap gates to $U$ and $V$.
 
-The possible outcomes of the measurement are distributed randomly and this
+The possible outcomes of the measurement are distributed randomly, and this
 distribution depends on $\theta$ since the circuit depends on $\theta$.
 The probability of measuring $\ket 0$ in the measured qubit can be computed as
-the combination of all outcomes' probabilites where the measured qubit is
+the combination of all outcomes' probabilities where the measured qubit is
 $\ket 0$.
 
 \begin{equation}
@@ -87,7 +87,7 @@ of the same structure \cite{bronstejn_taschenbuch_2016}.
     % TODO: janky alignment
 \end{equation}
 
-\section{Single outcome probabilites}
+\section{Single outcome probabilities}
 \label{sec:single-outcome-probability}
 
 As pointed out in the previous section, I will show in this section that there
@@ -184,8 +184,8 @@ $\sfrac12$.
 
 Similarly, the third summand from equation \ref{eq:single-prob} resolves to a
 sum of $\sin$ and $\cos$ functions of $\theta$.
-While both the second and third summand have a similar mathematical shape, their
-amplitude coefficients $c_1, c_2$ and $c_3, c_4$ may be different.
+While both the second and third summands have a similar mathematical shape,
+their amplitude coefficients $c_1, c_2$ and $c_3, c_4$ may be different.
 
 \begin{equation}
     \label{eq:single-prob-simplification2}
@@ -314,7 +314,7 @@ this computation is as computationally expensive as simulating the execution of
 the quantum circuit.
 % TODO: add a reason for this. something about calculating <alpha|A|beta>
 
-Instead, because of the sinoidal nature of the function, the constants can be
+Instead, because of the sinusoidal nature of the function, the constants can be
 determined through a few evaluations of the quantum circuit.
 
 \begin{equation}
@@ -457,9 +457,9 @@ find an equation with only the missing constants.
     \end{split}
 \end{equation}
 
-Similary to \ref{eq:d1+y2} to \ref{eq:d4}, the missing constants can be derived
+Similar to \ref{eq:d1+y2} to \ref{eq:d4}, the missing constants can be derived
 from this equation.
-First, we handle the case where $y_1$ zeroes out and $d_2$ can be chosen
+First, we handle the case where $y_1$ zeroes out, and $d_2$ can be chosen
 arbitrarily.
 
 \begin{equation}

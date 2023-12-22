@@ -169,7 +169,7 @@ probability distribution through their squared absolute values.
 Unlike with classical bits and gates, it is physically impossible for a quantum
 computer to create copies of a qubit.
 While classical computers typically read (i.e., copy), transform (e.g., add two
-numbers) and write data from and to registers, quantum computers can only
+numbers), and write data from and to registers, quantum computers can only
 perform in-place operations.
 
 Quantum states can be changed by applying operators to them.
@@ -188,8 +188,8 @@ implicitly.
 
 Universal quantum computers allow us to apply operations to these states that
 are described by unitary matrices\footnote{
-    A matrix $A \in \mathbb{C}^{N \times N}$ is called unitary iff its conjugate
-    transpose is its inverse, i.e. $\overline{A^\top} = A^{-1}$.
+    A matrix $A \in \mathbb{C}^{N \times N}$ is called unitary if and only if
+    its conjugate transpose is its inverse, i.e. $\overline{A^\top} = A^{-1}$.
 }.
 % COMMONLY USED EXAMPLE GATES, PARAMETERIZABLE (CONTROLLED) ROTATIONAL PAULI
 %  GATES IN PARTICULAR
@@ -228,7 +228,7 @@ both equal superpositions of the original states.
     \caption{
         In this single-qubit quantum circuit, a Hadamard gate is applied to the
         qubit before it is measured.
-        This circuit will probablistically output $\ket 0$ just as often as
+        This circuit will probabilistically output $\ket 0$ just as often as
         $\ket 1$.
     }
 \end{figure}
@@ -270,7 +270,7 @@ of two qubits and maps the basis states as follows:
 \end{gather}
 
 When applying the $CX$ gate to states from the computational basis, the second
-bit is flipped ($X$ is applied) iff the first bit is $\ket 1$.
+bit is flipped ($X$ is applied) if and only if the first bit is $\ket 1$.
 States other than those from the computational basis might, however, not follow
 this simple principle.
 The $\ket{++}$ state, for example, is transformed into the
@@ -362,7 +362,7 @@ Machine Learning task.
 \emph{Unsupervised} learning tasks, for example, can be implemented without
 given output data.
 In this case, the loss value must be determined from the model output without
-relying on given ideal output data.
+relying on any given ideal output data.
 When applying Machine Learning to an optimization problem, the loss value is
 typically the negative objective value of the output proposed by the model
 function.
@@ -423,10 +423,10 @@ structure.
     \text{ with } d_1,d_2,d_3 \in \mathbb R
 \end{equation}
 
-Here, $d_1, d_2, d_3$ are unknown constants, which are independent from
-$\theta$.
-By evaluating the PQC with three select values for $\theta$, the authors were
-able to reconstruct these constants.
+Here, $d_1, d_2, d_3$ are unknown constants independent of $\theta$.
+The authors could reconstruct these constants by evaluating the PQC with three
+select values for $\theta$.
 As sinusoidal functions are well understood, the minimum of this reconstructed
-function can be calculated analytically. it is mathematically easy to
+function can be calculated analytically.
+It is mathematically easy to
 calculate their minimum once the function is reconstructed.
