@@ -1,0 +1,48 @@
+\chapter{Related work}
+\label{chap:related-work}
+
+The successful training of Quantum Machine Learning models relies on choosing an
+optimization technique that can minimize the loss value effectively (see
+\autoref{sec:classical-ml-intro} and \autoref{sec:optimizers}).
+Most optimizers rely on the computation or approximation of the model's loss
+gradient w.r.t. the model's parameters.
+On the other hand, \texttt{Rotosolve} optimizes parameters of rotational Pauli
+gates independently instead.
+This allows it to minimize these parameters analytically instead of altering
+parameters in the direction of steepest descent
+\cite{ostaszewski_structure_2021}.
+In this thesis, I present an extension of this method for a second type of
+parameterized gates (i.e., controlled rotational Pauli gates).
+Another approach has recently been presented by Wierichs et al..
+
+In ``\emph{\citefield{wierichs_general_2022}{title}}''
+\cite{wierichs_general_2022}, Wierichs et al. observe that the univariate
+expected value $E(\theta)$ of a Variational Quantum Algorithm measurement can be
+expressed as a finite Fourier series.
+
+$$E(\theta) = a_0 + \sum_{l=1}^R a_l \cos(\Omega_l \theta) + b_l \sin(\Omega_l \theta)$$
+
+Using a discrete Fourier transform, they computed the coefficients
+$a_l, b_l\,, 1 \leq l \leq R$ of this expression to reconstruct $E(\theta)$ from a
+finite amount of circuit evaluations.
+This approach is restricted to parameterized quantum circuits that can be
+expressed as a gate $U(\theta) = e^{i \theta G}$ defined by a Hermitian
+generator $G$.
+The $R$ frequencies $\Omega_l\,, 1 \leq l \leq R$ can be derived from the
+eigenvalues of the Hermitian generator $G$.
+% TODO: mention univariate stuff, see Wierichs sec. 3
+% TODO: mention limitations (preprocessing?)
+
+To my knowledge, PennyLane is currently the only major quantum computing SDK
+implementing a variant of the \texttt{Rotosolve} algorithm
+\cite{bergholm_pennylane_2022,ostaszewski_structure_2021}.
+PennyLane's implementation extends the original \texttt{Rotosolve} approach by
+using Wierichs' general method to reconstruct univariate loss functions.
+This requires the calculation of the frequency spectrum $\Omega_l$ mentioned
+above prior to the first iteration of the optimizer.
+Only for parameters corresponding to rotational Pauli gates, PennyLane's
+\texttt{Rotosolve} implementation applies the eponymous analytic methodology
+from Ostaszewski's \texttt{Rotosolve} proposal.
+The \texttt{Crotosolve} optimizer presented in \autoref{chap:gradient-free} can
+be considered a special case of PennyLane's \texttt{Rotosolve} implementation,
+which has been optimized for controlled rotational Pauli gates.
