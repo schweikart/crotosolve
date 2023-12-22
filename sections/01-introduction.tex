@@ -27,7 +27,7 @@ Moreover, Machine Learning can compensate for or even benefit from a limited
 amount of noise \cite{ciliberto_quantum_2018}.
 
 A typical Machine Learning workflow uses a parameterizable function as a
-so-called model.
+so-called model \cite{bishop_pattern_2006}.
 Machine Learning aims to choose parameters for the model so that the model maps
 any given input data closely to the expected output data.
 In many iterations, an \emph{optimizer} evaluates the model function to compute
@@ -72,7 +72,7 @@ The \texttt{Rotosolve} optimizer uses this approach to optimize each parameter
 individually.
 While univariate optimization does not guarantee convergence to the global
 minimum, experiments show good results with this approach compared to
-state-of-the-art optimizers, namely Adam, and SPSA
+state-of-the-art optimizers such as Adam and SPSA
 \cite{kingma_adam_2017,spall_multivariate_1992,ostaszewski_structure_2021}.
 However, the original \texttt{Rotosolve} approach was limited to optimizing
 parameters of single-qubit gates.
@@ -95,8 +95,7 @@ It also contains a constructive proof for an algorithm that can be used to
 determine the prefactors and offsets characterizing the effect function's
 specific curve.
 
-The \texttt{Crotosolve} algorithm is put to the test in chapter
-\ref{chap:evaluation}.
+The \texttt{Crotosolve} algorithm is evaluated in chapter \ref{chap:evaluation}.
 I present a proof-of-concept implementation in PennyLane, a major quantum
 computing SDK \cite{bergholm_pennylane_2018,unitary_fund_team_results_2022}.
 Using this implementation and PennyLane's
@@ -113,7 +112,7 @@ consistently in comparison to its competitors.
 However, in cases with high numbers of parameters, the gradient-based Adam
 optimizer shows a slightly better final result.
 Even in this case, \texttt{Crotosolve} progression towards low loss values is
-much steeper. 
+steeper. 
 A comprehensive discussion of this evaluation can be found in section
 \ref{sec:evaluation-discussion}.
 

@@ -47,10 +47,10 @@ Before and after the $CRP(\theta)$ gate, the circuit can contain arbitrary gates
 that do not depend on $\theta$.
 These gates have been summarized as the $U$ and $V$ gates.
 Following the gates, a single qubit is measured.
-Note that both the choice of the measured qubit and the choice of the
-controlling qubit in the $CRP(\theta)$ gate are irrelevant for this analysis, as
-different choices can be covered with this circuit structure by appending or
-prepending swap gates to $U$ and $V$.
+It should be noted that both the choice of the measured qubit and the choice of
+the controlling qubit in the $CRP(\theta)$ gate are irrelevant for this
+analysis, as different choices can be covered with this circuit structure by
+appending or prepending swap gates to $U$ and $V$.
 
 The possible outcomes of the measurement are distributed randomly, and this
 distribution depends on $\theta$ since the circuit depends on $\theta$.
@@ -69,7 +69,7 @@ $\ket 0$.
 To resolve this result, I will show in \autoref{sec:single-outcome-probability}
 that there are $d_1, \dots, d_5 \in \mathbb R$ so that
 $\mathbb P(M = \ket\alpha \mid \theta) = d_1 + d_3 \cos\left(\sfrac\theta2 + d_2\right) + d_5 \cos\left(\theta + d_4\right)$.
-Using trigonometric identities, equation \ref{eq1} can be simplified to a term
+Using trigonometric identities, \autoref{eq1} can be simplified to a term
 of the same structure \cite{bronstejn_taschenbuch_2016}.
 % TODO: "sums of these terms"
 
@@ -90,9 +90,9 @@ of the same structure \cite{bronstejn_taschenbuch_2016}.
 \section{Single outcome probabilities}
 \label{sec:single-outcome-probability}
 
-As pointed out in the previous section, I will show in this section that there
-are constants $d_1, \dots, d_5 \in \mathbb R$ so that the probability of a
-single outcome can be expressed with the following equation.
+I will show in this section that there are constants
+$d_1, \dots, d_5 \in \mathbb R$ so that the probability of a single outcome can
+be expressed with the following equation.
 
 \begin{equation}
     \mathbb P\left(M = \ket \alpha \mid \theta\right)
@@ -143,7 +143,7 @@ term can be multiplied out further.
                 \left(\ket 0 \bra 0 \otimes I + \ket 1 \bra 1 \otimes RP\left(\theta\right)\right) \\
                 &\quad \cdot A
                 \cdot \left(\ket 0 \bra 0 \otimes I + \ket 1 \bra 1 \otimes RP\left(-\theta\right)\right)
-                \cdot \ket{\tilde\alpha} \\
+                \ket{\tilde\alpha} \\
             &= \underbrace{\bra{\tilde\alpha} (\ket 0 \bra 0 \otimes I)}_{=: \bra\gamma} \cdot A \cdot \underbrace{(\ket 0 \bra 0 \otimes I) \ket{\tilde\alpha}}_{=: \ket{\delta}} \\
                 &\quad + \underbrace{\bra{\tilde\alpha} (\ket 0 \bra 0 \otimes I)}_{= \bra\gamma} \cdot A \cdot (\ket 1 \bra 1 \otimes RP\left(-\theta\right)) \ket{\tilde\alpha} \\
                 &\quad + \bra{\tilde\alpha} (\ket 1 \bra 1 \otimes RP\left(\theta\right)) \cdot A \underbrace{(\ket 0 \bra 0 \otimes I) \ket{\tilde\alpha}}_{=: \ket{\delta}} \\
@@ -182,7 +182,7 @@ $\sfrac12$.
     \end{split}
 \end{equation}
 
-Similarly, the third summand from equation \ref{eq:single-prob} resolves to a
+Similarly, the third summand from \autoref{eq:single-prob} resolves to a
 sum of $\sin$ and $\cos$ functions of $\theta$.
 While both the second and third summands have a similar mathematical shape,
 their amplitude coefficients $c_1, c_2$ and $c_3, c_4$ may be different.
@@ -224,9 +224,9 @@ and a product of $\sin$ and $\cos$.
     \end{split}
 \end{equation}
 
-With equations \ref{eq:single-prob-simplification1},
+With Equations \ref{eq:single-prob-simplification1},
 \ref{eq:single-prob-simplification2}, and \ref{eq:single-prob-simplification3},
-equation \ref{eq:single-prob} can be expressed as the following.
+\autoref{eq:single-prob} can be expressed as the following.
 
 \begin{equation}
     \label{eq:single-prob-simplified}
@@ -304,23 +304,26 @@ form.
 
 \section{Determining the constants}
 \label{sec:constants}
-Equation \ref{eq:single-prob-simplified-simplified} describes the effect of the
-rotation angle parameter on the expected value of a single qubit.
+\autoref{eq:total-result-probability} describes the effect of the rotation angle
+parameter on the expected value of a single qubit measurement.
 The simple structure of this formula comes at the cost of five unknown
 constants $d_1, \dots, d_5$.
 While it is possible to compute those constants from their definitions in
-equations \ref{eq:single-prob} - \ref{eq:single-prob-simplified-simplified},
+\autoref{eq:single-prob} - \ref{eq:single-prob-simplified-simplified},
 this computation is as computationally expensive as simulating the execution of
 the quantum circuit.
 % TODO: add a reason for this. something about calculating <alpha|A|beta>
 
 Instead, because of the sinusoidal nature of the function, the constants can be
 determined through a few evaluations of the quantum circuit.
+To simplify the syntax, I will use $y(\theta)$ to refer to the total expected
+value of the measurement and $y_1(\theta), y_2(\theta)$ to refer to the two
+sinusoidal functions that $y(\theta)$ is composed of.
 
 \begin{equation}
     \label{eq:y}
     \begin{split}
-        y(\theta)
+        y(\theta) :&= \mathbb{P}(M_0 = \ket0 \mid \theta)\\
             &= d_1 + \underbrace{d_3 \cos(\sfrac\theta2 + d_2)}_{=: y_1(\theta)} + \underbrace{d_5 \cos(\theta + d_4)}_{=: y_2(\theta)}\\
             &= d_1 + y_1(\theta) + y_2(\theta)
     \end{split}

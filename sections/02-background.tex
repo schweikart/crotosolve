@@ -4,19 +4,20 @@
 This chapter introduces the theoretical background for understanding the idea
 behind \texttt{Crotosolve}.
 Rather than giving a complete overview of the field, this text is strictly
-focused on aspects critical for proving the optimizer's correctness.
+focused on aspects critical for proving the optimizer's correctness and
+understanding its applications.
 I will first present an introduction to the theory of quantum information
 processing using qubits, gates, and circuits.
 Following this introduction, I will also give a quick introduction to the field
 of Machine Learning.
 I will show how Quantum Machine Learning applies the ideas from Machine Learning
 to quantum processing devices.
-This section will focus on state-of-the-art classical and quantum optimization
-techniques in particular.
+The final section of this chapter will focus on state-of-the-art classical and
+quantum optimization techniques in particular.
 One of these optimization methods is \texttt{Rotosolve}, which I will present
 with further detail.
-These basic ideas are also fundamental for the \texttt{Crotosolve}, which will
-be introduced in the next chapter.
+These basic ideas are also fundamental for the \texttt{Crotosolve} algorithm,
+which will be developed in the next chapter.
 
 \section{A brief introduction to quantum computing}
 \label{sec:quantum-intro}
@@ -64,7 +65,7 @@ normalization of the probability distribution over the given basis states.
 While it is physically impossible to observe $\alpha_0$ and $\alpha_1$ directly,
 their squared absolute values still influence the outcome of observation $M$.
 If the same\footnote{
-    Two quantum states $\sum \alpha_n \ket n$, $\sum \beta_n \ket n$ are the
+    Two quantum states $\sum \alpha_n \ket n$ and $\sum \beta_n \ket n$ are the
     same if all of their probability amplitudes are the same,
     i.e., $\alpha_n = \beta_n \forall n$.
 } quantum state can be prepared many times, $\left|\alpha_n\right|^2$ can be
@@ -139,7 +140,7 @@ With two qubits, this results in
 with $\sum_{n \in \left\{00, 01, 10, 11\right\}} \left|\gamma_n\right|^2 = 1$.
 I use natural numbers instead of bitstrings to simplify the notation in the
 following.
-For example, equation \ref{eq:separate-state} can be compactly rewritten to the
+For example, \autoref{eq:separate-state} can be compactly rewritten to the
 following.
 
 \begin{equation}
@@ -178,13 +179,11 @@ amplitudes $\gamma_i$, we can represent this state with a $2^n$-dimensional
 complex vector.
 If we identify $\ket 0 \equiv \begin{pmatrix}1 & 0\end{pmatrix}^\top$ and
 $\ket 1 \equiv \begin{pmatrix}0 & 1\end{pmatrix}^\top$,
-equation \ref{eq:separate-state-n} leaves us with
+equation \ref{eq:separate-state-n} implicitly leaves us with
 
 \begin{equation}
-    \ket\psi \equiv \begin{pmatrix} \gamma_{0^n} \\ \vdots \\ \gamma_{1^n}\end{pmatrix}
+    \ket\psi \equiv \begin{pmatrix} \gamma_{0^n} \\ \vdots \\ \gamma_{1^n}\end{pmatrix}\,.
 \end{equation}
-
-implicitly.
 
 Universal quantum computers allow us to apply operations to these states that
 are described by unitary matrices\footnote{
@@ -195,16 +194,13 @@ are described by unitary matrices\footnote{
 %  GATES IN PARTICULAR
 % UNIVERSAL GATE SETS
 % TODO: MEASUREMENTS
-
-In quantum computing, every manipulation of the quantum state can be described
-by a so-called gate.
-A gate is a unitary transformation of the quantum state.
-Gates can act on one or multiple qubits and we can compose bigger gates by
+Such an operation is referred to as a \emph{gate} in quantum computing.
+Gates can act on one or multiple qubits, and bigger gates can be composed by
 computing the Kronecker product of gates.
 
-We can visualize the application of gates to a system of qubits through
+The application of gates to a system of qubits can be visualized through
 quantum circuits.
-In these circuits, each qubit is displayed as a horizontal line and gates are
+In these circuits, each qubit is displayed as a horizontal line, and gates are
 displayed as boxes that overlay the lines of the qubits they are applied to.
 Measurements are indicated by a box with a meter inside.
 
@@ -214,13 +210,7 @@ Take for example the Hadamard gate $H$,
     H = \frac{1}{\sqrt 2}\begin{pmatrix}1 & 1 \\1 & -1\end{pmatrix}\,.    
 \end{equation}
 
-Applying the Hadamard gate to a single qubit will transform the
-$\ket 0$ state into $\frac{1}{\sqrt 2}\ket 0 + \frac{1}{\sqrt 2}\ket 1$ and
-$\ket 1$ into $\frac{1}{\sqrt 2}\ket 0 - \frac{1}{\sqrt 2}\ket 1$, which are
-both equal superpositions of the original states.
-
-\begin{figure}[h]
-    \label{fig:H-circuit}
+\begin{figure}[]
     \centering
     \begin{quantikz}
         \lstick{\ket{0}}    & \gate{H}  & \meter\qw
@@ -231,10 +221,18 @@ both equal superpositions of the original states.
         This circuit will probabilistically output $\ket 0$ just as often as
         $\ket 1$.
     }
+    \label{fig:H-circuit}
 \end{figure}
 
+Applying the Hadamard gate to a single qubit will transform the
+$\ket 0$ state into $\frac{1}{\sqrt 2}\ket 0 + \frac{1}{\sqrt 2}\ket 1$ and
+$\ket 1$ into $\frac{1}{\sqrt 2}\ket 0 - \frac{1}{\sqrt 2}\ket 1$, which are
+both equal superpositions of the original states.
+\autoref{fig:H-circuit} visualizes the application of a Hadamard gate in a
+quantum circuit.
+
 All single-qubit gates $U \in \mathbb{C}^{2 \times 2}$ can be represented by
-products of \emph{pauli rotation gates} $RX(\theta), RY(\theta)$ and
+products of \emph{rotational Pauli gates} $RX(\theta), RY(\theta)$ and
 $RZ(\theta)$,
 
 \begin{equation}
@@ -291,7 +289,7 @@ For example, noise can be accumulated over time by unwanted interactions of the
 physical qubit implementation with the outside world.
 Additionally, the number of qubits on today's quantum devices is limited to a
 couple dozen or a couple hundred.
-On quantum computers with high amounts of qubits, the connection topology is
+On quantum computers with high numbers of qubits, the connection topology is
 incomplete, as this simplifies the architecture of the physical system. 
 This means that multi-qubit gates cannot be applied to arbitrary groups of
 qubits directly.
@@ -303,8 +301,9 @@ The limitations of today's quantum devices are collectively referred to as the
 \cite{preskill_quantum_2018,nielsen_quantum_2007}.
 % TODO: maybe move to QC chapter?
 
-Researchers suggest that Quantum Machine Learning and Variational Quantum
-Algorithms may produce useful results even in the presence of NISQ limitations.
+Research suggests that Quantum Machine Learning and Variational Quantum
+Algorithms may produce useful results even in the presence of NISQ limitations
+\cite{cerezo_variational_2021}.
 In the following section, I will first introduce a few ideas from classical
 Machine Learning.
 Using these results, I will present several approaches to Quantum Machine
@@ -324,7 +323,7 @@ produce results in this regime with high efficiency.
         It updates the model's parameters to reduce the loss value in the next
         evaluation.
         Through many iterations of this process, the model learns the relation
-        between input and output data.}
+        between input and output data \cite{bishop_pattern_2006}.}
     \label{fig:ml-training-loop}
 \end{figure}
 
@@ -335,7 +334,7 @@ together with its corresponding output data.
 This data could, for example, be the results of an experiment where the input
 represents the parameters of the experiment and the output represents the
 measurement results corresponding to these parameters.
-The goal of the supervised Machine Learning task is to recognize the relation
+The goal of a supervised Machine Learning task is to recognize the relation
 between input and output data to predict output values from input values.
 We measure the quality of the Machine Learning results with a
 \emph{loss value}, which is a real number representing how much the predicted
@@ -370,7 +369,7 @@ function.
 The success of a Machine Learning task depends on the careful selection of
 training data, loss function, model, and the optimizer.
 For the optimizer, a common choice is \emph{Gradient Descent}.
-In each optimizer iteration, the optimizer computes the gradient of the loss
+In each optimization iteration, the optimizer computes the gradient of the loss
 value from the model output w.r.t. the model parameters.
 As the gradient points towards the steepest ascent, its negative points towards
 the steepest descent.
@@ -420,10 +419,9 @@ structure.
 
 \begin{equation}
     \mathbb{P}(M = \ket 0 | \theta) = d_1 + d_3 \cdot \cos(\theta + d_2)
-    \text{ with } d_1,d_2,d_3 \in \mathbb R
 \end{equation}
 
-Here, $d_1, d_2, d_3$ are unknown constants independent of $\theta$.
+Here, $d_1, d_2, d_3 \in \mathbb R$ are unknown constants independent of $\theta$.
 The authors could reconstruct these constants by evaluating the PQC with three
 select values for $\theta$.
 As sinusoidal functions are well understood, the minimum of this reconstructed
