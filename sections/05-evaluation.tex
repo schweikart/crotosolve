@@ -12,7 +12,7 @@ expressibility and from various research applications.
 \label{sec:proof-of-concept}
 To put the approach proposed in chapter \ref{chap:gradient-free} to test,
 I have implemented a proof-of-concept application with PennyLane
-\cite{bergholm_pennylane_2022}.
+\cite{bergholm_pennylane_2018}.
 PennyLane is a popular quantum computing SDK with extensive documentation and a
 library of readily implemented optimizers \cite{unitary_fund_team_results_2022}.
 Particularly, PennyLane is currently the only quantum SDK to implement the
@@ -84,7 +84,7 @@ standard gradient descent with a fixed learning rate, % TODO: cite! and isnt thi
 \texttt{Adagrad} \cite{duchi_adaptive_2011}.
 Additionally, I will test my \texttt{Crotosolve} implementation against
 PennyLane's implementation of the \texttt{Rotosolve} algorithm
-\cite{ostaszewski_structure_2021,bergholm_pennylane_2022}, which is extended by
+\cite{ostaszewski_structure_2021,bergholm_pennylane_2018}, which is extended by
 Wierichs' paper on ``\emph{\citefield{wierichs_general_2022}{title}}'' to
 support further types of gates \cite{wierichs_general_2022}.
 
@@ -163,7 +163,7 @@ For CRP gates, both algorithms use the same strategy, although different methods
 to achieve their common goal.
 PennyLane's implementation of the \texttt{Rotosolve} algorithm proposed by
 Ostaszewski et al. is augmented with the work of Wierichs et al.
-\cite{ostaszewski_structure_2021,wierichs_general_2022,bergholm_pennylane_2022}.
+\cite{ostaszewski_structure_2021,wierichs_general_2022,bergholm_pennylane_2018}.
 Wierichs' work allows the algorithm to reconstruct univariate loss functions
 from almost any quantum circuit through a discrete Fourier series transform.
 While both \texttt{Crotosolve} and \texttt{Rotosolve} cache an evaluation value
